@@ -1,2 +1,6 @@
-# EECS581
- 
+# EECS 581 - Capstone
+
+## Team
+- Tanner Helton
+- Chris Stillman
+- Adam Jolles
