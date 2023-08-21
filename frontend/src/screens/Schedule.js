@@ -1,33 +1,13 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { View } from "react-native";
+import LaundryCardContainer from "../components/LaundryCardContainer";
 
-function ScheduleScreen({ navigation }) {
+function LaundryScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome ScheduleScreen!</Text>
-      <Button
-        mode="contained"
-        onPress={() => {
-          /* Navigate or any action */
-        }}
-      >
-        Click Me
-      </Button>
+    <View>
+      <LaundryCardContainer />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 10,
-  },
-});
-
-export default ScheduleScreen;
+export default LaundryScreen;
