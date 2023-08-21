@@ -2,10 +2,10 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Text } from "react-native-paper";
 
-function HomeScreen({ navigation }) {
+function ScheduleScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome Home!</Text>
+      <Text style={styles.title}>Welcome ScheduleScreen!</Text>
       <Button
         mode="contained"
         onPress={() => {
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default ScheduleScreen;
