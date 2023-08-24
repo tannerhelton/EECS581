@@ -2,7 +2,7 @@
 *.zip
 node_modules/
 .env
-
+frontend/vendor
 # Xcode
 *.pbxuser
 !default.pbxuser

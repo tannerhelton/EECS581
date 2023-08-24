@@ -1,20 +1,12 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, Text, StyleSheet } from "react-native";
-import firebase from "@react-native-firebase/app";
 
 function SignIn({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const handleSignIn = () => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .catch((error) => {
-        setErrorMessage(error.message);
-      });
-  };
+  const handleSignIn = () => {};
 
   return (
     <View style={styles.container}>
