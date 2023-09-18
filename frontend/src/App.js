@@ -3,12 +3,13 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Link,
   Navigate,
 } from "react-router-dom";
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+import AppToolbar from "./components/AppToolbar";
+
 import HomePage from "./screens/HomePage";
 import AuthHomePage from "./screens/AuthHomePage";
 import LoginPage from "./screens/LoginPage";
@@ -40,34 +41,7 @@ function App() {
 
   return (
     <Router>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
-            Health Horizon AI
-          </Typography>
-          <Button color="inherit">
-            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-              Home
-            </Link>
-          </Button>
-          <Button color="inherit">
-            <Link
-              to="/login"
-              style={{ textDecoration: "none", color: "white" }}
-            >
-              Login
-            </Link>
-          </Button>
-          <Button color="inherit">
-            <Link
-              to="/chatbot"
-              style={{ textDecoration: "none", color: "white" }}
-            >
-              Chatbot
-            </Link>
-          </Button>
-        </Toolbar>
-      </AppBar>
+      <AppToolbar user={user} />
       <Routes>
         <Route path="/" element={user ? <AuthHomePage /> : <HomePage />} />
         <Route
