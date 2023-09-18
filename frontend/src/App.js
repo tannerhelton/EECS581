@@ -1,8 +1,16 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  Navigate,
+} from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import HomePage from "./screens/HomePage";
+import AuthHomePage from "./screens/AuthHomePage";
 import LoginPage from "./screens/LoginPage";
 import ChatbotPage from "./screens/ChatbotPage";
 
@@ -18,7 +26,18 @@ const firebaseConfig = {
 
 const fb = initializeApp(firebaseConfig);
 
+const auth = getAuth(fb);
+
 function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+      setUser(authUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <Router>
       <AppBar position="static">
@@ -50,9 +69,15 @@ function App() {
         </Toolbar>
       </AppBar>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/chatbot" element={<ChatbotPage />} />
+        <Route path="/" element={user ? <AuthHomePage /> : <HomePage />} />
+        <Route
+          path="/login"
+          element={!user ? <LoginPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/chatbot"
+          element={user ? <ChatbotPage /> : <Navigate to="/login" />}
+        />
       </Routes>
     </Router>
   );
