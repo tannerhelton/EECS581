@@ -5,3 +5,4 @@
 - Chris Stillman
 - Adam Jolles
 - Thomas Gansner
+- Sloan Stubler
