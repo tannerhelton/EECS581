@@ -27,7 +27,10 @@ export default function AppToolbar({ user }) {
         {/* Home button */}
         <NavButton to="/" label="Home" />
 
-        {/* Conditional button: Shows "Chatbot" if user is logged in, otherwise "Login" */}
+        {/* Profile button (only if user is logged in) */}
+        {user && <NavButton to="/profile" label="Profile" />}
+
+        {/* Chatbot or Login button based on user's login status */}
         <NavButton
           to={user ? "/chatbot" : "/login"}
           label={user ? "Chatbot" : "Login"}

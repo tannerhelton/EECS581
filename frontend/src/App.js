@@ -9,6 +9,7 @@ import {
 
 // Import Firebase app and auth modules
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // Import custom components and screens
@@ -17,6 +18,7 @@ import HomePage from "./screens/HomePage";
 import AuthHomePage from "./screens/AuthHomePage";
 import LoginPage from "./screens/LoginPage";
 import ChatbotPage from "./screens/ChatbotPage";
+import ProfilePage from "./screens/ProfilePage";
 
 // Firebase configuration object
 const firebaseConfig = {
@@ -34,6 +36,7 @@ const fb = initializeApp(firebaseConfig);
 
 // Get Firebase auth instance
 const auth = getAuth(fb);
+const db = getFirestore(fb);
 
 // Main App component
 function App() {
@@ -64,6 +67,17 @@ function App() {
           path="/login"
           element={!user ? <LoginPage /> : <Navigate to="/" />}
         />
+        <Route
+          path="/profile"
+          element={
+            user ? (
+              <ProfilePage auth={auth} db={db} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+
         {/* Chatbot route */}
         <Route
           path="/chatbot"
