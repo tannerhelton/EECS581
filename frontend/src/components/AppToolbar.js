@@ -2,6 +2,7 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
 
 // A reusable navigation button component
 const NavButton = ({ to, label }) => (
@@ -15,6 +16,13 @@ const NavButton = ({ to, label }) => (
 
 // Main App Toolbar component
 export default function AppToolbar({ user }) {
+  const auth = getAuth();
+
+  // Function to handle logout
+  const handleLogout = () => {
+    signOut(auth);
+  };
+
   return (
     // AppBar for the app header
     <AppBar position="static">
@@ -35,6 +43,13 @@ export default function AppToolbar({ user }) {
           to={user ? "/chatbot" : "/login"}
           label={user ? "Chatbot" : "Login"}
         />
+
+        {/* Logout button (only if user is logged in) */}
+        {user && (
+          <Button color="inherit" onClick={handleLogout}>
+            Logout
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );
