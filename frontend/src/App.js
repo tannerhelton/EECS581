@@ -14,11 +14,12 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // Import custom components and screens
 import AppToolbar from "./components/AppToolbar";
-import HomePage from "./screens/HomePage";
-import AuthHomePage from "./screens/AuthHomePage";
-import LoginPage from "./screens/LoginPage";
-import ChatbotPage from "./screens/ChatbotPage";
-import ProfilePage from "./screens/ProfilePage";
+import HomePage from "./screens/UnAuth/HomePage";
+import AuthHomePage from "./screens/Auth/AuthHomePage";
+import LoginPage from "./screens/UnAuth/LoginPage";
+import ChatbotPage from "./screens/Auth/ChatbotPage";
+import ProfilePage from "./screens/Auth/ProfilePage";
+import AboutPage from "./screens/UnAuth/AboutPage";
 
 // Firebase configuration object
 const firebaseConfig = {
@@ -67,6 +68,9 @@ function App() {
           path="/login"
           element={!user ? <LoginPage /> : <Navigate to="/" />}
         />
+        {/* About route */}
+        <Route path="/about" element={<AboutPage />} />
+        {/* Profile route */}
         <Route
           path="/profile"
           element={

@@ -35,6 +35,11 @@ export default function AppToolbar({ user }) {
         {/* Home button */}
         <NavButton to="/" label="Home" />
 
+        {/* About button */}
+        <NavButton to="/about" label="About" />
+
+        {/* Dashboard button (only if user is logged in) */}
+
         {/* Profile button (only if user is logged in) */}
         {user && <NavButton to="/profile" label="Profile" />}
 
