@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { styled } from "@mui/system";
 
-const logoUrl = "/HH_logo.png";
+const logoUrl = "/HH_Logo.png";
 
 const HeaderLogo = styled("img")({
   height: "40px",

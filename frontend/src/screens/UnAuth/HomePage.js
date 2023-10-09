@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, Paper, Container } from "@mui/material";
 import { styled } from "@mui/system";
 
-const logoUrl = "/HH_logo.png";
+const logoUrl = "/HH_Logo.png";
 
 const StyledContainer = styled(Container)({
   padding: (theme) => theme.spacing(4),
