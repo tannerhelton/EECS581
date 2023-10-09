@@ -1,11 +1,20 @@
 import React, { useState } from "react";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography, Paper, Container } from "@mui/material";
+import { styled } from "@mui/system";
 import {
   getAuth,
   signInWithEmailAndPassword,
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "firebase/auth";
+
+// Reusing the styles from HomePage and AboutPage
+const StyledContainer = styled(Container)({
+  padding: (theme) => theme.spacing(4),
+  marginTop: '25vh',
+  textAlign: "center",
+  backgroundColor: 'transparent',
+});
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -51,23 +60,27 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <Typography variant="h1">Login</Typography>
-      <form onSubmit={handleLogin}>
+    <StyledContainer component={Paper} elevation={0}>
+      <Typography variant="h2" color="primary">Login</Typography>
+      <form onSubmit={handleLogin} style={{ marginTop: '20px' }}>
         <TextField
           label="Email"
           variant="outlined"
+          fullWidth
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          style={{ marginBottom: '10px' }}
         />
         <TextField
           label="Password"
           variant="outlined"
           type="password"
+          fullWidth
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          style={{ marginBottom: '20px' }}
         />
-        <Button variant="contained" color="primary" type="submit">
+        <Button variant="contained" color="primary" type="submit" fullWidth>
           Login
         </Button>
       </form>
@@ -76,22 +89,25 @@ const LoginPage = () => {
       <TextField
         label="Phone Number"
         variant="outlined"
+        fullWidth
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
+        style={{ marginTop: '20px', marginBottom: '10px' }}
       />
-      <Button variant="contained" color="primary" onClick={handlePhoneLogin}>
+      <Button variant="contained" color="primary" onClick={handlePhoneLogin} fullWidth>
         Login with Phone
       </Button>
       {confirmationResult && (
-        <div>
+        <div style={{ marginTop: '20px' }}>
           <TextField
             label="Verification Code"
             variant="outlined"
+            fullWidth
             onChange={(e) => confirmCode(e.target.value)}
           />
         </div>
       )}
-    </div>
+    </StyledContainer>
   );
 };
 
