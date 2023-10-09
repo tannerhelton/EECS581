@@ -1,55 +1,46 @@
-// Importing required components and modules
 import React from "react";
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { AppBar, Toolbar, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
+import { styled } from "@mui/system";
 
-// A reusable navigation button component
+const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
+
+const HeaderLogo = styled("img")({
+  height: '40px',
+  marginRight: (theme) => theme.spacing(2),
+});
+
 const NavButton = ({ to, label }) => (
-  <Button color="inherit">
-    {/* Use Link for client-side routing, apply common styling */}
-    <Link to={to} style={{ textDecoration: "none", color: "white" }}>
+  <Button color="primary">   {/* This makes the button use the primary color */}
+    <Link to={to} style={{ textDecoration: "none", color: "inherit" }}>
       {label}
     </Link>
   </Button>
 );
 
-// Main App Toolbar component
+
 export default function AppToolbar({ user }) {
   const auth = getAuth();
 
-  // Function to handle logout
   const handleLogout = () => {
     signOut(auth);
   };
 
   return (
-    // AppBar for the app header
-    <AppBar position="static">
+    <AppBar position="static" color="transparent">
       <Toolbar>
-        {/* Title of the app */}
-        <Typography variant="h6" style={{ flexGrow: 1 }}>
-          Health Horizon AI
-        </Typography>
+        {/* Replacing title with logo */}
+        <HeaderLogo src={logoUrl} alt="Health Horizon AI Logo" />
 
-        {/* Home button */}
         <NavButton to="/" label="Home" />
-
-        {/* About button */}
         <NavButton to="/about" label="About" />
 
-        {/* Dashboard button (only if user is logged in) */}
-
-        {/* Profile button (only if user is logged in) */}
         {user && <NavButton to="/profile" label="Profile" />}
-
-        {/* Chatbot or Login button based on user's login status */}
         <NavButton
           to={user ? "/chatbot" : "/login"}
           label={user ? "Chatbot" : "Login"}
         />
-
-        {/* Logout button (only if user is logged in) */}
         {user && (
           <Button color="inherit" onClick={handleLogout}>
             Logout

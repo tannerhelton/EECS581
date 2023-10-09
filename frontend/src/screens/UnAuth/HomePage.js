@@ -1,12 +1,29 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import { Typography, Paper, Container } from "@mui/material";
+import { styled } from "@mui/system";
+
+const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
+
+const StyledContainer = styled(Container)({
+  padding: (theme) => theme.spacing(4),
+  marginTop: (theme) => theme.spacing(4),
+  textAlign: "center",
+  backgroundColor: 'transparent', // Making the Paper's background transparent
+});
+
+const LogoImage = styled("img")({
+  maxWidth: "30%",
+  marginBottom: (theme) => theme.spacing(3),
+});
 
 const HomePage = () => {
   return (
-    <div>
-      <Typography variant="h1">Welcome to Health Horizon AI</Typography>
-      <Typography variant="body1">Early detection, better health.</Typography>
-    </div>
+    <StyledContainer component={Paper} elevation={0}> {/* Removed shadow with elevation={0} */}
+      <LogoImage src={logoUrl} alt="Health Horizon AI Logo" />
+      <Typography variant="h2" color="primary"> {/* Changed to h2 variant for larger text and specified color */}
+        Early detection, better health.
+      </Typography>
+    </StyledContainer>
   );
 };
 

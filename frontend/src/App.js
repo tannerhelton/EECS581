@@ -7,6 +7,9 @@ import {
   Navigate,
 } from "react-router-dom";
 
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme";
+
 // Import Firebase app and auth modules
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
@@ -39,58 +42,52 @@ const fb = initializeApp(firebaseConfig);
 const auth = getAuth(fb);
 const db = getFirestore(fb);
 
-// Main App component
 function App() {
-  // State to hold the current user
   const [user, setUser] = useState(null);
 
-  // Effect to listen for auth state changes
   useEffect(() => {
-    // Subscribe to auth state changes
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
       setUser(authUser);
     });
-    // Cleanup: Unsubscribe from auth state changes
     return () => unsubscribe();
   }, []);
 
-  // Render the app
   return (
-    <Router>
-      {/* Toolbar component */}
-      <AppToolbar user={user} />
-      {/* Define application routes */}
-      <Routes>
-        {/* Home route */}
-        <Route path="/" element={user ? <AuthHomePage /> : <HomePage />} />
-        {/* Login route */}
-        <Route
-          path="/login"
-          element={!user ? <LoginPage /> : <Navigate to="/" />}
-        />
-        {/* About route */}
-        <Route path="/about" element={<AboutPage />} />
-        {/* Profile route */}
-        <Route
-          path="/profile"
-          element={
-            user ? (
-              <ProfilePage auth={auth} db={db} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-
-        {/* Chatbot route */}
-        <Route
-          path="/chatbot"
-          element={user ? <ChatbotPage /> : <Navigate to="/login" />}
-        />
-      </Routes>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        {/* Toolbar component */}
+        <AppToolbar user={user} />
+        {/* Define application routes */}
+        <Routes>
+          {/* Home route */}
+          <Route path="/" element={user ? <AuthHomePage /> : <HomePage />} />
+          {/* Login route */}
+          <Route
+            path="/login"
+            element={!user ? <LoginPage /> : <Navigate to="/" />}
+          />
+          {/* About route */}
+          <Route path="/about" element={<AboutPage />} />
+          {/* Profile route */}
+          <Route
+            path="/profile"
+            element={
+              user ? (
+                <ProfilePage auth={auth} db={db} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          {/* Chatbot route */}
+          <Route
+            path="/chatbot"
+            element={user ? <ChatbotPage /> : <Navigate to="/login" />}
+          />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 
-// Export the App component
 export default App;
