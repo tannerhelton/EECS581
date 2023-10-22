@@ -1,0 +1,57 @@
+/* ProfilePage.css */
+
+/* Profile card style */
+.profile-card {
+    background-color: #2c3e50; /* Dark grey background color */
+    color: white; /* White text color */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+  }
+  
+  /* Edit and Questionnaire button container */
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  /* Edit button style */
+  .edit-button {
+    background-color: #3498db; /* Button background color */
+    color: white; /* White text color */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .edit-button:hover {
+    background-color: #303f9f; /* Darker blue on hover */
+  }
+  
+  /* Questionnaire button style */
+  .questionnaire-button {
+    background-color: #3498db; /* Button background color */
+    color: white; /* White text color */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none; /* Remove underline */
+  }
+  
+  .questionnaire-button:hover {
+    background-color: #303f9f; /* Darker blue on hover */
+  }
+  
+  /* Error message style */
+  .error {
+    color: #f44336; /* Red text color for error messages */
+    margin-top: 10px;
+  }
+  

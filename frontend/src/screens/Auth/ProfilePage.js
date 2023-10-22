@@ -1,5 +1,7 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "./css/ProfilePage.css"; // Import the CSS file
 
 function ProfilePage({ auth, db }) {
 	const [userInfo, setUserInfo] = useState({
@@ -118,192 +120,56 @@ function ProfilePage({ auth, db }) {
 	}, [auth, db]);
 
 	return (
-		<div>
-			<h1>Account Information</h1>
-			<p>
-				<strong>Name:</strong>
-				{editable ? (
-					<input
-						type="text"
-						name="displayName"
-						value={userInfo.displayName}
-						onChange={handleChange}
-					/>
-				) : (
-					userInfo.displayName
-				)}
-			</p>
-			<p>
-				<strong>Email:</strong> {userInfo.email}
-			</p>
-			<p>
-				<strong>Phone Number:</strong>
-				{editable ? (
-					<input
-						type="text"
-						name="phoneNumber"
-						value={userInfo.phoneNumber}
-						onChange={handleChange}
-					/>
-				) : (
-					userInfo.phoneNumber
-				)}
-			</p>
-			<p>
-				<strong>Height:</strong>
+		<>
+			<div className="profile-card">
+				<h1>Account Information</h1>
+				<p>
+					<strong>Name:</strong>
+					{editable ? (
+						<input
+							type="text"
+							name="displayName"
+							value={userInfo.displayName}
+							onChange={handleChange}
+						/>
+					) : (
+						userInfo.displayName
+					)}
+				</p>
+				<p>
+					<strong>Email:</strong> {userInfo.email}
+				</p>
+				<p>
+					<strong>Phone Number:</strong>
+					{editable ? (
+						<input
+							type="text"
+							name="phoneNumber"
+							value={userInfo.phoneNumber}
+							onChange={handleChange}
+						/>
+					) : (
+						userInfo.phoneNumber
+					)}
+				</p>
 				{editable ? (
 					<div>
-						<input
-							type="text"
-							name="heightFeet"
-							value={userInfo.heightFeet}
-							onChange={handleChange}
-							placeholder="Feet"
-						/>
-						<input
-							type="text"
-							name="heightInches"
-							value={userInfo.heightInches}
-							onChange={handleChange}
-							placeholder="Inches"
-						/>
+						<button onClick={handleSave}>Save</button>
+						<button onClick={() => setEditable(false)}>Cancel</button>
 					</div>
 				) : (
-					`${userInfo.heightFeet}' ${userInfo.heightInches}"`
-				)}
-			</p>
-			<p>
-				<strong>Weight (in kg):</strong>
-				{editable ? (
-					<input
-						type="number"
-						name="weight"
-						value={userInfo.weight}
-						onChange={handleChange}
-					/>
-				) : (
-					userInfo.weight
-				)}
-			</p>
-			<p>
-				<strong>Date of Birth:</strong>
-				{editable ? (
 					<div>
-						<input
-							type="text"
-							name="dateOfBirth"
-							value={userInfo.dateOfBirth}
-							onChange={handleChange}
-						/>
-						{userInfo.dateOfBirthError && (
-							<span className="error">{userInfo.dateOfBirthError}</span>
-						)}
+						<button onClick={handleEdit}>Edit</button>
 					</div>
-				) : (
-					userInfo.dateOfBirth
 				)}
-			</p>
-			<p>
-				<strong>Gender:</strong>
-				{editable ? (
-					<input
-						type="text"
-						name="gender"
-						value={userInfo.gender}
-						onChange={handleChange}
-					/>
-				) : (
-					userInfo.gender
-				)}
-			</p>
-			<p>
-				<strong>Blood Type:</strong>
-				{editable ? (
-					<input
-						type="text"
-						name="bloodType"
-						value={userInfo.bloodType}
-						onChange={handleChange}
-					/>
-				) : (
-					userInfo.bloodType
-				)}
-			</p>
-			<p>
-				<strong>Allergies:</strong>
-				{editable ? (
-					<input
-						type="text"
-						name="allergies"
-						value={userInfo.allergies}
-						onChange={handleChange}
-					/>
-				) : (
-					userInfo.allergies
-				)}
-			</p>
-			<p>
-				<strong>Current Medications:</strong>
-				{editable ? (
-					<input
-						type="text"
-						name="medications"
-						value={userInfo.medications}
-						onChange={handleChange}
-					/>
-				) : (
-					userInfo.medications
-				)}
-			</p>
-			<p>
-				<strong>Existing Medical Conditions:</strong>
-				{editable ? (
-					<input
-						type="text"
-						name="medicalConditions"
-						value={userInfo.medicalConditions}
-						onChange={handleChange}
-					/>
-				) : (
-					userInfo.medicalConditions
-				)}
-			</p>
-			<p>
-				<strong>Emergency Contact Name:</strong>
-				{editable ? (
-					<input
-						type="text"
-						name="emergencyContactName"
-						value={userInfo.emergencyContactName}
-						onChange={handleChange}
-					/>
-				) : (
-					userInfo.emergencyContactName
-				)}
-			</p>
-			<p>
-				<strong>Emergency Contact Number:</strong>
-				{editable ? (
-					<input
-						type="text"
-						name="emergencyContactNumber"
-						value={userInfo.emergencyContactNumber}
-						onChange={handleChange}
-					/>
-				) : (
-					userInfo.emergencyContactNumber
-				)}
-			</p>
-			{editable ? (
-				<div>
-					<button onClick={handleSave}>Save</button>
-					<button onClick={() => setEditable(false)}>Cancel</button>
-				</div>
-			) : (
-				<button onClick={handleEdit}>Edit</button>
-			)}
-			{error && <div className="error">{error}</div>}
-		</div>
+				{error && <div className="error">{error}</div>}
+			</div>
+			<div className="button-container">
+				<Link to="/questionnaire" className="questionnaire-button">
+					Go to Questionnaire
+				</Link>
+			</div>
+		</>
 	);
 }
 
