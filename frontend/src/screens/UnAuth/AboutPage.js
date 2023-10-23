@@ -1,13 +1,10 @@
 import React from "react";
-import { Typography, Paper, Container } from "@mui/material";
+import { Typography, Grid, Paper, Container, Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 
-<<<<<<< Updated upstream
-// Reusing the styles from HomePage to maintain consistency
-=======
 const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
-const heartDiseaseUrl = process.env.PUBLIC_URL + "/logo192.png";
-const cancerUrl = process.env.PUBLIC_URL + "/neural.png";
+const heartDiseaseUrl = process.env.PUBLIC_URL + "/logo512.png";
+const cancerUrl = process.env.PUBLIC_URL + "/logo512.png";
 const diabetesUrl = process.env.PUBLIC_URL + "/logo512.png";
 
 const LogoImage = styled("img")({
@@ -19,28 +16,14 @@ const InnerWrapper = styled('div')({
   paddingBottom: '200px',
 });
 
->>>>>>> Stashed changes
 const StyledContainer = styled(Container)({
   padding: (theme) => theme.spacing(4),
   marginTop: '25vh',
-  marginBottom: '100px', // Added this line
+  marginBottom: '100px',
   textAlign: "center",
   backgroundColor: 'transparent',
 });
 
-<<<<<<< Updated upstream
-const AboutPage = () => {
-  return (
-    <StyledContainer component={Paper} elevation={0}>
-      <Typography variant="h2" color="primary">About Health Horizon AI</Typography>
-      <Typography variant="h6" color="primary" style={{ marginTop: '20px' }}>
-        At Health Horizon AI, we are dedicated to leveraging the power of
-        machine learning to advance healthcare. Our mission is to pioneer
-        early detection technologies for various medical conditions, including
-        but not limited to heart disease, diabetes, and more.
-      </Typography>
-    </StyledContainer>
-=======
 const BlocksContainer = styled(Container)({
   padding: '20px',
   marginTop: '20vh',
@@ -96,7 +79,6 @@ const AboutPage = () => {
       </Grid>
     </BlocksContainer>
     </>
->>>>>>> Stashed changes
   );
 };
 
