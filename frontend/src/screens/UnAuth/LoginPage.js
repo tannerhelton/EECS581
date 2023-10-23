@@ -16,11 +16,14 @@ const LogoImage = styled("img")({
 });
 
 const StyledContainer = styled(NarrowContainer)({
-  padding: (theme) => theme.spacing(4),
+  padding: '20px',
   marginTop: '20vh',
   textAlign: "center",
   backgroundColor: 'transparent',
-  width: '50%'
+  width: '50%',
+  borderRadius: '20px',
+  backgroundColor: '#2c3e50',
+  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
 });
 
 const primaryLabelStyle = {
@@ -44,20 +47,35 @@ const primaryBorderStyle = {
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
 
-  const navigate = useNavigate(); // Use the useNavigate hook
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/AuthHomePage"); // Navigate using the useNavigate hook
+      navigate("/ProfilePage");
     } catch (error) {
       console.error("Login Failed:", error);
+  
+      switch (error.code) {
+        case 'auth/wrong-password':
+          setLoginError("Incorrect Username or Password");
+          break;
+        case 'auth/user-not-found':
+          setLoginError("Incorrect Username or Password");
+          break;
+        case 'auth/invalid-email':
+          setLoginError("Invalid Email Format");
+          break;
+        default:
+          setLoginError(error.message); 
+          break;
+      }
     }
   };
-
 
   return (
     <StyledContainer component={Paper} elevation={0}>
@@ -88,6 +106,7 @@ const LoginPage = () => {
           InputLabelProps={{ style: primaryLabelStyle }}
           InputProps={{ style: primaryLabelStyle }}
         />
+        {loginError && <Typography color="error" style={{ marginTop: '10px' }}>{loginError}</Typography>}
         <Button variant="contained" color="primary" type="submit" fullWidth>
           Login
         </Button>
@@ -95,5 +114,6 @@ const LoginPage = () => {
     </StyledContainer>
   );
 };
+
 
 export default LoginPage;

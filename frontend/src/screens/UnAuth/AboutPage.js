@@ -5,12 +5,27 @@ import { styled } from "@mui/system";
 const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
 const neuralUrl = process.env.PUBLIC_URL + "/neural.png";
 
+const NarrowContainer = styled(Container)({
+  maxWidth: '400px',
+});
+
 // Reusing the styles from HomePage to maintain consistency
 const StyledContainer = styled(Container)({
   padding: (theme) => theme.spacing(4),
   marginTop: '25vh',
   textAlign: "center",
   backgroundColor: 'transparent',
+});
+
+const UnstyledContainer = styled(NarrowContainer)({
+  padding: '20px',
+  marginTop: '20vh',
+  textAlign: "center",
+  backgroundColor: 'transparent',
+  width: '50%',
+  borderRadius: '20px',
+  backgroundColor: '#2c3e50',
+  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
 });
 
 const LogoImage = styled("img")({
