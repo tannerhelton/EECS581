@@ -27,7 +27,11 @@ const LoginPage = () => {
     const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+<<<<<<< Updated upstream
       // Navigate to another page or whatever you want
+=======
+      navigate("/profile");
+>>>>>>> Stashed changes
     } catch (error) {
       console.error("Login Failed:", error);
     }

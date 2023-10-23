@@ -2,14 +2,33 @@ import React from "react";
 import { Typography, Paper, Container } from "@mui/material";
 import { styled } from "@mui/system";
 
+<<<<<<< Updated upstream
 // Reusing the styles from HomePage to maintain consistency
+=======
+const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
+const heartDiseaseUrl = process.env.PUBLIC_URL + "/logo192.png";
+const cancerUrl = process.env.PUBLIC_URL + "/neural.png";
+const diabetesUrl = process.env.PUBLIC_URL + "/logo512.png";
+
+const LogoImage = styled("img")({
+  maxWidth: "30%",
+  marginBottom: (theme) => theme.spacing(3),
+});
+
+const InnerWrapper = styled('div')({
+  paddingBottom: '200px',
+});
+
+>>>>>>> Stashed changes
 const StyledContainer = styled(Container)({
   padding: (theme) => theme.spacing(4),
   marginTop: '25vh',
+  marginBottom: '100px', // Added this line
   textAlign: "center",
   backgroundColor: 'transparent',
 });
 
+<<<<<<< Updated upstream
 const AboutPage = () => {
   return (
     <StyledContainer component={Paper} elevation={0}>
@@ -21,6 +40,63 @@ const AboutPage = () => {
         but not limited to heart disease, diabetes, and more.
       </Typography>
     </StyledContainer>
+=======
+const BlocksContainer = styled(Container)({
+  padding: '20px',
+  marginTop: '20vh',
+  textAlign: "center",
+  backgroundColor: 'transparent',
+  width: '50%',
+  borderRadius: '20px',
+  backgroundColor: '#2c3e50',
+  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+});
+
+const FeatureBlock = ({ imageUrl, title, description }) => (
+  <Grid item xs={12} sm={4}>
+    <Avatar variant="rounded" style={{ margin: '0 auto', marginBottom: '20px', backgroundColor: 'transparent' }}>
+      <img src={imageUrl} alt={title} style={{ maxWidth: '100%' }} />
+    </Avatar>
+    <Typography variant="h5" color="primary">{title}</Typography>
+    <Typography variant="body1" style={{ color: '#FFFFFF' }}>{description}</Typography>
+  </Grid>
+);
+
+
+const AboutPage = () => {
+  return (
+    <>
+      <StyledContainer component={Paper} elevation={0}>
+        <Typography variant="h2" color="primary">About Health Horizon AI</Typography>
+        <Typography variant="h6" color="primary" style={{ marginTop: '20px' }}>
+          At Health Horizon AI, we are dedicated to leveraging the power of
+          machine learning to advance healthcare. Our mission is to pioneer
+          early detection technologies for various medical conditions, including
+          heart disease, cancer, diabetes, and more.
+        </Typography>
+      </StyledContainer>
+      
+      <BlocksContainer>
+      <Grid container spacing={6}>
+        <FeatureBlock 
+          imageUrl={heartDiseaseUrl}
+          title="Heart Disease" 
+          description="We leverage linear regression algorithms to detect early heart disease in patients." 
+        />
+        <FeatureBlock 
+          imageUrl={cancerUrl}
+          title="Cancer" 
+          description="Our neural networks are meticulously trained to accurately detect cancer symptoms." 
+        />
+        <FeatureBlock 
+          imageUrl={diabetesUrl}
+          title="Diabetes" 
+          description="Our trained data models and sophisticated AI algorithms allow us to create catered medical plans for diabetic patients." 
+        />
+      </Grid>
+    </BlocksContainer>
+    </>
+>>>>>>> Stashed changes
   );
 };
 
