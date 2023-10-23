@@ -4,21 +4,22 @@ import { Link } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { styled } from "@mui/system";
 
-const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
+const logoUrl = "/HH_Logo.png";
 
 const HeaderLogo = styled("img")({
-  height: '40px',
+  height: "40px",
   marginRight: (theme) => theme.spacing(2),
 });
 
 const NavButton = ({ to, label }) => (
-  <Button color="primary">   {/* This makes the button use the primary color */}
+  <Button color="primary">
+    {" "}
+    {/* This makes the button use the primary color */}
     <Link to={to} style={{ textDecoration: "none", color: "inherit" }}>
       {label}
     </Link>
   </Button>
 );
-
 
 export default function AppToolbar({ user }) {
   const auth = getAuth();

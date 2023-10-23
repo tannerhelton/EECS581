@@ -9,6 +9,7 @@ const StyledContainer = styled(Container)({
   padding: (theme) => theme.spacing(4),
   marginTop: (theme) => theme.spacing(4),
   textAlign: "center",
+
   backgroundColor: 'transparent',
 });
 
@@ -31,7 +32,9 @@ const HomePage = () => {
   return (
     <StyledContainer component={Paper} elevation={0}>
       <LogoImage src={logoUrl} alt="Health Horizon AI Logo" />
-      <Typography variant="h2" color="primary"> {/* Changed to h2 variant for larger text and specified color */}
+      <Typography variant="h2" color="primary">
+        {" "}
+        {/* Changed to h2 variant for larger text and specified color */}
         Early detection, better health.
       </Typography>
     </StyledContainer>
