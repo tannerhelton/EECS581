@@ -47,22 +47,32 @@ const primaryBorderStyle = {
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // For displaying error messages
+  const [loginError, setLoginError] = useState("");
 
-  const navigate = useNavigate(); // Use the useNavigate hook
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/profile"); // Navigate using the useNavigate hook
+      navigate("/ProfilePage");
     } catch (error) {
       console.error("Login Failed:", error);
-      if (error.code === "auth/invalid-email" || error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
-        setErrorMessage("Login Failed: Incorrect Username or Password");
-      } else {
-        setErrorMessage(error.message); // You can set other Firebase error messages here
+  
+      switch (error.code) {
+        case 'auth/wrong-password':
+          setLoginError("Incorrect Username or Password");
+          break;
+        case 'auth/user-not-found':
+          setLoginError("Incorrect Username or Password");
+          break;
+        case 'auth/invalid-email':
+          setLoginError("Invalid Email Format");
+          break;
+        default:
+          setLoginError(error.message); 
+          break;
       }
     }
   };
@@ -96,7 +106,7 @@ const LoginPage = () => {
           InputLabelProps={{ style: primaryLabelStyle }}
           InputProps={{ style: primaryLabelStyle }}
         />
-        {errorMessage && <Typography variant="body2" color="error">{errorMessage}</Typography>}
+        {loginError && <Typography color="error" style={{ marginTop: '10px' }}>{loginError}</Typography>}
         <Button variant="contained" color="primary" type="submit" fullWidth>
           Login
         </Button>

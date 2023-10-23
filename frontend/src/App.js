@@ -24,6 +24,7 @@ import LoginPage from "./screens/UnAuth/LoginPage";
 import ChatbotPage from "./screens/Auth/ChatbotPage";
 import ProfilePage from "./screens/Auth/ProfilePage";
 import AboutPage from "./screens/UnAuth/AboutPage";
+import MLResults from "./screens/Auth/MLResults";
 
 // Firebase configuration object
 const firebaseConfig = {
@@ -90,6 +91,10 @@ function App() {
 						element={
 							user ? <Questionnaire db={db} /> : <Navigate to="/login" />
 						}
+					/>
+					<Route
+						path="/matplotlib-results"
+						element={user ? <MLResults /> : <Navigate to="/login" />}
 					/>
 				</Routes>
 			</Router>

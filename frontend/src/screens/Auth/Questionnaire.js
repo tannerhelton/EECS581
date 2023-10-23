@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./css/Questionnaire.css";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
@@ -18,6 +18,7 @@ function Questionnaire({ db }) {
 	});
 	const [successMessage, setSuccessMessage] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const navigate = useNavigate();
 
 	const handleAnswerChange = (question, answer) => {
 		setAnswers((prevAnswers) => ({
@@ -46,6 +47,13 @@ function Questionnaire({ db }) {
 			setSuccessMessage("");
 			setErrorMessage("An error occurred while saving. Please try again.");
 		}
+	};
+
+	const generateAndDisplayMatplotlibResults = () => {
+		// Generate Matplotlib results and set them in the state
+		const results = "You have cancer"; // Replace with your actual Matplotlib generation logic
+		// Redirect to the /matplotlib-results route
+		navigate("/matplotlib-results");
 	};
 
 	return (
@@ -170,6 +178,12 @@ function Questionnaire({ db }) {
 					Save Questionnaire
 				</button>
 			</div>
+			<div className="question">
+				<button onClick={generateAndDisplayMatplotlibResults}>
+					Generate Matplotlib Results
+				</button>
+			</div>
+
 			<Link to="/profile" className="back-to-profile">
 				<ArrowBackIosNewIcon />
 			</Link>
