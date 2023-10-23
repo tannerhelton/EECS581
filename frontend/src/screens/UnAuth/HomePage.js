@@ -6,7 +6,7 @@ const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
 const neuralUrl = process.env.PUBLIC_URL + "/neural.png";
 
 const StyledContainer = styled(Container)({
-  padding: (theme) => theme.spacing(4),
+  padding: '20px',
   marginTop: (theme) => theme.spacing(4),
   textAlign: "center",
   backgroundColor: 'transparent',
