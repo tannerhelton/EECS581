@@ -8,7 +8,7 @@ const NarrowContainer = styled(Container)({
   maxWidth: '400px',
 });
 
-const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
+const logoUrl = process.env.PUBLIC_URL + "/HH_Logo.png";
 
 const LogoImage = styled("img")({
   maxWidth: "10%",
@@ -56,7 +56,7 @@ const LoginPage = () => {
     const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/ProfilePage");
+      navigate("/");
     } catch (error) {
       console.error("Login Failed:", error);
   

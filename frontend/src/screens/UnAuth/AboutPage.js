@@ -2,10 +2,12 @@ import React from "react";
 import { Typography, Grid, Paper, Container, Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 
+
 const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
 const heartDiseaseUrl = process.env.PUBLIC_URL + "/logo512.png";
 const cancerUrl = process.env.PUBLIC_URL + "/logo512.png";
 const diabetesUrl = process.env.PUBLIC_URL + "/logo512.png";
+
 
 const LogoImage = styled("img")({
   maxWidth: "30%",
