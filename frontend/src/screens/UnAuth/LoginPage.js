@@ -56,7 +56,7 @@ const LoginPage = () => {
     const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/AuthHomePage"); // Navigate using the useNavigate hook
+      navigate("/profile"); // Navigate using the useNavigate hook
     } catch (error) {
       console.error("Login Failed:", error);
       if (error.code === "auth/invalid-email" || error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
