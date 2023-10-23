@@ -3,21 +3,27 @@ import { Typography, Grid, Paper, Container, Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 
 const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
-const neuralUrl = process.env.PUBLIC_URL + "/neural.png";
+const heartDiseaseUrl = process.env.PUBLIC_URL + "/logo512.png";
+const cancerUrl = process.env.PUBLIC_URL + "/logo512.png";
+const diabetesUrl = process.env.PUBLIC_URL + "/logo512.png";
 
-const NarrowContainer = styled(Container)({
-  maxWidth: '400px',
+const LogoImage = styled("img")({
+  maxWidth: "30%",
+  marginBottom: (theme) => theme.spacing(3),
 });
 
-// Reusing the styles from HomePage to maintain consistency
+const InnerWrapper = styled('div')({
+  paddingBottom: '200px',
+});
 const StyledContainer = styled(Container)({
   padding: (theme) => theme.spacing(4),
   marginTop: '25vh',
+  marginBottom: '100px',
   textAlign: "center",
   backgroundColor: 'transparent',
 });
 
-const UnstyledContainer = styled(NarrowContainer)({
+const BlocksContainer = styled(Container)({
   padding: '20px',
   marginTop: '20vh',
   textAlign: "center",
@@ -42,6 +48,7 @@ const FeatureBlock = ({ icon, title, description }) => (
     <Typography variant="body1" style={{ color: '#FFFFFF' }}>{description}</Typography>
   </Grid>
 );
+
 
 const AboutPage = () => {
   return (
