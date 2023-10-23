@@ -1,105 +1,76 @@
-// Import necessary modules from React and React Router
+// React and React Router imports
 import React, { useState, useEffect } from "react";
 import {
-	BrowserRouter as Router,
-	Route,
-	Routes,
-	Navigate,
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
 } from "react-router-dom";
 
+// MUI imports
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 
-// Import Firebase app and auth modules
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+// Firebase imports and initialization
+import { auth, db } from "./firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 
-// Import custom components and screens
-import Questionnaire from "./screens/Auth/Questionnaire";
+// Custom component imports
 import AppToolbar from "./components/AppToolbar";
-import HomePage from "./screens/UnAuth/HomePage";
-import AuthHomePage from "./screens/Auth/AuthHomePage";
-import LoginPage from "./screens/UnAuth/LoginPage";
-import ChatbotPage from "./screens/Auth/ChatbotPage";
-import ProfilePage from "./screens/Auth/ProfilePage";
-import AboutPage from "./screens/UnAuth/AboutPage";
-import MLResults from "./screens/Auth/MLResults";
+import {
+  HomePage,
+  AuthHomePage,
+  LoginPage,
+  ChatbotPage,
+  ProfilePage,
+  AboutPage,
+  MLResults,
+  Questionnaire,
+} from "./screens";
 
-// Firebase configuration object
-const firebaseConfig = {
-	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-	authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-	measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
-	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-	storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-	messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-	appId: process.env.REACT_APP_FIREBASE_APP_ID,
-};
-
-// Initialize Firebase app
-const fb = initializeApp(firebaseConfig);
-
-// Get Firebase auth instance
-const auth = getAuth(fb);
-const db = getFirestore(fb);
+function renderPrivateRoute(element) {
+  return auth.currentUser ? element : <Navigate to="/login" />;
+}
 
 function App() {
-	const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-			setUser(authUser);
-		});
-		return () => unsubscribe();
-	}, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, setUser);
+    return unsubscribe;
+  }, []);
 
-	return (
-		<ThemeProvider theme={theme}>
-			<Router>
-				{/* Toolbar component */}
-				<AppToolbar user={user} />
-				{/* Define application routes */}
-				<Routes>
-					{/* Home route */}
-					<Route path="/" element={user ? <AuthHomePage /> : <HomePage />} />
-					{/* Login route */}
-					<Route
-						path="/login"
-						element={!user ? <LoginPage /> : <Navigate to="/" />}
-					/>
-					{/* About route */}
-					<Route path="/about" element={<AboutPage />} />
-					{/* Profile route */}
-					<Route
-						path="/profile"
-						element={
-							user ? (
-								<ProfilePage auth={auth} db={db} />
-							) : (
-								<Navigate to="/login" />
-							)
-						}
-					/>
-					{/* Chatbot route */}
-					<Route
-						path="/chatbot"
-						element={user ? <ChatbotPage /> : <Navigate to="/login" />}
-					/>
-					<Route
-						path="/questionnaire"
-						element={
-							user ? <Questionnaire db={db} /> : <Navigate to="/login" />
-						}
-					/>
-					<Route
-						path="/matplotlib-results"
-						element={user ? <MLResults /> : <Navigate to="/login" />}
-					/>
-				</Routes>
-			</Router>
-		</ThemeProvider>
-	);
+  return (
+    <ThemeProvider theme={theme}>
+      <Router>
+        <AppToolbar user={user} />
+        <Routes>
+          <Route path="/" element={user ? <AuthHomePage /> : <HomePage />} />
+          <Route
+            path="/login"
+            element={!user ? <LoginPage /> : <Navigate to="/" />}
+          />
+          <Route path="/about" element={<AboutPage />} />
+          <Route
+            path="/profile"
+            element={renderPrivateRoute(<ProfilePage auth={auth} db={db} />)}
+          />
+          <Route
+            path="/chatbot"
+            element={renderPrivateRoute(<ChatbotPage />)}
+          />
+          <Route
+            path="/questionnaire"
+            element={renderPrivateRoute(<Questionnaire db={db} />)}
+          />
+          <Route
+            path="/matplotlib-results"
+            element={renderPrivateRoute(<MLResults />)}
+          />
+        </Routes>
+      </Router>
+    </ThemeProvider>
+  );
 }
 
 export default App;
