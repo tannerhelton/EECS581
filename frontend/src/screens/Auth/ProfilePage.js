@@ -164,11 +164,6 @@ function ProfilePage({ auth, db }) {
 				)}
 				{error && <div className="error">{error}</div>}
 			</div>
-			<div className="button-container">
-				<Link to="/questionnaire" className="questionnaire-button">
-					Go to Questionnaire
-				</Link>
-			</div>
 		</>
 	);
 }
