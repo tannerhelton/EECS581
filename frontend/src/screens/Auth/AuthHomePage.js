@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, Grid, Paper, Container, Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 
-const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
+const logoUrl = process.env.PUBLIC_URL + "/HH_Logo.png";
 const neuralUrl = process.env.PUBLIC_URL + "/neural.png";
 
 const StyledContainer = styled(Container)({
@@ -34,6 +34,11 @@ const HomePage = () => {
       <Typography variant="h2" color="primary"> {/* Changed to h2 variant for larger text and specified color */}
         Early detection, better health.
       </Typography>
+      <Typography variant="h4" color="secondary">
+        <br/>Welcome back, {"displayName"}!<br/>
+        Take the next step and complete your profile.
+      </Typography>
+
     </StyledContainer>
   );
 };

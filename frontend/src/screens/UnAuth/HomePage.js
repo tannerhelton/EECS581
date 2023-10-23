@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, Grid, Paper, Container, Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 
-const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
+const logoUrl = process.env.PUBLIC_URL + "/HH_Logo.png";
 const neuralUrl = process.env.PUBLIC_URL + "/neural.png";
 
 const StyledContainer = styled(Container)({
