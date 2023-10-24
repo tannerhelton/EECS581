@@ -15,6 +15,14 @@ function Questionnaire({ db }) {
 		difficultyWalking: "",
 		gender: "",
 		ageCategory: "",
+		race: "", // New question
+		diabetic: "", // New question
+		physicalActivity: "", // New question
+		genHealth: "", // New question
+		sleepTime: "", // New question
+		asthma: "", // New question
+		kidneyDisease: "", // New question
+		skinCancer: "", // New question
 	});
 	const [successMessage, setSuccessMessage] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
@@ -174,16 +182,113 @@ function Questionnaire({ db }) {
 				</select>
 			</div>
 			<div className="question">
+				<label>What is your race?</label>
+				<select
+					onChange={(e) => handleAnswerChange("race", e.target.value)}
+					value={answers.race}
+				>
+					<option value="">Select</option>
+					<option value="White">White</option>
+					<option value="Black">Black</option>
+					<option value="Asian">Asian</option>
+					<option value="Native American">Native American</option>
+					<option value="Native Hawaiian">Native Hawaiian</option>
+					<option value="Other Pacific Islander">Other Pacific Islander</option>
+				</select>
+			</div>
+			<div className="question">
+				<label>Are you diabetic?</label>
+				<select
+					onChange={(e) => handleAnswerChange("diabetic", e.target.value)}
+					value={answers.diabetic}
+				>
+					<option value="">Select</option>
+					<option value="Yes">Yes</option>
+					<option value="No">No</option>
+				</select>
+			</div>
+			<div className="question">
+				<label>Do you exercise reguarly?</label>
+				<select
+					onChange={(e) =>
+						handleAnswerChange("physicalActivity", e.target.value)
+					}
+					value={answers.physicalActivity}
+				>
+					<option value="">Select</option>
+					<option value="Yes">Yes</option>
+					<option value="No">No</option>
+				</select>
+			</div>
+			<div className="question">
+				<label>How is your general health?</label>
+				<select
+					onChange={(e) => handleAnswerChange("genHealth", e.target.value)}
+					value={answers.genHealth}
+				>
+					<option value="">Select</option>
+					<option value="Very good">Very good</option>
+					<option value="Good">Good</option>
+					<option value="Fair">Fair</option>
+					<option value="Bad">Bad</option>
+					<option value="Very Bad">Very bad</option>
+				</select>
+			</div>
+			<div className="question">
+				<label>How many hours do you sleep per night on average?</label>
+				<input
+					type="number"
+					onChange={(e) => handleAnswerChange("sleepTime", e.target.value)}
+					value={answers.sleepTime}
+					placeholder="Enter hours"
+				/>
+			</div>
+			<div className="question">
+				<label>Do you have asthma?</label>
+				<select
+					onChange={(e) => handleAnswerChange("asthma", e.target.value)}
+					value={answers.asthma}
+				>
+					<option value="">Select</option>
+					<option value="Yes">Yes</option>
+					<option value="No">No</option>
+					{/* Add more asthma options here */}
+				</select>
+			</div>
+			<div className="question">
+				<label>Do you have kidney disease?</label>
+				<select
+					onChange={(e) => handleAnswerChange("kidneyDisease", e.target.value)}
+					value={answers.kidneyDisease}
+				>
+					<option value="">Select</option>
+					<option value="Yes">Yes</option>
+					<option value="No">No</option>
+					{/* Add more kidney disease options here */}
+				</select>
+			</div>
+			<div className="question">
+				<label>Do you have skin cancer?</label>
+				<select
+					onChange={(e) => handleAnswerChange("skinCancer", e.target.value)}
+					value={answers.skinCancer}
+				>
+					<option value="">Select</option>
+					<option value="Yes">Yes</option>
+					<option value="No">No</option>
+					{/* Add more skin cancer options here */}
+				</select>
+			</div>
+			<div className="question">
 				<button onClick={saveQuestionnaireToFirestore}>
 					Save Questionnaire
 				</button>
 			</div>
 			<div className="question">
 				<button onClick={generateAndDisplayMatplotlibResults}>
-					Generate Matplotlib Results
+					Generate Results
 				</button>
 			</div>
-
 			<Link to="/profile" className="back-to-profile">
 				<ArrowBackIosNewIcon />
 			</Link>
