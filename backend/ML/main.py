@@ -1,4 +1,5 @@
 import sys
+from flask import Flask, jsonify
 import pandas as pd
 import numpy as np
 import sklearn
@@ -63,3 +64,26 @@ plt.ylabel('Thalach',fontsize = 15,color='blue')
 plt.title('Age vs Thalach',fontsize = 15,color='blue')
 plt.grid()
 plt.show()
+
+
+app = Flask(__name)
+
+@app.route('/api/matplotlib-results')
+def get_matplotlib_results():
+    image_urls = generate_matplotlib_results()
+    return jsonify(image_urls)
+
+def generate_matplotlib_results():
+    # Your existing Python script code that generates the PNG images
+    # You can store the images in a folder and return their URLs
+    # Replace this with your actual image generation logic
+    image_urls = [
+        'image_url_1.png',
+        'image_url_2.png',
+        # Add more image URLs as needed
+    ]
+    
+    return image_urls
+
+if __name__ == '__main__':
+    app.run(debug=True) 
