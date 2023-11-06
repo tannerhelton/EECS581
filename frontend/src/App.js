@@ -52,10 +52,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       {" "}
-      // Provides the custom MUI theme to children
       <Router>
-        <AppToolbar user={user} /> // Displays the application toolbar with user
-        info
+        <AppToolbar user={user} />
         <Routes>
           <Route
             path="/"
@@ -65,11 +63,9 @@ function App() {
             path="/login"
             element={!user ? <LoginPage /> : <Navigate to="/" />} // Redirects to home if already logged in
           />
-          <Route path="/about" element={<AboutPage />} /> // Static about page
-          route
-          <Route path="/signup" element={<SignUpPage />} /> // Sign-up route
-          <Route path="/forgotpassword" element={<ForgotPasswordPage />} /> //
-          Password reset route
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
           <Route
             path="/profile"
             element={renderPrivateRoute(<ProfilePage auth={auth} db={db} />)} // Private route for profile page
