@@ -76,7 +76,7 @@ const AboutPage = () => {
           <FeatureBlock
             imageUrl={heartDiseaseUrl}
             title="Heart Disease"
-            description="We leverage linear regression algorithms to detect early heart disease in patients."
+            description="We leverage a K-nearest neighbors (KNN) algorithm to detect early heart disease in patients."
           />
           <FeatureBlock
             imageUrl={cancerUrl}
