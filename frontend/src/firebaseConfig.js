@@ -18,7 +18,7 @@ const auth = getAuth(fb);
 const db = getFirestore(fb);
 
 let appCheck;
-if (process.env.NODE_ENV !== "development") {
+if (process.env.REACT_APP_ENV !== "development") {
   appCheck = initializeAppCheck(fb, {
     provider: new ReCaptchaV3Provider(process.env.REACT_APP_RECAPTCHA_SITE_KEY),
     isTokenAutoRefreshEnabled: true,

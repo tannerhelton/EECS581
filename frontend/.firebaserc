@@ -1,5 +1,28 @@
 {
   "projects": {
     "default": "eecs581"
-  }
+  },
+  "targets": {
+    "sai-hc": {
+      "hosting": {
+        "staging": [
+          "health-horizon-staging"
+        ],
+        "production": [
+          "eecs581"
+        ]
+      }
+    },
+    "eecs581": {
+      "hosting": {
+        "staging": [
+          "health-horizon-staging"
+        ],
+        "production": [
+          "eecs581"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

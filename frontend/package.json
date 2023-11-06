@@ -19,12 +19,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "predeploy": "npm run build",
-    "deploy": "firebase deploy",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "REACT_APP_ENV=development react-scripts start",
+    "build:staging": "REACT_APP_ENV=staging react-scripts build",
+    "build:production": "REACT_APP_ENV=production react-scripts build",
+    "eject": "react-scripts eject",
+    "predeploy:staging": "npm run build:staging",
+    "predeploy:production": "npm run build:production",
+    "deploy:staging": "firebase deploy --only hosting:staging",
+    "deploy:production": "firebase deploy --only hosting:production"
   },
   "eslintConfig": {
     "extends": [
