@@ -28,6 +28,9 @@ import {
 	Questionnaire,
 } from "./screens";
 
+import SignUpPage from './screens/UnAuth/SignUpPage';
+import ForgotPasswordPage from './screens/UnAuth/ForgotPasswordPage';
+
 function renderPrivateRoute(element) {
 	return auth.currentUser ? element : <Navigate to="/login" />;
 }
@@ -54,6 +57,8 @@ function App() {
 						element={!user ? <LoginPage /> : <Navigate to="/" />}
 					/>
 					<Route path="/about" element={<AboutPage />} />
+					<Route path="/signup" element={<SignUpPage />} />
+					<Route path="/forgotpassword" element={<ForgotPasswordPage />} />
 					<Route
 						path="/profile"
 						element={renderPrivateRoute(<ProfilePage auth={auth} db={db} />)}

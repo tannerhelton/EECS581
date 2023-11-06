@@ -16,24 +16,30 @@ const InnerWrapper = styled("div")({
   paddingBottom: "200px",
 });
 
-const StyledContainer = styled(Container)({
+const StyledContainer = styled(Container)(({ theme }) => ({
   padding: (theme) => theme.spacing(4),
-  marginTop: "25vh",
-  marginBottom: "100px",
+  marginTop: theme.spacing(15),
+  marginBottom: theme.spacing(5),
   textAlign: "center",
   backgroundColor: "transparent",
-});
+}));
 
-const BlocksContainer = styled(Container)({
+const BlocksContainer = styled(Container)(({ theme }) => ({
   padding: "20px",
-  marginTop: "20vh",
+  marginTop: theme.spacing(15),
+  marginBottom: theme.spacing(5),
   textAlign: "center",
   backgroundColor: "transparent",
   width: "50%",
-  borderRadius: "20px",
+  borderRadius: theme.shape.borderRadius,
   backgroundColor: "#2c3e50",
-  boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
-});
+  boxShadow: theme.shadows[5],
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  height: 'fit-content',
+  color: 'white',
+}));
 
 const FeatureBlock = ({ imageUrl, title, description }) => (
   <Grid item xs={12} sm={4}>
