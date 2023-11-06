@@ -12,7 +12,8 @@ import { ThemeProvider } from "@mui/material/styles"; // Provides a theme to MUI
 import theme from "./theme"; // Custom theme settings for MUI
 
 // Firebase imports and initialization
-import { auth, db, appCheck } from "./firebaseConfig"; // Importing Firebase services
+import { auth, db, appCheck, analytics } from "./firebaseConfig"; // Importing Firebase services
+import { logEvent } from "firebase/analytics"; // Importing Firebase analytics
 import { onAuthStateChanged } from "firebase/auth"; // Listener for authentication state changes
 
 // Custom component imports
@@ -45,6 +46,7 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, setUser); // Listening for auth changes
     console.log("App Check:", appCheck); // Logging app check status
+    logEvent(analytics, "app_check", { status: appCheck }); // Logging app check status to analytics
     return unsubscribe; // Cleanup subscription on component unmount
   }, []);
 

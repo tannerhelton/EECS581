@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getAnalytics } from "firebase/analytics";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const firebaseConfig = {
@@ -16,6 +17,7 @@ const firebaseConfig = {
 const fb = initializeApp(firebaseConfig);
 const auth = getAuth(fb);
 const db = getFirestore(fb);
+const analytics = getAnalytics(fb);
 
 let appCheck;
 if (process.env.REACT_APP_ENV !== "development") {
@@ -25,4 +27,4 @@ if (process.env.REACT_APP_ENV !== "development") {
   });
 }
 
-export { fb, auth, db, appCheck };
+export { fb, auth, db, appCheck, analytics };
