@@ -53,6 +53,10 @@ const SignInButton = styled(Button)(({ theme }) => ({
   textTransform: 'none',
 }));
 
+const CustomGoogleIcon = styled(GoogleIcon)({
+  color: 'red', 
+});
+
 const CustomTextField = styled(TextField)(({ theme }) => ({
   '& label.Mui-focused': {
     color: theme.palette.primary.main,
@@ -150,12 +154,20 @@ const LoginPage = () => {
         <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-            sx={{ mt: 2 }}
+            sx={{ mt: 2, color: 'primary.main' }}
         />
         <SignInButton
           variant="outlined"
-          startIcon={<GoogleIcon />}
-          onClick={signInWithGoogle}
+          startIcon={<GoogleIcon sx={{ '&:hover': { color: 'primary.main !important' } }} />}
+        onClick={signInWithGoogle}
+        sx={{
+            '&:hover': {
+              backgroundColor: 'transparent',
+              '& .MuiSvgIcon-root': { 
+                color: 'primary.main !important',
+              }
+            }
+          }}
         >
           Sign in with Google
         </SignInButton>

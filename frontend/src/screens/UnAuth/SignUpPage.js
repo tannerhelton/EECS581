@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, TextField, Typography, Paper, Container, Box } from '@mui/material';
+import { Button, TextField, Typography, Paper, Container, Box, Stack } from '@mui/material';
 import { styled } from '@mui/system';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -71,82 +71,87 @@ const SignUpPage = () => {
 
   return (
     <StyledContainer component={Paper} elevation={0}>
-      <Box marginBottom={3}>
-        <LogoImage src={logoUrl} alt='Health Horizon AI Logo' />
-        <Typography variant='h4' style={primaryColorStyle}>
-          Sign Up
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <form onSubmit={handleSignUp}>
-          <TextField
-            label='Full Name'
-            margin='normal'
-            required
-            fullWidth
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            InputLabelProps={{ style: primaryColorStyle }}
-            InputProps={{ style: primaryColorStyle }}
-            sx={textFieldStyle}
-          />
-          <TextField
-            label='Email Address'
-            margin='normal'
-            required
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            InputLabelProps={{ style: primaryColorStyle }}
-            InputProps={{ style: primaryColorStyle }}
-            sx={textFieldStyle}
-          />
-          <TextField
-            label='Password'
-            margin='normal'
-            required
-            fullWidth
-            type='password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            InputLabelProps={{ style: primaryColorStyle }}
-            InputProps={{ style: primaryColorStyle }}
-            sx={textFieldStyle}
-          />
-          <TextField
-            label='Phone Number'
-            margin='normal'
-            required
-            fullWidth
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            InputLabelProps={{ style: primaryColorStyle }}
-            InputProps={{ style: primaryColorStyle }}
-            sx={textFieldStyle}
-          />
-          {signUpError && (
-            <Typography color='error' style={{ marginTop: '10px' }}>
-              {signUpError}
-            </Typography>
-          )}
-          <Button
-            variant='contained'
-            color='primary'
-            type='submit'
-            fullWidth
-            sx={{ marginTop: '20px' }}
-          >
+      <Stack spacing={3} justifyContent="center" alignItems="center">
+        <Box marginBottom={3}>
+          <LogoImage src={logoUrl} alt='Health Horizon AI Logo' />
+          <Typography variant='h4' style={primaryColorStyle} marginBottom='20px'>
             Sign Up
-          </Button>
-        </form>
-      </Box>
+          </Typography>
+          <Typography variant='body1' style={{ color: 'white', marginBottom: '10px' }}>
+          Sign up here to explore new horizons of health and AI technology
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <form onSubmit={handleSignUp}>
+            <TextField
+              label='Full Name'
+              margin='normal'
+              required
+              fullWidth
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              InputLabelProps={{ style: primaryColorStyle }}
+              InputProps={{ style: primaryColorStyle }}
+              sx={textFieldStyle}
+            />
+            <TextField
+              label='Email Address'
+              margin='normal'
+              required
+              fullWidth
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              InputLabelProps={{ style: primaryColorStyle }}
+              InputProps={{ style: primaryColorStyle }}
+              sx={textFieldStyle}
+            />
+            <TextField
+              label='Password'
+              margin='normal'
+              required
+              fullWidth
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              InputLabelProps={{ style: primaryColorStyle }}
+              InputProps={{ style: primaryColorStyle }}
+              sx={textFieldStyle}
+            />
+            <TextField
+              label='Phone Number'
+              margin='normal'
+              required
+              fullWidth
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              InputLabelProps={{ style: primaryColorStyle }}
+              InputProps={{ style: primaryColorStyle }}
+              sx={textFieldStyle}
+            />
+            {signUpError && (
+              <Typography color='error' style={{ marginTop: '10px' }}>
+                {signUpError}
+              </Typography>
+            )}
+            <Button
+              variant='contained'
+              color='primary'
+              type='submit'
+              fullWidth
+              sx={{ marginTop: '20px' }}
+            >
+              Sign Up
+            </Button>
+          </form>
+        </Box>
+      </Stack>
     </StyledContainer>
   );
 };
