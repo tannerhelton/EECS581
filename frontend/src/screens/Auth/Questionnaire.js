@@ -174,11 +174,19 @@ function Questionnaire({ db }) {
 					value={answers.ageCategory}
 				>
 					<option value="">Select</option>
-					<option value="65-69">65-69</option>
-					<option value="60-64">60-64</option>
-					<option value="70-74">70-74</option>
-					<option value="55-59">55-59</option>
+					<option value="25-29">25-29</option>
+					<option value="30-34">30-34</option>
+					<option value="35-39">35-39</option>
+					<option value="40-44">40-44</option>
+					<option value="45-49">45-49</option>
 					<option value="50-54">50-54</option>
+					<option value="55-59">55-59</option>
+					<option value="60-64">60-64</option>
+					<option value="65-69">65-69</option>
+					<option value="70-74">70-74</option>
+					<option value="75-79">75-79</option>
+					<option value="80 or older">80 or older</option>
+					
 				</select>
 			</div>
 			<div className="question">
