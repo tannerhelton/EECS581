@@ -1,10 +1,10 @@
 // React and React Router imports
 import React, { useState, useEffect } from "react";
 import {
-	BrowserRouter as Router,
-	Route,
-	Routes,
-	Navigate,
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
 } from "react-router-dom";
 
 // MUI imports
@@ -12,73 +12,74 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 
 // Firebase imports and initialization
-import { auth, db } from "./firebaseConfig";
+import { auth, db, appCheck } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 
 // Custom component imports
 import AppToolbar from "./components/AppToolbar";
 import {
-	HomePage,
-	AuthHomePage,
-	LoginPage,
-	ChatbotPage,
-	ProfilePage,
-	AboutPage,
-	MLResults,
-	Questionnaire,
+  HomePage,
+  AuthHomePage,
+  LoginPage,
+  ChatbotPage,
+  ProfilePage,
+  AboutPage,
+  MLResults,
+  Questionnaire,
 } from "./screens";
 
-import SignUpPage from './screens/UnAuth/SignUpPage';
-import ForgotPasswordPage from './screens/UnAuth/ForgotPasswordPage';
+import SignUpPage from "./screens/UnAuth/SignUpPage";
+import ForgotPasswordPage from "./screens/UnAuth/ForgotPasswordPage";
 
 function renderPrivateRoute(element) {
-	return auth.currentUser ? element : <Navigate to="/login" />;
+  return auth.currentUser ? element : <Navigate to="/login" />;
 }
 
 function App() {
-	const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, setUser);
-		return unsubscribe;
-	}, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, setUser);
+    console.log("App Check:", appCheck);
+    return unsubscribe;
+  }, []);
 
-	return (
-		<ThemeProvider theme={theme}>
-			<Router>
-				<AppToolbar user={user} />
-				<Routes>
-					<Route
-						path="/"
-						element={user ? <AuthHomePage auth={auth} db={db} /> : <HomePage />}
-					/>
-					<Route
-						path="/login"
-						element={!user ? <LoginPage /> : <Navigate to="/" />}
-					/>
-					<Route path="/about" element={<AboutPage />} />
-					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/forgotpassword" element={<ForgotPasswordPage />} />
-					<Route
-						path="/profile"
-						element={renderPrivateRoute(<ProfilePage auth={auth} db={db} />)}
-					/>
-					<Route
-						path="/chatbot"
-						element={renderPrivateRoute(<ChatbotPage />)}
-					/>
-					<Route
-						path="/questionnaire"
-						element={renderPrivateRoute(<Questionnaire db={db} />)}
-					/>
-					<Route
-						path="/matplotlib-results"
-						element={renderPrivateRoute(<MLResults />)}
-					/>
-				</Routes>
-			</Router>
-		</ThemeProvider>
-	);
+  return (
+    <ThemeProvider theme={theme}>
+      <Router>
+        <AppToolbar user={user} />
+        <Routes>
+          <Route
+            path="/"
+            element={user ? <AuthHomePage auth={auth} db={db} /> : <HomePage />}
+          />
+          <Route
+            path="/login"
+            element={!user ? <LoginPage /> : <Navigate to="/" />}
+          />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
+          <Route
+            path="/profile"
+            element={renderPrivateRoute(<ProfilePage auth={auth} db={db} />)}
+          />
+          <Route
+            path="/chatbot"
+            element={renderPrivateRoute(<ChatbotPage />)}
+          />
+          <Route
+            path="/questionnaire"
+            element={renderPrivateRoute(<Questionnaire db={db} />)}
+          />
+          <Route
+            path="/matplotlib-results"
+            element={renderPrivateRoute(<MLResults />)}
+          />
+        </Routes>
+      </Router>
+    </ThemeProvider>
+  );
 }
 
 export default App;
