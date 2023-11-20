@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+// Importing various Material UI components for UI design
 import {
   Button, TextField, Typography, Paper, Container, Box, Grid, Link,
   FormControlLabel, Checkbox
 } from '@mui/material';
 import { styled } from '@mui/system';
+// Importing Firebase authentication methods
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -13,9 +15,11 @@ import {
 import { useNavigate } from 'react-router-dom';
 import GoogleIcon from '@mui/icons-material/Google';
 
+// Initialize Firebase Authentication
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
 
+// StyledContainer: Custom styled container for the login page
 const StyledContainer = styled(Container)(({ theme }) => ({
   width: 'fit-content',
   padding: theme.spacing(3),
@@ -33,16 +37,19 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   color: 'white',
 }));
 
+// LogoImage: Custom styled component for displaying a logo image
 const LogoImage = styled('img')({
   width: '50px', // Adjust the logo size as needed
   marginBottom: '20px',
 });
 
+// PrimaryText: Custom styled typography for primary text in the login page
 const PrimaryText = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.main,
   marginBottom: theme.spacing(2),
 }));
 
+// SignInButton: Custom styled button for sign-in actions
 const SignInButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
   color: theme.palette.getContrastText(theme.palette.background.paper),
@@ -53,10 +60,12 @@ const SignInButton = styled(Button)(({ theme }) => ({
   textTransform: 'none',
 }));
 
+// CustomGoogleIcon: Custom styled Google icon with specific color
 const CustomGoogleIcon = styled(GoogleIcon)({
   color: 'red', 
 });
 
+// CustomTextField: Custom styled text field for input fields like email and password
 const CustomTextField = styled(TextField)(({ theme }) => ({
   '& label.Mui-focused': {
     color: theme.palette.primary.main,
@@ -75,13 +84,16 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
+// LoginPage: The main component for the login page
 const LoginPage = () => {
+  // State hooks for managing user input and login errors
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
 
   const navigate = useNavigate();
 
+  // handleLogin: Function to handle login with email and password
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -92,6 +104,7 @@ const LoginPage = () => {
     }
   };
 
+  // signInWithGoogle: Function to handle Google sign-in
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
@@ -100,6 +113,7 @@ const LoginPage = () => {
     }
   };
 
+  // Render method returning JSX for the LoginPage
   return (
     <StyledContainer component={Paper} elevation={0}>
       <LogoImage src={process.env.PUBLIC_URL + '/HH_Logo.png'} alt='Health Horizon AI Logo' />
