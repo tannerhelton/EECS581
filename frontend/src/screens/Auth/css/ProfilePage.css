@@ -93,6 +93,8 @@
   padding: 0;
   padding-left: 8px;
   font-family: Inter, -apple-system, system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  min-width: 20%;
+  border: 1px solid transparent;
 }
 
 .profile-info {
@@ -101,6 +103,9 @@
   padding: 0;
   padding-left: 8px;
   font-family: Inter, -apple-system, system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  border-radius: 4px;
+  border: 1px solid #1b2631;
+  width: 20%;
 }
 
 .profilePage {

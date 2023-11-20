@@ -138,7 +138,7 @@ function ProfilePage({ auth, db }) {
 					)}
 				</p>
 				<p>
-					<strong>Email: </strong><br /> {userInfo.email}
+					<strong>Email: </strong><br/><div className="profile-info">{userInfo.email}</div>
 				</p>
 				<p>
 					<strong>Phone Number:</strong><br />
