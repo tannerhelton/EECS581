@@ -1,21 +1,26 @@
 import React from "react";
+// Importing various Material UI components for UI design
 import { Typography, Grid, Paper, Container, Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 
+// URL constants for images used in the application
 const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
 const heartDiseaseUrl = process.env.PUBLIC_URL + "/logo512.png";
 const cancerUrl = process.env.PUBLIC_URL + "/logo512.png";
 const diabetesUrl = process.env.PUBLIC_URL + "/logo512.png";
 
+// LogoImage: Styled component for displaying logos
 const LogoImage = styled("img")({
   maxWidth: "30%",
   marginBottom: (theme) => theme.spacing(3),
 });
 
+// InnerWrapper: A styled div for additional styling and layout
 const InnerWrapper = styled("div")({
   paddingBottom: "200px",
 });
 
+// StyledContainer: Custom styled container for the about page
 const StyledContainer = styled(Container)(({ theme }) => ({
   padding: (theme) => theme.spacing(4),
   marginTop: theme.spacing(15),
@@ -24,6 +29,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   backgroundColor: "transparent",
 }));
 
+// BlocksContainer: A styled container for arranging feature blocks
 const BlocksContainer = styled(Container)(({ theme }) => ({
   padding: "20px",
   marginTop: theme.spacing(15),
@@ -41,6 +47,8 @@ const BlocksContainer = styled(Container)(({ theme }) => ({
   color: 'white',
 }));
 
+// FeatureBlock: A functional component representing a single feature block
+// It takes imageUrl, title, and description as props
 const FeatureBlock = ({ imageUrl, title, description }) => (
   <Grid item xs={12} sm={4}>
     <Avatar
@@ -62,6 +70,7 @@ const FeatureBlock = ({ imageUrl, title, description }) => (
   </Grid>
 );
 
+// AboutPage: The main component for the about page
 const AboutPage = () => {
   return (
     <>

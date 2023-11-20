@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+// Importing various Material UI components for UI design
 import { Button, TextField, Typography, Paper, Container, Box, Stack } from '@mui/material';
 import { styled } from '@mui/system';
+// Importing Firebase authentication methods
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
+// Initialize Firebase Authentication
 const auth = getAuth();
 
+// StyledContainer: Custom styled container for the sign-up page
 const StyledContainer = styled(Container)(({ theme }) => ({
   width: '500px', 
   padding: theme.spacing(3),
@@ -23,15 +27,18 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   color: 'white',
 }));
 
+// LogoImage: Custom styled component for displaying a logo
 const LogoImage = styled('img')({
   maxWidth: '10%',
   marginBottom: '20px',
 });
 
+// CSS styles for primary colored text
 const primaryColorStyle = {
   color: '#6195CB',
 };
 
+// CSS styles for text fields
 const textFieldStyle = {
   marginBottom: '10px',
   '& .MuiOutlinedInput-root': {
@@ -47,9 +54,12 @@ const textFieldStyle = {
   },
 };
 
+// URL for logo image, fetched from environment variable
 const logoUrl = process.env.PUBLIC_URL + '/HH_Logo.png';
 
+// SignUpPage: The main component for the sign-up page
 const SignUpPage = () => {
+  // State variables for user input
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -58,17 +68,21 @@ const SignUpPage = () => {
 
   const navigate = useNavigate();
 
+  // handleSignUp: Function to handle the sign-up process
   const handleSignUp = async (event) => {
     event.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      // Here you might want to update the user profile or store the additional fields in your database
-      navigate('/'); // Navigate to the home page or other page on successful sign up
+      // Additional logic after successful sign up
+      // Navigate to home or another page on success
+      navigate('/');
     } catch (error) {
+      // Handle sign-up error
       setSignUpError(error.message);
     }
   };
 
+  // JSX for rendering the sign-up form
   return (
     <StyledContainer component={Paper} elevation={0}>
       <Stack spacing={3} justifyContent="center" alignItems="center">
