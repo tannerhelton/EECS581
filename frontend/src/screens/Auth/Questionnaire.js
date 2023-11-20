@@ -186,7 +186,6 @@ function Questionnaire({ db }) {
 					<option value="70-74">70-74</option>
 					<option value="75-79">75-79</option>
 					<option value="80 or older">80 or older</option>
-					
 				</select>
 			</div>
 			<div className="question">
@@ -293,11 +292,9 @@ function Questionnaire({ db }) {
 				</button>
 			</div>
 			<div className="question">
-				<button onClick={generateAndDisplayMatplotlibResults}>
-					Generate Results
-				</button>
+				<button onClick={generateAndDisplayMatplotlibResults}>Next</button>
 			</div>
-			<Link to="/profile" className="back-to-profile">
+			<Link to="/" className="back-to-profile">
 				<ArrowBackIosNewIcon />
 			</Link>
 		</div>
