@@ -3,6 +3,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 import "./css/Questionnaire.css";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import BMICalculatorPopup from "./BMICalculator";
 
 function Questionnaire({ db }) {
 	const [answers, setAnswers] = useState({
@@ -24,8 +25,11 @@ function Questionnaire({ db }) {
 		kidneyDisease: "", // New question
 		skinCancer: "", // New question
 	});
+
 	const [successMessage, setSuccessMessage] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const [showBMICalculator, setShowBMICalculator] = useState(false);
+	const [calculatedBMI, setCalculatedBMI] = useState(null);
 	const navigate = useNavigate();
 
 	const handleAnswerChange = (question, answer) => {
@@ -64,6 +68,23 @@ function Questionnaire({ db }) {
 		navigate("/matplotlib-results");
 	};
 
+	const openBMICalculator = () => {
+		setShowBMICalculator(true);
+	};
+
+	const closeBMICalculator = () => {
+		setShowBMICalculator(false);
+	};
+
+	const handleBMICalculation = (bmi) => {
+		setAnswers((prevAnswers) => ({
+			...prevAnswers,
+			bmi: bmi.toFixed(2), // Round BMI to two decimal places
+		}));
+		setCalculatedBMI(bmi);
+		closeBMICalculator();
+	};
+
 	return (
 		<div className="questionnaire-card">
 			<h1>Questionnaire</h1>
@@ -79,6 +100,7 @@ function Questionnaire({ db }) {
 					value={answers.bmi}
 					placeholder="Enter BMI"
 				/>
+				<button onClick={openBMICalculator}>Calculate BMI</button>
 			</div>
 			<div className="question">
 				<label>Do you smoke?</label>
@@ -174,11 +196,18 @@ function Questionnaire({ db }) {
 					value={answers.ageCategory}
 				>
 					<option value="">Select</option>
-					<option value="65-69">65-69</option>
-					<option value="60-64">60-64</option>
-					<option value="70-74">70-74</option>
-					<option value="55-59">55-59</option>
+					<option value="25-29">25-29</option>
+					<option value="30-34">30-34</option>
+					<option value="35-39">35-39</option>
+					<option value="40-44">40-44</option>
+					<option value="45-49">45-49</option>
 					<option value="50-54">50-54</option>
+					<option value="55-59">55-59</option>
+					<option value="60-64">60-64</option>
+					<option value="65-69">65-69</option>
+					<option value="70-74">70-74</option>
+					<option value="75-79">75-79</option>
+					<option value="80 or older">80 or older</option>
 				</select>
 			</div>
 			<div className="question">
@@ -208,7 +237,7 @@ function Questionnaire({ db }) {
 				</select>
 			</div>
 			<div className="question">
-				<label>Do you exercise reguarly?</label>
+				<label>Do you exercise regularly?</label>
 				<select
 					onChange={(e) =>
 						handleAnswerChange("physicalActivity", e.target.value)
@@ -285,13 +314,17 @@ function Questionnaire({ db }) {
 				</button>
 			</div>
 			<div className="question">
-				<button onClick={generateAndDisplayMatplotlibResults}>
-					Generate Results
-				</button>
+				<button onClick={generateAndDisplayMatplotlibResults}>Next</button>
 			</div>
-			<Link to="/profile" className="back-to-profile">
+			<Link to="/" className="back-to-profile">
 				<ArrowBackIosNewIcon />
 			</Link>
+			{showBMICalculator && (
+				<BMICalculatorPopup
+					onClose={closeBMICalculator}
+					onCalculate={handleBMICalculation}
+				/>
+			)}
 		</div>
 	);
 }

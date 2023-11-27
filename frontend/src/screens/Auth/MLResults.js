@@ -1,32 +1,50 @@
-import React, { useState, useEffect } from "react";
-import "./css/MLResults.css"; // Create a CSS file for styling
+import React, { useState } from "react";
+import "./css/MLResults.css";
 import { Link } from "react-router-dom";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 function MLResults() {
-	const [matplotlibResults, setMatplotlibResults] = useState([]);
+	const [resultData, setResultData] = useState({});
+	const [loading, setLoading] = useState(false);
 
-	// Make an API request to your Python server to fetch the PNG images
-	useEffect(() => {
-		fetch("/api/matplotlib-results") // Replace with your API endpoint
+	const generateImage = () => {
+		setLoading(true);
+
+		fetch("/api/main")
 			.then((response) => response.json())
 			.then((data) => {
-				setMatplotlibResults(data);
+				setResultData(data);
 			})
 			.catch((error) => {
-				console.error("Error fetching data:", error);
+				console.error("Error fetching results:", error);
+			})
+			.finally(() => {
+				setLoading(false);
 			});
-	}, []);
+	};
 
 	return (
 		<div className="ml-results-card">
-			<h2>Matplotlib Results</h2>
+			<h2>Your Results</h2>
+			{loading ? (
+				<p>Loading results...</p>
+			) : (
+				<button type="button" onClick={generateImage}>
+					Generate
+				</button>
+			)}
 			<div className="ml-results-content">
-				{matplotlibResults.map((result, index) => (
-					<img key={index} src={result} alt={`Matplotlib Result ${index}`} />
-				))}
+				{resultData.probability && (
+					<p>Probability of Heart Disease: {resultData.probability}%</p>
+				)}
+				{resultData.plots &&
+					resultData.plots.map((plot, index) => (
+						<div className="ml-results-image-card" key={index}>
+							<img src={plot} alt={`Generated Image ${index + 1}`} />
+						</div>
+					))}
 			</div>
-			<Link to="/profile" className="back-to-profile">
+			<Link to="/" className="back-to-profile">
 				<ArrowBackIosNewIcon />
 			</Link>
 		</div>
