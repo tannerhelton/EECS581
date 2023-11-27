@@ -120,41 +120,43 @@ function ProfilePage({ auth, db }) {
 	}, [auth, db]);
 
 	return (
-		<>
+		<div className="profilePage">
 			<div className="profile-card">
 				<h1>Account Information</h1>
 				<p>
-					<strong>Name:</strong>
+					<strong>Name:</strong><br />
 					{editable ? (
-						<input
+						<input 
+							className="profile-input"
 							type="text"
 							name="displayName"
 							value={userInfo.displayName}
 							onChange={handleChange}
 						/>
 					) : (
-						userInfo.displayName
+						<div className="profile-info">{userInfo.displayName}</div>
 					)}
 				</p>
 				<p>
-					<strong>Email:</strong> {userInfo.email}
+					<strong>Email: </strong><br/><div className="profile-info">{userInfo.email}</div>
 				</p>
 				<p>
-					<strong>Phone Number:</strong>
+					<strong>Phone Number:</strong><br />
 					{editable ? (
-						<input
-							type="text"
-							name="phoneNumber"
-							value={userInfo.phoneNumber}
-							onChange={handleChange}
-						/>
+					<input 
+						className="profile-input"
+						type="text"
+						name="phoneNumber"
+						value={userInfo.phoneNumber}
+						onChange={handleChange}
+					/>
 					) : (
-						userInfo.phoneNumber
+						<div className="profile-info">{userInfo.phoneNumber}</div>
 					)}
 				</p>
 				{editable ? (
 					<div>
-						<button onClick={handleSave}>Save</button>
+						<button onClick={handleSave}>Save</button><span> </span>
 						<button onClick={() => setEditable(false)}>Cancel</button>
 					</div>
 				) : (
@@ -164,7 +166,7 @@ function ProfilePage({ auth, db }) {
 				)}
 				{error && <div className="error">{error}</div>}
 			</div>
-		</>
+		</div>
 	);
 }
 
