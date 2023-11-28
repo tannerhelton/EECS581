@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Grid, Paper, Container, Avatar } from "@mui/material";
+import { Typography, Grid, Paper, Container, Avatar, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 
@@ -12,6 +12,18 @@ const StyledContainer = styled(Container)({
 	textAlign: "center",
 	backgroundColor: "transparent",
 });
+
+const StyledButton = styled(Button)(({ theme }) => ({
+	marginTop: theme.spacing(2),
+	color: theme.palette.getContrastText(theme.palette.primary.main),
+	backgroundColor: theme.palette.primary.main,
+	borderColor: theme.palette.primary.main,
+	'&:hover': {
+	  backgroundColor: theme.palette.primary.dark,
+	  borderColor: theme.palette.primary.dark,
+	},
+	textTransform: 'none',
+  }));
 
 const LogoImage = styled("img")({
 	maxWidth: "30%",
@@ -55,10 +67,12 @@ const AuthHomePage = ({ auth }) => {
 				Take the next step.
 			</Typography>
 			<div className="button-container">
-				<Link to="/questionnaire" className="questionnaire-button">
-					Begin your Journey
-				</Link>
-			</div>
+        <Link to="/questionnaire" style={{ textDecoration: 'none' }}>
+          <StyledButton variant="contained" color="primary">
+            Begin your Journey
+          </StyledButton>
+        </Link>
+      </div>
 		</StyledContainer>
 	);
 };

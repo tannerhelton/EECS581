@@ -15,6 +15,7 @@ import io
 # ----------------------------------------
 
 
+
 def load_and_preprocess_data(filepath):
     """
     Load and preprocess the dataset.
@@ -59,6 +60,7 @@ def plot_feature_distribution(df, feature, user_value, color, label):
     ax.set_xlabel(feature)
     ax.set_ylabel("Density")
     ax.legend()
+
     image_bytes_io = io.BytesIO()
     plt.savefig(image_bytes_io, format='png')
     plt.close()
@@ -85,6 +87,7 @@ def correlation_analysis(df):
     plt.figure(figsize=(13, 6))
     plt.title('Distribution of correlation of features')
     abs(correlation['HeartDisease']).sort_values()[:-1].plot.barh()
+
     # Save the plot to a BytesIO object as a PNG
     image_bytes_io = io.BytesIO()
     plt.savefig(image_bytes_io, format='png')
@@ -117,7 +120,6 @@ def evaluate_model(model, x_test, y_test):
         'kappa': kappa, 'fpr': fpr, 'tpr': tpr, 'auc': auc, 'cm': cm
     }
 
-
 def transform_data(df, categorical_features):
     """
     Apply data transformations (OneHotEncoding and Standardization) to the DataFrame.
@@ -134,7 +136,6 @@ def transform_data(df, categorical_features):
     df_transformed = scaler.fit_transform(df_transformed)
 
     return df_transformed, transformer, scaler
-
 
 def train_model(X_train, y_train):
     """
@@ -171,6 +172,7 @@ def predict_heart_disease(filepath, user_input):
     X = df.drop('HeartDisease', axis=1)
     X_encoded = pd.get_dummies(X, columns=categorical_columns)
     scaler = StandardScaler()
+    
     X_encoded[numerical_columns] = scaler.fit_transform(
         X_encoded[numerical_columns])
 
@@ -185,6 +187,7 @@ def predict_heart_disease(filepath, user_input):
     # Function to predict heart disease with manual preprocessing
     def predict_heart_disease_manual(user_input):
         user_input_df = pd.DataFrame([user_input])
+
         user_input_encoded = pd.get_dummies(
             user_input_df, columns=categorical_columns)
         user_input_encoded = user_input_encoded.reindex(
@@ -263,6 +266,7 @@ def main():
         'KidneyDisease': 'No',
         'SkinCancer': 'No'
     }
+
     plot_feature_distribution(
         df, 'BMI', user_dataTest['BMI'], 'red', 'User BMI')
     probability_manual = predict_heart_disease(

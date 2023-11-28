@@ -26,6 +26,7 @@ function MLResults() {
 	return (
 		<div className="ml-results-card">
 			<h2>Your Results</h2>
+
 			{loading ? (
 				<p>Loading results...</p>
 			) : (
@@ -34,6 +35,7 @@ function MLResults() {
 				</button>
 			)}
 			<div className="ml-results-content">
+
 				{resultData.probability && (
 					<p>Probability of Heart Disease: {resultData.probability}%</p>
 				)}

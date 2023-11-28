@@ -1,40 +1,54 @@
 import React from "react";
+// Importing various Material UI components for UI design
 import { Typography, Grid, Paper, Container, Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 
+// URL constants for images used in the application
 const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
 const heartDiseaseUrl = process.env.PUBLIC_URL + "/logo512.png";
 const cancerUrl = process.env.PUBLIC_URL + "/logo512.png";
 const diabetesUrl = process.env.PUBLIC_URL + "/logo512.png";
 
+// LogoImage: Styled component for displaying logos
 const LogoImage = styled("img")({
   maxWidth: "30%",
   marginBottom: (theme) => theme.spacing(3),
 });
 
+// InnerWrapper: A styled div for additional styling and layout
 const InnerWrapper = styled("div")({
   paddingBottom: "200px",
 });
 
-const StyledContainer = styled(Container)({
+// StyledContainer: Custom styled container for the about page
+const StyledContainer = styled(Container)(({ theme }) => ({
   padding: (theme) => theme.spacing(4),
-  marginTop: "25vh",
-  marginBottom: "100px",
+  marginTop: theme.spacing(15),
+  marginBottom: theme.spacing(5),
   textAlign: "center",
   backgroundColor: "transparent",
-});
+}));
 
-const BlocksContainer = styled(Container)({
+// BlocksContainer: A styled container for arranging feature blocks
+const BlocksContainer = styled(Container)(({ theme }) => ({
   padding: "20px",
-  marginTop: "20vh",
+  marginTop: theme.spacing(15),
+  marginBottom: theme.spacing(5),
   textAlign: "center",
   backgroundColor: "transparent",
   width: "50%",
-  borderRadius: "20px",
+  borderRadius: theme.shape.borderRadius,
   backgroundColor: "#2c3e50",
-  boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
-});
+  boxShadow: theme.shadows[5],
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  height: 'fit-content',
+  color: 'white',
+}));
 
+// FeatureBlock: A functional component representing a single feature block
+// It takes imageUrl, title, and description as props
 const FeatureBlock = ({ imageUrl, title, description }) => (
   <Grid item xs={12} sm={4}>
     <Avatar
@@ -56,6 +70,7 @@ const FeatureBlock = ({ imageUrl, title, description }) => (
   </Grid>
 );
 
+// AboutPage: The main component for the about page
 const AboutPage = () => {
   return (
     <>
@@ -76,7 +91,7 @@ const AboutPage = () => {
           <FeatureBlock
             imageUrl={heartDiseaseUrl}
             title="Heart Disease"
-            description="We leverage linear regression algorithms to detect early heart disease in patients."
+            description="We leverage a K-nearest neighbors (KNN) algorithm to detect early heart disease in patients."
           />
           <FeatureBlock
             imageUrl={cancerUrl}

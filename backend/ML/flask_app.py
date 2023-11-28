@@ -10,6 +10,7 @@ import base64
 from contextlib import redirect_stdout
 import CVD_kNN
 
+
 matplotlib.use('agg')  # Use the 'agg' backend (a non-interactive backend)
 
 app = Flask(__name__)
@@ -59,6 +60,7 @@ def main_route():
         'plots': result[1:]
     })
 
+# Routes for retrieving data
 
 @app.route('/api/text-results', methods=['GET'])
 def display_text_results():
