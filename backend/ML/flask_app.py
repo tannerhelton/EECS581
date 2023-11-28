@@ -7,7 +7,9 @@ import io
 import os
 import matplotlib
 import base64
-import "CVD_kNN"
+from contextlib import redirect_stdout
+import CVD_kNN
+
 
 matplotlib.use('agg')  # Use the 'agg' backend (a non-interactive backend)
 
@@ -17,33 +19,48 @@ CORS(app)  # Apply CORS to the app
 # where we want to create matplotlib pngs
 
 
+# Plotting count distributions
+# plot_count_distribution(df, "Sex")
+# plot_count_distribution(df, "Smoking")
+# plot_count_distribution(df, 'Race')
+# plot_count_distribution(df, 'AgeCategory')
+# plot_count_distribution(df, "KidneyDisease")
+
+# Plotting feature distributions
+# plot_feature_distribution(df, 'BMI', user_data['BMI'], 'red', 'User BMI')
+# plot_feature_distribution(df, 'SleepTime', user_data['SleepTime'], 'blue', 'User SleepTime')
+# plot_feature_distribution(df, 'PhysicalHealth', user_data['PhysicalHealth'], 'green', 'User PhysicalHealth')
+# plot_feature_distribution(df, 'MentalHealth', user_data['MentalHealth'], 'purple', 'User MentalHealth')
+
+
 def text_results():
-    return "This is some text from the text_results function."
+    text_output = io.StringIO()
+    with redirect_stdout(text_output):
+        CVD_kNN.main()
+
+    # Get the captured text output as a string
+    text_result = text_output.getvalue()
+
+    return text_result
 
 
-def generate_plot():
-    x = np.linspace(0, 10, 100)
-    y = np.sin(x)
+def generate_plots():
+    plots = CVD_kNN.main()
 
-    plt.figure(figsize=(6, 4))
-    plt.plot(x, y)
-    plt.title("Simple Sine Wave Plot")
-    plt.xlabel("X-axis")
-    plt.ylabel("Y-axis")
-
-    # Save the plot to a BytesIO object as a PNG
-    image_bytes_io = io.BytesIO()
-    plt.savefig(image_bytes_io, format='png')
-    plt.close()
-
-    # Encode the image as a base64 data URL
-    image_data = base64.b64encode(image_bytes_io.getvalue()).decode('utf-8')
-    data_url = f'data:image/png;base64,{image_data}'
-
-    return data_url
+    return plots
 
 # Routes for retrieving data
 
+
+@app.route('/api/main', methods=['GET'])
+def main_route():
+    result = CVD_kNN.main()  # Call your main function
+    return jsonify({
+        'probability': result[0],
+        'plots': result[1:]
+    })
+
+# Routes for retrieving data
 
 @app.route('/api/text-results', methods=['GET'])
 def display_text_results():
@@ -53,8 +70,8 @@ def display_text_results():
 
 @app.route('/api/generate-plot', methods=['GET'])
 def generate_and_return_plot():
-    data_url = generate_plot()
-    return data_url
+    data_urls = generate_plots()
+    return jsonify(data_urls)
 
 
 if __name__ == '__main__':

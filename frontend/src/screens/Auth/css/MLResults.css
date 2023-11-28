@@ -4,26 +4,32 @@
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Box shadow for card effect */
-  max-width: 400px; /* Adjust the max width as needed */
+  max-width: 600px; /* Adjust the max width as needed */
   margin: 0 auto; /* Center the card horizontally */
   text-align: center;
 }
 
 .ml-results-content {
-  margin-top: 10px;
+  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px; /* Adjust the gap between cards as needed */
+  gap: 20px; /* Adjust the gap between cards as needed */
 }
 
 .ml-results-image-card {
   background-color: #34495e; /* Card background color */
   border-radius: 8px;
-  padding: 10px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); /* Box shadow for card effect */
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Box shadow for card effect */
 }
 
 .ml-results-image-card img {
   max-width: 100%; /* Make sure the images fit within the card */
+  max-height: 300px; /* Adjust the max height of images as needed */
+}
+
+.back-to-profile {
+  align-self: flex-start;
+  margin-top: 20px; /* Add some margin to the back-to-profile link */
 }

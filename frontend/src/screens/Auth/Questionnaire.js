@@ -3,6 +3,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 import "./css/Questionnaire.css";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import BMICalculatorPopup from "./BMICalculator";
 
 function Questionnaire({ db }) {
 	const [answers, setAnswers] = useState({
@@ -24,8 +25,11 @@ function Questionnaire({ db }) {
 		kidneyDisease: "", // New question
 		skinCancer: "", // New question
 	});
+
 	const [successMessage, setSuccessMessage] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const [showBMICalculator, setShowBMICalculator] = useState(false);
+	const [calculatedBMI, setCalculatedBMI] = useState(null);
 	const navigate = useNavigate();
 
 	const handleAnswerChange = (question, answer) => {
@@ -64,6 +68,23 @@ function Questionnaire({ db }) {
 		navigate("/matplotlib-results");
 	};
 
+	const openBMICalculator = () => {
+		setShowBMICalculator(true);
+	};
+
+	const closeBMICalculator = () => {
+		setShowBMICalculator(false);
+	};
+
+	const handleBMICalculation = (bmi) => {
+		setAnswers((prevAnswers) => ({
+			...prevAnswers,
+			bmi: bmi.toFixed(2), // Round BMI to two decimal places
+		}));
+		setCalculatedBMI(bmi);
+		closeBMICalculator();
+	};
+
 	return (
 		<div className="questionnaire-card">
 			<h1>Questionnaire</h1>
@@ -79,6 +100,7 @@ function Questionnaire({ db }) {
 					value={answers.bmi}
 					placeholder="Enter BMI"
 				/>
+				<button onClick={openBMICalculator}>Calculate BMI</button>
 			</div>
 			<div className="question">
 				<label>Do you smoke?</label>
@@ -215,7 +237,7 @@ function Questionnaire({ db }) {
 				</select>
 			</div>
 			<div className="question">
-				<label>Do you exercise reguarly?</label>
+				<label>Do you exercise regularly?</label>
 				<select
 					onChange={(e) =>
 						handleAnswerChange("physicalActivity", e.target.value)
@@ -297,6 +319,12 @@ function Questionnaire({ db }) {
 			<Link to="/" className="back-to-profile">
 				<ArrowBackIosNewIcon />
 			</Link>
+			{showBMICalculator && (
+				<BMICalculatorPopup
+					onClose={closeBMICalculator}
+					onCalculate={handleBMICalculation}
+				/>
+			)}
 		</div>
 	);
 }
