@@ -9,6 +9,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.compose import make_column_transformer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.model_selection import GridSearchCV
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 import base64
 import io
@@ -28,7 +30,6 @@ def load_and_preprocess_data(filepath):
     df['Diabetic'] = df['Diabetic'].astype(int)
     return df
 
-
 def plot_count_distribution(df, feature):
     """
     Plot count distribution of a feature based on heart disease.
@@ -42,7 +43,6 @@ def plot_count_distribution(df, feature):
         f"Distribution of Cases with Yes/No heart disease according to {feature}")
     plt.show()
 
-
 def plot_feature_distribution(df, feature, user_value, color, label):
     """
     Plot the distribution of a given feature in the dataset, 
@@ -51,9 +51,9 @@ def plot_feature_distribution(df, feature, user_value, color, label):
     fig, ax = plt.subplots(figsize=(13, 5))
     # The HeartDisease column should be numeric (1 for Yes, 0 for No)
     sns.kdeplot(df[df["HeartDisease"] == 1][feature], alpha=0.5,
-                shade=True, color="red", label="HeartDisease", ax=ax)
+                fill=True, color="red", label="HeartDisease", ax=ax)
     sns.kdeplot(df[df["HeartDisease"] == 0][feature], alpha=0.5,
-                shade=True, color="#fccc79", label="Normal", ax=ax)
+                fill=True, color="#fccc79", label="Normal", ax=ax)
     plt.axvline(user_value, color=color, linestyle='dashed',
                 linewidth=2, label=label)
     plt.title(f'Distribution of {feature} with User Data Point', fontsize=18)
@@ -70,7 +70,6 @@ def plot_feature_distribution(df, feature, user_value, color, label):
     data_url = f'data:image/png;base64,{image_data}'
 
     return data_url
-
 
 def correlation_analysis(df):
     """
@@ -99,7 +98,6 @@ def correlation_analysis(df):
 
     return data_url
 
-
 def evaluate_model(model, x_test, y_test):
     """
     Evaluate the given model using test data.
@@ -126,7 +124,7 @@ def transform_data(df, categorical_features):
     Returns the transformed DataFrame and the transformers.
     """
     transformer = ColumnTransformer(
-        [(f"onehot_{col}", OneHotEncoder(sparse=False), [col])
+        [(f"onehot_{col}", OneHotEncoder(sparse_output=False), [col])
          for col in categorical_features],
         remainder='passthrough'
     )
@@ -137,15 +135,44 @@ def transform_data(df, categorical_features):
 
     return df_transformed, transformer, scaler
 
+def perform_grid_search(X_train, y_train):
+    '''
+    Perform grid search to find the best hyperparameters for the kNN model.
+    Returns the best model and the best number of neighbors.
+    '''
+    # Instantiate kNN model
+    model = KNeighborsClassifier()
+
+    # Define the parameter grid for n_neighbors
+    param_grid = {'n_neighbors': range(1, 31)}
+    print("Performing grid search...")
+    # Create GridSearchCV object
+    grid_search = GridSearchCV(model, param_grid, cv=5, scoring='accuracy')
+    print("Grid search done.")
+    # Fit the model using Grid Search
+    grid_search.fit(X_train, y_train)
+    print("Best parameters: ", grid_search.best_params_)
+    # Retrieve the best number of neighbors and the best model
+    best_n_neighbors = grid_search.best_params_['n_neighbors']
+    best_model = grid_search.best_estimator_
+
+    return best_model, best_n_neighbors
+
 def train_model(X_train, y_train):
     """
     Train the kNN model on the provided training data.
     Returns the trained model.
     """
-    model = KNeighborsClassifier(n_neighbors=5)
+    model = KNeighborsClassifier(
+        n_neighbors=30,      # Number of neighbors to use
+        weights='distance', # Weight type (uniform or distance)
+        algorithm='auto',   # Algorithm to compute nearest neighbors ('ball_tree', 'kd_tree', 'brute', or 'auto')
+        leaf_size=30,       # Leaf size for the tree algorithm
+        p=2,                # Power parameter for the Minkowski metric (p=2 is equivalent to using Euclidean distance)
+        metric='minkowski'  # Distance metric to use ('euclidean', 'manhattan', 'minkowski', etc.)
+    )
     model.fit(X_train, y_train)
     return model
-
 
 def predict_heart_disease(filepath, user_input):
     # Re-importing the dataset to start fresh
@@ -202,7 +229,6 @@ def predict_heart_disease(filepath, user_input):
 
     return predict_heart_disease_manual(user_input)
 
-
 def main():
     # Load and preprocess the dataset
     df = load_and_preprocess_data('.././CVD_datasets/heart_main.csv')
@@ -245,6 +271,24 @@ def main():
 
     # Train model
     model = train_model(X_train, y_train)
+
+    # Evaluate model
+    evaluation = evaluate_model(model, X_test, y_test)
+
+    # Print evaluation metrics
+    print("Evaluation Metrics:")
+    print("-----------------------------")
+    print(f"Accuracy: {evaluation['acc']}")
+    print(f"Precision: {evaluation['prec']}")
+    print(f"Recall: {evaluation['rec']}")
+    print(f"F1 Score: {evaluation['f1']}")
+    print(f"Cohen's Kappa: {evaluation['kappa']}")
+    print(f"AUC: {evaluation['auc']}")
+    print(f"Confusion Matrix: \n{evaluation['cm']}")
+    print("-----------------------------")
+
+    # Perform grid search   
+    #best_model, best_n_neighbors = perform_grid_search(X_train, y_train)
 
     # Define example user data
     user_dataTest = {
