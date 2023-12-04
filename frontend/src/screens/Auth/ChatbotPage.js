@@ -5,6 +5,11 @@
 import React from "react";
 import { Button, TextField, Typography } from "@mui/material";
 import "./css/ChatbotPage.css"; // Import the CSS file
+import OpenAI from "openai";
+const openai = new OpenAI({
+  apiKey: process.env.REACT_APP_OPENAI_KEY,
+  dangerouslyAllowBrowser: true,
+});
 
 // Define the ChatbotPage component
 const ChatbotPage = () => {
@@ -53,11 +58,10 @@ const ChatbotPage = () => {
               "&::-webkit-scrollbar-thumb": {
                 backgroundColor: "#6195CB",
                 borderRadius: "10px",
-                
               },
               "&::-webkit-scrollbar-thumb:hover": {
                 backgroundColor: "whitesmoke",
-              }
+              },
             },
           }}
         />
@@ -68,16 +72,22 @@ const ChatbotPage = () => {
           color="primary"
           id="chatbotSendButton"
           onClick={() => handleQuery()}
-        >Send</Button>
+        >
+          Send
+        </Button>
       </div>
       {/* chat history between user and chatbot */}
       <div id="chatbotCard2">
         <div id="chatBotInit" className="chatbotResponse">
-          <img src={process.env.PUBLIC_URL + "/HH_Logo.png"} className="chatbotImg"></img>
+          <img
+            src={process.env.PUBLIC_URL + "/HH_Logo.png"}
+            className="chatbotImg"
+          ></img>
           <div className="chatbotText">
             Hi, I'm your AI assistant. How can I help you today?
             <br />
-            Please include as much detail as possible so I can better assist you.
+            Please include as much detail as possible so I can better assist
+            you.
             <br />
             Waiting for your inquiry...
           </div>
@@ -161,26 +171,52 @@ function queryResponseChunk(chunk, isLastChunk = false) {
 //send form to GPT API here
 async function sendForm(query) {
   try {
-    const response = await fetch(
-      "https://us-central1-eecs581.cloudfunctions.net/chatRequest",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ query: query }),
-      }
-    );
+    // const response = await fetch(
+    //   "https://us-central1-eecs581.cloudfunctions.net/chatRequest",
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ query: query }),
+    //   }
+    // );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    // if (!response.ok) {
+    //   throw new Error(`HTTP error! Status: ${response.status}`);
+    // }
+
+    // const data = await response.json();
+
+    const thread = await openai.beta.threads.create();
+    console.log(thread);
+
+    const message = await openai.beta.threads.messages.create(thread.id, {
+      role: "user",
+      content: query,
+    });
+    console.log(message);
+
+    const run = await openai.beta.threads.runs.create(thread.id, {
+      assistant_id: process.env.REACT_APP_ASSISTANT_ID,
+      instructions: "Please address the user as John Doe.",
+    });
+
+    let status = await openai.beta.threads.runs.retrieve(thread.id, run.id);
+    console.log(status);
+
+    while (status.status !== "completed") {
+      console.log(status);
+      await new Promise((r) => setTimeout(r, 1000));
+      status = await openai.beta.threads.runs.retrieve(thread.id, run.id);
     }
 
-    const data = await response.json();
+    const messages = await openai.beta.threads.messages.list(thread.id);
 
+    console.log("Messages:", messages.data[0].content[0].text.value);
     // Assuming the backend sends the full response at once
     // Modify as needed if your backend sends streamed responses
-    queryResponseChunk(data.response, true);
+    queryResponseChunk(messages.data[0].content[0].text.value, true);
   } catch (error) {
     console.error("Error sending query to the server:", error);
     // Handle the error appropriately in the UI
