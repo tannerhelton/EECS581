@@ -5,9 +5,10 @@ import { styled } from "@mui/system";
 
 // URL constants for images used in the application
 const logoUrl = process.env.PUBLIC_URL + "/HH_logo.png";
-const heartDiseaseUrl = process.env.PUBLIC_URL + "/logo512.png";
-const cancerUrl = process.env.PUBLIC_URL + "/logo512.png";
-const diabetesUrl = process.env.PUBLIC_URL + "/logo512.png";
+const heartDiseaseUrl = process.env.PUBLIC_URL + "/heart.png";
+const cancerUrl = process.env.PUBLIC_URL + "/cancer.png";
+const diabetesUrl = process.env.PUBLIC_URL + "/diabetes.png";
+const public_url = process.env.PUBLIC_URL;
 
 // LogoImage: Styled component for displaying logos
 const LogoImage = styled("img")({
@@ -52,10 +53,11 @@ const BlocksContainer = styled(Container)(({ theme }) => ({
 const FeatureBlock = ({ imageUrl, title, description }) => (
   <Grid item xs={12} sm={4}>
     <Avatar
-      variant="rounded"
+      sx={{ width: 75, height: 75 }}
+      variant="square"
       style={{
         margin: "0 auto",
-        marginBottom: "20px",
+        marginBottom: "8px",
         backgroundColor: "transparent",
       }}
     >
@@ -74,6 +76,7 @@ const FeatureBlock = ({ imageUrl, title, description }) => (
 const AboutPage = () => {
   return (
     <>
+    {/* About HHai */}
       <StyledContainer component={Paper} elevation={0}>
         <Typography variant="h2" color="primary">
           About Health Horizon AI
@@ -87,6 +90,7 @@ const AboutPage = () => {
       </StyledContainer>
 
       <BlocksContainer>
+        {/* Showing what our models are capable of */}
         <Grid container spacing={6}>
           <FeatureBlock
             imageUrl={heartDiseaseUrl}
@@ -105,6 +109,49 @@ const AboutPage = () => {
           />
         </Grid>
       </BlocksContainer>
+      
+      <StyledContainer component={Paper} elevation={0}>
+        {/* More about us */}
+        <Typography variant="h2" color="primary">Meet Our Team</Typography>
+        <Typography variant="h6" color="primary" style={{ marginTop: "20px" }}>
+          Health Horizon AI is a team of passionate students from the University of Kansas.
+          We are a group of aspiring computer scientists who are dedicated to
+          building a fast, efficient, accurate, and elegant solution for patient healthcare needs.
+        </Typography>
+        {/* Read about each developer */}
+        <Grid container spacing={6} style={{marginTop: "20px", marginBottom: "40px" }}>
+          <FeatureBlock
+            imageUrl={public_url + "/default-user-icon.png"}
+            title="Tanner Helton"
+            description="We leverage a K-nearest neighbors (KNN) algorithm to detect early heart disease in patients."
+          />
+          <FeatureBlock
+            imageUrl={public_url + "/default-user-icon.png"}
+            title="Chris Stillman"
+            description="Our neural networks are meticulously trained to accurately detect cancer symptoms."
+          />
+          <FeatureBlock
+            imageUrl={public_url + "/default-user-icon.png"}
+            title="Adam Jolles"
+            description="Our trained data models and sophisticated AI algorithms allow us to create catered medical plans for diabetic patients."
+          />
+          <FeatureBlock
+            imageUrl={public_url + "/default-user-icon.png"}
+            title="Thomas Gasner"
+            description="Our trained data models and sophisticated AI algorithms allow us to create catered medical plans for diabetic patients."
+          />
+          <FeatureBlock
+            imageUrl={public_url + "/default-user-icon.png"}
+            title="Sloan Stubler"
+            description="I'm Sloan. A Frontend developer for Health Horizon AI. I hope your experience with our app is great!"
+          />
+        </Grid>
+        <hr></hr>
+        {/* contact info */}
+        <Typography variant="h6" color="primary" style={{ marginTop: "20px", marginBottom: "-20px", fontSize: "18px" }}>
+          Feel like something could be better? Contact us!
+        </Typography>
+      </StyledContainer>
     </>
   );
 };
