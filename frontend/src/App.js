@@ -28,6 +28,8 @@ import {
   AboutPage,
   MLResults,
   Questionnaire,
+  ContactUsPage,
+  ThankYouPage
 } from "./screens";
 
 // Unauthenticated screens for sign-up and password reset
@@ -66,6 +68,8 @@ function App() {
             element={!user ? <LoginPage /> : <Navigate to="/" />} // Redirects to home if already logged in
           />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/contactus" element={<ContactUsPage />} />
+          <Route path="/thank-you" element={<ThankYouPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
           <Route
