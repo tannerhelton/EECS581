@@ -68,10 +68,9 @@ const ChatbotPage = () => {
           color="primary"
           id="chatbotSendButton"
           onClick={() => handleQuery()}
-        >
-          Send
-        </Button>
+        >Send</Button>
       </div>
+      {/* chat history between user and chatbot */}
       <div id="chatbotCard2">
         <div id="chatBotInit" className="chatbotResponse">
           <img src={process.env.PUBLIC_URL + "/HH_Logo.png"} className="chatbotImg"></img>
@@ -100,6 +99,7 @@ function handleQuery() {
   if (!query) return;
   queryLock = true;
   document.getElementById("chatbotInput").value = "";
+  document.getElementById("chatbotInput").focus();
   //send users query
   sendForm(query);
   // show users query in the chat log
