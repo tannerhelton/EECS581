@@ -29,7 +29,8 @@ import {
   MLResults,
   Questionnaire,
   ContactUsPage,
-  ThankYouPage
+  ThankYouPage,
+  UploadPage
 } from "./screens";
 
 // Unauthenticated screens for sign-up and password reset
@@ -79,6 +80,10 @@ function App() {
           <Route
             path="/chatbot"
             element={renderPrivateRoute(<ChatbotPage />)} // Private route for chatbot page
+          />
+          <Route
+            path="/upload"
+            element={renderPrivateRoute(<UploadPage />)} // Private route for image upload page
           />
           <Route
             path="/questionnaire"

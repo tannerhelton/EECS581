@@ -38,6 +38,7 @@ export default function AppToolbar({ user }) {
                     to={user ? "/chatbot" : "/login"}
                     label={user ? "Chatbot" : "Login"}
                 />
+                {user && <NavButton to="/upload" label="Upload" />}
                 <NavButton to="/contactus" label="Contact" />
                 {user && (
                     <Button color="primary" onClick={handleLogout}>
