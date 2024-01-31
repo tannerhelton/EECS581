@@ -51,7 +51,7 @@ const BlocksContainer = styled(Container)(({ theme }) => ({
 
 // FeatureBlock: A functional component representing a single feature block
 // It takes imageUrl, title, and description as props
-const FeatureBlock = ({ imageUrl, title, description }) => (
+const FeatureBlock = ({ imageUrl, title, description, linkUrl }) => (
 	<Grid item xs={12} sm={4}>
 		<Link to={linkUrl} style={{ textDecoration: "none" }}>
 			<Avatar
