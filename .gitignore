@@ -31,6 +31,9 @@ frontend/build/
 frontend/ios/Pods/*
 .gradle/
 
+# Python
+*.pyc
+
 # Others
 yarn.lock
 package-lock.json

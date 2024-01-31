@@ -231,7 +231,7 @@ def predict_heart_disease(filepath, user_input):
 
 def main():
     # Load and preprocess the dataset
-    df = load_and_preprocess_data('.././CVD_datasets/heart_main.csv')
+    df = load_and_preprocess_data('../backend/CVD_datasets/heart_main.csv')
 
     # Plotting count distributions
     # plot_count_distribution(df, "Sex")
@@ -314,7 +314,7 @@ def main():
     plot_feature_distribution(
         df, 'BMI', user_dataTest['BMI'], 'red', 'User BMI')
     probability_manual = predict_heart_disease(
-        '.././CVD_datasets/heart_main.csv', user_dataTest)
+        '../backend/CVD_datasets/heart_main.csv', user_dataTest)
     probability_percentage_manual = probability_manual * 100  # Convert to percentage
     print(probability_percentage_manual)
     return [
