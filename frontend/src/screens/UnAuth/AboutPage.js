@@ -149,7 +149,7 @@ const AboutPage = () => {
 					/>
 					<FeatureBlock
 						imageUrl={public_url + "/default-user-icon.png"}
-						title="Thomas Gasner"
+						title="Thomas Gansner"
 						description="Our trained data models and sophisticated AI algorithms allow us to create catered medical plans for diabetic patients."
 					/>
 					<FeatureBlock

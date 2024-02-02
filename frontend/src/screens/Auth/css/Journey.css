@@ -1,0 +1,24 @@
+.journey-container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.j-buttons{
+    margin-top: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: space-between;
+}
+.hd-button{
+    margin-right: 20vh;
+    width: 20vh;
+    height: 10vh;
+}
+.cancer-button{
+    width: 20vh;
+    height: 10vh;
+}
+.white-image{
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
