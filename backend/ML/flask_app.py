@@ -1,4 +1,5 @@
-import shutil  # Import the shutil module
+# Import required libraries
+import shutil
 import numpy as np
 from flask_cors import CORS
 from flask import Flask, jsonify, send_file
@@ -10,69 +11,50 @@ import base64
 from contextlib import redirect_stdout
 import CVD_kNN
 
+# Set matplotlib to use 'agg' backend, which is non-interactive and suitable for server environments
+matplotlib.use('agg')
 
-matplotlib.use('agg')  # Use the 'agg' backend (a non-interactive backend)
-
+# Initialize a Flask app
 app = Flask(__name__)
-CORS(app)  # Apply CORS to the app
+# Apply Cross-Origin Resource Sharing (CORS) to the Flask app to allow cross-origin requests
+CORS(app)
 
-# where we want to create matplotlib pngs
-
-
-# Plotting count distributions
-# plot_count_distribution(df, "Sex")
-# plot_count_distribution(df, "Smoking")
-# plot_count_distribution(df, 'Race')
-# plot_count_distribution(df, 'AgeCategory')
-# plot_count_distribution(df, "KidneyDisease")
-
-# Plotting feature distributions
-# plot_feature_distribution(df, 'BMI', user_data['BMI'], 'red', 'User BMI')
-# plot_feature_distribution(df, 'SleepTime', user_data['SleepTime'], 'blue', 'User SleepTime')
-# plot_feature_distribution(df, 'PhysicalHealth', user_data['PhysicalHealth'], 'green', 'User PhysicalHealth')
-# plot_feature_distribution(df, 'MentalHealth', user_data['MentalHealth'], 'purple', 'User MentalHealth')
-
-
+# Function to capture and return text results from the CVD_kNN module
 def text_results():
     text_output = io.StringIO()
     with redirect_stdout(text_output):
-        CVD_kNN.main()
+        CVD_kNN.main()  # Run the main function of CVD_kNN and capture its printed output
 
-    # Get the captured text output as a string
+    # Get the captured text output as a string and return it
     text_result = text_output.getvalue()
-
     return text_result
 
-
+# Function to generate plots using the CVD_kNN module and return them
 def generate_plots():
-    plots = CVD_kNN.main()
-
+    plots = CVD_kNN.main()  # Run the main function of CVD_kNN to get plots
     return plots
 
-# Routes for retrieving data
-
-
+# Flask route for the main functionality, returning JSON data including probability and plots
 @app.route('/api/main', methods=['GET'])
 def main_route():
-    result = CVD_kNN.main()  # Call your main function
+    result = CVD_kNN.main()  # Call the main function from the CVD_kNN module
     return jsonify({
-        'probability': result[0],
-        'plots': result[1:]
+        'probability': result[0],  # Probability result from CVD_kNN
+        'plots': result[1:]  # Plot data from CVD_kNN
     })
 
-# Routes for retrieving data
-
+# Flask route for retrieving text results
 @app.route('/api/text-results', methods=['GET'])
 def display_text_results():
-    text_result = text_results()
-    return text_result
+    text_result = text_results()  # Get text results
+    return text_result  # Return the text results as a response
 
-
+# Flask route for generating and returning plot data
 @app.route('/api/generate-plot', methods=['GET'])
 def generate_and_return_plot():
-    data_urls = generate_plots()
-    return jsonify(data_urls)
+    data_urls = generate_plots()  # Generate plots
+    return jsonify(data_urls)  # Return plot data as JSON
 
-
+# Run the Flask app in debug mode if this script is the main program
 if __name__ == '__main__':
     app.run(debug=True)

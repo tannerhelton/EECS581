@@ -26,16 +26,22 @@ function MLResults() {
 	return (
 		<div className="ml-results-card">
 			<h2>Your Results</h2>
-
 			{loading ? (
-				<p>Loading results...</p>
+				<div className="loading-section">
+					<div className="loader">
+						<li className="ball"></li>
+						<li className="ball"></li>
+						<li className="ball"></li>
+					</div>
+				</div>
 			) : (
-				<button type="button" onClick={generateImage}>
-					Generate
-				</button>
+				!resultData.probability && (
+					<button type="button" onClick={generateImage}>
+						Generate
+					</button>
+				)
 			)}
 			<div className="ml-results-content">
-
 				{resultData.probability && (
 					<p>Probability of Heart Disease: {resultData.probability}%</p>
 				)}
