@@ -125,6 +125,64 @@ def kerasFeatureSelection(X_train, X_test):
 
     return X_train_features, X_test_features
 
+def resnet_feature_selection(X_train, X_test):
+    from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
+    from tensorflow.keras.models import Model
+
+    # Load the ResNet50 model
+    model_resnet = ResNet50(weights='imagenet', include_top=False)
+    # Extract features
+    feature_extractor = Model(inputs=model_resnet.inputs, outputs=model_resnet.layers[-1].output)
+
+    def extract_features(sample):
+        sample_preprocessed = preprocess_input(sample)
+        features = feature_extractor.predict(sample_preprocessed)
+        return features
+
+    X_train_features = extract_features(X_train)
+    X_test_features = extract_features(X_test)
+
+    return X_train_features, X_test_features
+
+
+def inception_feature_selection(X_train, X_test):
+    from tensorflow.keras.applications.inception_v3 import InceptionV3, preprocess_input
+    from tensorflow.keras.models import Model
+
+    # Load the InceptionV3 model
+    model_inception = InceptionV3(weights='imagenet', include_top=False)
+    # Extract features
+    feature_extractor = Model(inputs=model_inception.inputs, outputs=model_inception.layers[-1].output)
+
+    def extract_features(sample):
+        sample_preprocessed = preprocess_input(sample)
+        features = feature_extractor.predict(sample_preprocessed)
+        return features
+
+    X_train_features = extract_features(X_train)
+    X_test_features = extract_features(X_test)
+
+    return X_train_features, X_test_features
+
+def efficientnet_feature_selection(X_train, X_test):
+    from tensorflow.keras.applications.efficientnet import EfficientNetB0, preprocess_input
+    from tensorflow.keras.models import Model
+
+    # Load the EfficientNetB0 model
+    model_efficientnet = EfficientNetB0(weights='imagenet', include_top=False)
+    # Extract features
+    feature_extractor = Model(inputs=model_efficientnet.inputs, outputs=model_efficientnet.layers[-1].output)
+
+    def extract_features(sample):
+        sample_preprocessed = preprocess_input(sample)
+        features = feature_extractor.predict(sample_preprocessed)
+        return features
+
+    X_train_features = extract_features(X_train)
+    X_test_features = extract_features(X_test)
+
+    return X_train_features, X_test_features
+
 
 def dataReshape(X_train_features, X_test_features):
     # Reshape the training data
