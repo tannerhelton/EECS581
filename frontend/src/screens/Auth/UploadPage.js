@@ -39,6 +39,11 @@ const UploadPage = () => {
       <div id="uploadResultsPre">Results will appear shortly after your image is uploaded.</div>
       <div id="uploadResults"></div>
     </div>
+    <div id="imageStorageCard">
+      <div id="imageStoragePre">Your previous uploads will be stored here. To improve accuracy, our model will use them to track how your skin changes over time.</div>
+      <div id="storageContainer"></div>
+      {populateImageStorage()}
+    </div>
   </>);
 };
 
@@ -82,4 +87,14 @@ function timeRemaining(startTime, percent) {
 function displayResults(resultData) {
   document.getElementById('uploadResultsPre').innerHTML = "";
   document.getElementById('uploadResults').innerHTML = resultData.target.responseText;
+  populateImageStorage(); // populate the image storage card with the user's previous uploads
+}
+
+function populateImageStorage() {
+  const request = new XMLHttpRequest();
+  request.open('GET', './get-image-storage');
+  request.send();
+  request.addEventListener('load', (data) => {
+    document.getElementById('storageContainer').innerHTML = data.target.responseText;
+  });
 }
