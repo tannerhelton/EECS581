@@ -2,6 +2,8 @@ const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const fs = require("fs");
 const { Upload } = require("@aws-sdk/lib-storage");
 
+const user_id = "temp123";
+
 async function main(path) {
   console.log(path);
   const fileContent = fs.readFileSync(path);
@@ -10,16 +12,22 @@ async function main(path) {
   const s3 = new S3Client({
     region: "us-east-1",
     credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID || "AKIASMCYLFCCEK4OG62T",
+      secretAccessKey:
+        process.env.AWS_SECRET_ACCESS_KEY ||
+        "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",
     },
   });
+
+  const date = new Date();
+  const key = `${user_id}/${date.getFullYear()}/${date.getMonth()}/${date.getDate()}/${date.getTime()}.txt`;
 
   // Setting up S3 upload parameters
   const params = {
     Bucket: "health-horizon-bucket",
-    Key: "test.txt",
+    Key: key,
     Body: fileContent,
+    ContentType: "text/plain",
   };
 
   try {
