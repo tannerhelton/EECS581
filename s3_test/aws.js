@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const fs = require("fs");
 const { Upload } = require("@aws-sdk/lib-storage");
@@ -12,15 +14,14 @@ async function main(path) {
   const s3 = new S3Client({
     region: "us-east-1",
     credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID || "AKIASMCYLFCCEK4OG62T",
-      secretAccessKey:
-        process.env.AWS_SECRET_ACCESS_KEY ||
-        "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",
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     },
   });
 
   const date = new Date();
   const key = `${user_id}/${date.getFullYear()}/${date.getMonth()}/${date.getDate()}/${date.getTime()}.txt`;
+  const url = "https://health-horizon-bucket.s3.amazonaws.com/" + key;
 
   // Setting up S3 upload parameters
   const params = {
@@ -42,7 +43,7 @@ async function main(path) {
 
     const data = await upload.done();
 
-    console.log(`File uploaded successfully. ${data}`);
+    console.log(`File uploaded successfully. Access: ${url}`);
   } catch (err) {
     console.error("Error uploading file:", err);
   }
