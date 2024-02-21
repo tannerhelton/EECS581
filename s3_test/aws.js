@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client } = require("@aws-sdk/client-s3");
 const fs = require("fs");
 const { Upload } = require("@aws-sdk/lib-storage");
 
