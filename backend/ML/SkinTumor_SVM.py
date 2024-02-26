@@ -1,6 +1,12 @@
 #IMPORTS
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.model_selection import cross_val_score
+from sklearn.svm import SVC
+from keras.applications.vgg16 import VGG16
+from keras.models import Model
 import os
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,9 +15,10 @@ import os
 from glob import glob
 import seaborn as sns
 from PIL import Image
+import joblib
     
 
-def loading_data(benign_train, malignant_train, benign_test, malignant_test):
+def loadingData(benign_train, malignant_train, benign_test, malignant_test):
     #LOADING DATA
     folder_benign_train = benign_train
     folder_malignant_train = malignant_train
@@ -60,7 +67,6 @@ def loading_data(benign_train, malignant_train, benign_test, malignant_test):
 
     return X_train, y_train, X_test, y_test
 
-
 def testDisplay(X_train, y_train):
     # Display first 15 images of moles, and how they are classified
     w=40
@@ -78,7 +84,6 @@ def testDisplay(X_train, y_train):
         plt.imshow(X_train[i], interpolation='nearest')
     plt.show()
 
-
 def dataCounts(X_train, y_train, X_test, y_test):
     # Bar graph to show the number of benign and malignant moles in the training and test data
     plt.bar(0, y_train[np.where(y_train == 0)].shape[0], label = 'benign')
@@ -93,7 +98,6 @@ def dataCounts(X_train, y_train, X_test, y_test):
     plt.title("Test Data")
     plt.show()
 
-
 def normalizeImages(X_train, X_test):
     # Normalize the images to have pixel values between 0 and 1
     def normalize_images(images):
@@ -106,11 +110,7 @@ def normalizeImages(X_train, X_test):
 
     return X_train_norm, X_test_norm
 
-
 def kerasFeatureSelection(X_train, X_test):
-    from keras.applications.vgg16 import VGG16
-    from keras.models import Model
-    
     # Load the VGG16 model
     model_vgg16 = VGG16(weights='imagenet', include_top=False)
     # Extract features
@@ -125,7 +125,7 @@ def kerasFeatureSelection(X_train, X_test):
 
     return X_train_features, X_test_features
 
-def resnet_feature_selection(X_train, X_test):
+def resnetFeatureSelection(X_train, X_test):
     from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
     from tensorflow.keras.models import Model
 
@@ -144,8 +144,7 @@ def resnet_feature_selection(X_train, X_test):
 
     return X_train_features, X_test_features
 
-
-def inception_feature_selection(X_train, X_test):
+def inceptionFeatureSelection(X_train, X_test):
     from tensorflow.keras.applications.inception_v3 import InceptionV3, preprocess_input
     from tensorflow.keras.models import Model
 
@@ -164,7 +163,7 @@ def inception_feature_selection(X_train, X_test):
 
     return X_train_features, X_test_features
 
-def efficientnet_feature_selection(X_train, X_test):
+def efficientnetFeatureSelection(X_train, X_test):
     from tensorflow.keras.applications.efficientnet import EfficientNetB0, preprocess_input
     from tensorflow.keras.models import Model
 
@@ -183,7 +182,6 @@ def efficientnet_feature_selection(X_train, X_test):
 
     return X_train_features, X_test_features
 
-
 def dataReshape(X_train_features, X_test_features):
     # Reshape the training data
     num_training_samples = X_train_features.shape[0]
@@ -194,64 +192,139 @@ def dataReshape(X_train_features, X_test_features):
     X_test_reshaped = X_test_features.reshape(num_testing_samples, -1)
     
     # Now, apply PCA on the reshaped data
-    from sklearn.decomposition import PCA
     pca = PCA(n_components=0.9)  # retain 90% of the variance
     X_train_pca = pca.fit_transform(X_train_reshaped)
     X_test_pca = pca.transform(X_test_reshaped)
 
-    return X_train_pca, X_test_pca
-    
+    # Save the PCA model
+    joblib.dump(pca, 'pca_model.joblib')
 
+    return X_train_pca, X_test_pca
 
 def trainModel(X_train_pca, y_train):
-    from sklearn.svm import SVC
-    
+    # Train the model
     svm_model = SVC(kernel='rbf')
     svm_model.fit(X_train_pca, y_train)
 
+    # Save the model
+    joblib.dump(svm_model, 'svm_model.joblib')
+
     return svm_model
 
-
 def modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train):
-    
-    from sklearn.metrics import accuracy_score, classification_report
-    
+    # Model metrics
     y_pred = svm_model.predict(X_test_pca)
     print("Accuracy:", accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred))
 
-        
-    from sklearn.model_selection import cross_val_score
-    
+    # Cross-validation
     scores = cross_val_score(svm_model, X_train_pca, y_train, cv=5)
     print("Cross-validation scores:", scores)
+
+'''def plot3D(X_train_pca, y_train):
+    # Plot the data in 3D
+    fig = plt.figure(1, figsize=(8, 6))
+    ax = Axes3D(fig, elev=-150, azim=110)
+    ax.scatter(X_train_pca[:, 0], X_train_pca[:, 1], X_train_pca[:, 2], c=y_train, cmap=plt.cm.coolwarm, s=20, edgecolor='k')
+    ax.set_title("First three PCA directions")
+    ax.set_xlabel("1st eigenvector")
+    ax.w_xaxis.set_ticklabels([])
+    ax.set_ylabel("2nd eigenvector")
+    ax.w_yaxis.set_ticklabels([])
+    ax.set_zlabel("3rd eigenvector")
+    ax.w_zaxis.set_ticklabels([])
+
+    plt.show()'''
+
+def testPreprocessing(test_image_path):
+    # Load the image
+    img = Image.open(test_image_path)
+    img = img.convert('RGB')
+    img = img.resize((224, 224))
+
+    return img
+
+def testFeatureSelection(test_image):
+    # Preprocess the image
+    test_image = test_image.resize((224, 224))  # Resize to match VGG16 input
+    test_image = np.array(test_image)
+    test_image = np.expand_dims(test_image, axis=0)  # Add batch dimension
+    #test_image = preprocess_input(test_image)  # Preprocess for VGG16
+
+    # Load the VGG16 model
+    model_vgg16 = VGG16(weights='imagenet', include_top=False)
+
+    # Extract features
+    feature_extractor = Model(inputs=model_vgg16.inputs, outputs=model_vgg16.layers[-2].output)
+    test_feature = feature_extractor.predict(test_image)
+
+    return test_feature
+
+def testReshape(test_feature):
+    # Reshape the test data
+    num_testing_samples = test_feature.shape[0]
+    test_reshaped = test_feature.reshape(num_testing_samples, -1)
+
+    # Load the PCA model
+    pca = joblib.load('pca_model.joblib')
+    test_pca = pca.transform(test_reshaped)
+
+    return test_pca
+
+def testPrediction(test_pca):
+    # Load the model
+    svm_model = joblib.load('svm_model.joblib')
+
+    # Make a prediction
+    prediction = svm_model.predict(test_pca)
+
+    return prediction
+
+
 
 
 def main(): 
     print("Loading data")
-    X_train, y_train, X_test, y_test = loading_data('./data/train/benign', './data/train/malignant', './data/test/benign', './data/test/malignant')
+    #X_train, y_train, X_test, y_test = loadingData('./data/train/benign', './data/train/malignant', './data/test/benign', './data/test/malignant')
     print("Data loaded")
     
     print("Displaying first 15 images of moles, and how they are classified")
-    testDisplay(X_train, y_train)
+    #testDisplay(X_train, y_train)
 
     print("Data counts")
-    dataCounts(X_train, y_train, X_test, y_test)
+    #dataCounts(X_train, y_train, X_test, y_test)
 
     print("Normalizing images")
-    X_train_norm, X_test_norm = normalizeImages(X_train, X_test)
+    #X_train_norm, X_test_norm = normalizeImages(X_train, X_test)
 
     print("Keras feature selection")
-    X_train_features, X_test_features = kerasFeatureSelection(X_train_norm, X_test_norm)
+    #X_train_features, X_test_features = kerasFeatureSelection(X_train_norm, X_test_norm)
 
     print("Reshaping the image data into 2d arrays")
-    X_train_pca, X_test_pca = dataReshape(X_train_features, X_test_features)
+    #X_train_pca, X_test_pca = dataReshape(X_train_features, X_test_features)
 
     print("Training model")
-    svm_model = trainModel(X_train_pca, y_train)
+    #svm_model = trainModel(X_train_pca, y_train)
 
     print("Model metrics")
-    modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train)
+    #modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train)
+
+    print("Plotting 3D")
+    #plot3D(X_train_pca, y_train)
+
+    print("Test preprocessing")
+    test_image = testPreprocessing('./data/test/malignant/1.jpg')
+
+    print("Test feature selection")
+    test_feature = testFeatureSelection(test_image)
+
+    print("Test reshape")
+    test_pca = testReshape(test_feature)
+
+    print("Test prediction")
+    prediction = testPrediction(test_pca)
+
+    print("Prediction:", "Malignant" if prediction[0] == 1 else "Benign")
 
 if __name__ == '__main__':
     main()

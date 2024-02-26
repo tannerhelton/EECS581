@@ -38,3 +38,5 @@ frontend/ios/Pods/*
 yarn.lock
 package-lock.json
 *.lock
+backend/ML/svm_model.joblib
+backend/ML/pca_model.joblib
