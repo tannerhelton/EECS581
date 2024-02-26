@@ -10,6 +10,9 @@ const heartDiseaseUrl = process.env.PUBLIC_URL + "/heart.png";
 const cancerUrl = process.env.PUBLIC_URL + "/cancer.png";
 const diabetesUrl = process.env.PUBLIC_URL + "/diabetes.png";
 const public_url = process.env.PUBLIC_URL;
+const tannerURL = process.env.PUBLIC_URL + "/tanner.jpg";
+const chrisURL = process.env.PUBLIC_URL + "/chris.jpg";
+const adamURL = process.env.PUBLIC_URL + "/adam.jpg";
 
 // LogoImage: Styled component for displaying logos
 const LogoImage = styled("img")({
@@ -58,9 +61,12 @@ const FeatureBlock = ({ imageUrl, title, description, linkUrl }) => (
 				sx={{ width: 75, height: 75 }}
 				variant="square"
 				style={{
+					width: "100px",
+					height: "100px",
 					margin: "0 auto",
 					marginBottom: "8px",
 					backgroundColor: "transparent",
+					objectFit: 'cover'
 				}}
 			>
 				<img src={imageUrl} alt={title} style={{ maxWidth: "100%" }} />
@@ -133,17 +139,17 @@ const AboutPage = () => {
 					style={{ marginTop: "20px", marginBottom: "40px" }}
 				>
 					<FeatureBlock
-						imageUrl={public_url + "/default-user-icon.png"}
+						imageUrl={tannerURL}
 						title="Tanner Helton"
 						description="We leverage a K-nearest neighbors (KNN) algorithm to detect early heart disease in patients."
 					/>
 					<FeatureBlock
-						imageUrl={public_url + "/default-user-icon.png"}
+						imageUrl={chrisURL}
 						title="Chris Stillman"
 						description="Our neural networks are meticulously trained to accurately detect cancer symptoms."
 					/>
 					<FeatureBlock
-						imageUrl={public_url + "/default-user-icon.png"}
+						imageUrl={adamURL}
 						title="Adam Jolles"
 						description="Our trained data models and sophisticated AI algorithms allow us to create catered medical plans for diabetic patients."
 					/>
