@@ -23,7 +23,7 @@ const ImagesDisplay = () => {
 				setImages([]);
 			});
 	}, []);
-
+	// Return the images
 	return (
 		<div>
 			{Array.isArray(images) &&
