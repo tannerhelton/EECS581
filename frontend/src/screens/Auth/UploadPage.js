@@ -5,6 +5,7 @@
 import React from "react";
 import { Button, Input, Typography } from "@mui/material";
 import "./css/UploadPage.css"; // Import the CSS file
+import ImagesDisplay from "../../components/ImagesDisplay";
 
 // Define the UploadPage component
 const UploadPage = () => {
@@ -40,11 +41,16 @@ const UploadPage = () => {
       <div id="uploadResults"></div>
     </div>
     <div id="imageStorageCard">
-      <div id="imageStoragePre">Your previous uploads will be stored here. To improve accuracy, our model will use them to track how your skin changes over time.</div>
-      <div id="storageContainer"></div>
-      {populateImageStorage()}
-    </div>
-  </>);
+				<div id="imageStoragePre">
+					Your previous uploads will be stored here. To improve accuracy, our
+					model will use them to track how your skin changes over time.
+					<ImagesDisplay></ImagesDisplay>
+				</div>
+				<div id="storageContainer"></div>
+				{/* {populateImageStorage()} */}
+			</div>
+		</>
+	);
 };
 
 // Export the UploadPage component for use in other parts of the app

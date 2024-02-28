@@ -38,5 +38,9 @@ frontend/ios/Pods/*
 yarn.lock
 package-lock.json
 *.lock
+<<<<<<< Updated upstream
 backend/ML/svm_model.joblib
 backend/ML/pca_model.joblib
+=======
+*.icloud
+>>>>>>> Stashed changes
