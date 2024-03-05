@@ -1,3 +1,9 @@
+// This page is a health questionnaire for the user to fill out.
+// The user will be provided a list of questions and their answers will be saved to the database.
+// The user will then be able to view the results of the questionnaire.
+// The results are in the form of a probability of heart disease, including graphs and data.
+
+//imports
 import React, { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
@@ -5,6 +11,7 @@ import "./css/Questionnaire.css";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import BMICalculatorPopup from "./BMICalculator";
 
+// Questionnaire component
 function Questionnaire({ db }) {
 	const [answers, setAnswers] = useState({
 		bmi: "",
@@ -32,6 +39,7 @@ function Questionnaire({ db }) {
 	const [calculatedBMI, setCalculatedBMI] = useState(null);
 	const navigate = useNavigate();
 
+	// Handles changes to the answers
 	const handleAnswerChange = (question, answer) => {
 		setAnswers((prevAnswers) => ({
 			...prevAnswers,
@@ -39,11 +47,13 @@ function Questionnaire({ db }) {
 		}));
 	};
 
+	// Clears the success and error messages
 	const clearMessages = () => {
 		setSuccessMessage("");
 		setErrorMessage("");
 	};
 
+	// Saves the questionnaire answers to Firestore
 	const saveQuestionnaireToFirestore = async () => {
 		clearMessages();
 		try {
@@ -61,6 +71,7 @@ function Questionnaire({ db }) {
 		}
 	};
 
+	// Generates and displays the results using Matplotlib
 	const generateAndDisplayMatplotlibResults = () => {
 		navigate("/matplotlib-results");
 	};
@@ -83,6 +94,7 @@ function Questionnaire({ db }) {
 		closeBMICalculator();
 	};
 
+	// Renders the questionnaire
 	return (
 		<div className="questionnaire-card">
 			<h1>Questionnaire</h1>

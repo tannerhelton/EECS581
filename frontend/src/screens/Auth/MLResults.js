@@ -1,12 +1,18 @@
+//This page is when the ML model calculates the results of the heart disease test.
+//it will display various graphs and information to the user.
+
+//imports
 import React, { useState } from "react";
 import "./css/MLResults.css";
 import { Link } from "react-router-dom";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
+//component setup
 function MLResults() {
 	const [resultData, setResultData] = useState({});
 	const [loading, setLoading] = useState(false);
 
+	//api call
 	const generateImage = () => {
 		setLoading(true);
 
@@ -23,6 +29,7 @@ function MLResults() {
 			});
 	};
 
+	//render
 	return (
 		<div className="ml-results-card">
 			<h2>Your Results</h2>

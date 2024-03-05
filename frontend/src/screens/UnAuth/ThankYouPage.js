@@ -1,7 +1,11 @@
+// A response page to display to users when they submit a contact form
+
+//imports
 import React from 'react';
 import { Typography, Paper, Container, Box } from '@mui/material';
 import { styled } from '@mui/system';
 
+// styling component
 const StyledContainer = styled(Container)({
   maxWidth: '400px',
   padding: '20px',
@@ -13,6 +17,7 @@ const StyledContainer = styled(Container)({
   color: 'white', // Adjust text color as needed
 });
 
+// ThankYouPage: Functional component for the thank you page
 const ThankYouPage = () => {
   return (
     <StyledContainer component={Paper} elevation={0}>

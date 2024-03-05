@@ -1,3 +1,7 @@
+// Contact Us page for HHai
+//contains an email form and other contact information
+
+//imports
 import React, { useState } from "react";
 import { Button, TextField, Typography, Paper, Container, Box } from "@mui/material";
 import { styled } from "@mui/system";

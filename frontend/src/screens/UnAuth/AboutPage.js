@@ -1,3 +1,6 @@
+//This page is the About page, which provides information about the Health Horizon AI team and the services they provide.
+
+//imports
 import React from "react";
 import { Link } from "react-router-dom";
 // Importing various Material UI components for UI design

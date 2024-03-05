@@ -1,3 +1,7 @@
+//The home page for authenticated users. This page is only accessible to authenticated users.
+//it includes a custom welcome message and a button to naviagate to test selection.
+
+//imports
 import React from "react";
 import {
 	Typography,
@@ -9,10 +13,11 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
-
+//images
 const logoUrl = process.env.PUBLIC_URL + "/HH_Logo.png";
 const neuralUrl = process.env.PUBLIC_URL + "/neural.png";
 
+//styling components
 const StyledContainer = styled(Container)({
 	padding: (theme) => theme.spacing(4),
 	marginTop: (theme) => theme.spacing(4),
@@ -58,6 +63,7 @@ const FeatureBlock = ({ icon, title, description }) => (
 	</Grid>
 );
 
+//page setup with custom welcome message and navigation button
 const AuthHomePage = ({ auth }) => {
 	console.log(auth.currentUser);
 	return (

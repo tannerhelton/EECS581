@@ -1,3 +1,6 @@
+// The page where users can create an account with HHai
+
+//imports
 import React, { useState } from 'react';
 // Importing various Material UI components for UI design
 import { Button, TextField, Typography, Paper, Container, Box, Stack } from '@mui/material';
