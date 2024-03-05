@@ -1,13 +1,19 @@
+// This file is the main page for the user to select which test they would like to take.
+//it ccontains navigation buttons to go to each test.
+
+//imports
 import React from "react";
 import { Link } from "react-router-dom";
 import "./css/Journey.css";
 import { Typography, Grid, Paper, Container, Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 
+//images
 const heartDiseaseUrl = process.env.PUBLIC_URL + "/heart.png";
 const cancerUrl = process.env.PUBLIC_URL + "/cancer.png";
 const diabetesUrl = process.env.PUBLIC_URL + "/diabetes.png";
 
+//styling components
 const BlocksContainer = styled(Container)(({ theme }) => ({
 	padding: "20px",
 	marginTop: theme.spacing(15),
@@ -51,6 +57,7 @@ const FeatureBlock = ({ imageUrl, title, linkUrl }) => (
 	</Grid>
 );
 
+//main page component
 function HealthOptions() {
 	return (
 		<div className="journey-container">

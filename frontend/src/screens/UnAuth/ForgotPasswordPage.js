@@ -1,3 +1,5 @@
+// Page for handling the forgot password functionality
+
 import React, { useState } from 'react';
 // Importing various Material UI components for UI design
 import { Button, TextField, Typography, Paper, Container, Box } from '@mui/material';

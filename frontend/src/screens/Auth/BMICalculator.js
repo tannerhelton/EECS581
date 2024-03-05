@@ -1,6 +1,11 @@
+// A component used to calculate BMI.
+//It is used on the Questionnaire page to make it easier for users to calculate their BMI.
+
+//imports
 import React, { useState } from "react";
 import "./css/BMICalculatorPopup.css";
 
+//component setup
 const BMICalculatorPopup = ({ onClose, onCalculate }) => {
 	const [height, setHeight] = useState("");
 	const [weight, setWeight] = useState("");
@@ -12,6 +17,7 @@ const BMICalculatorPopup = ({ onClose, onCalculate }) => {
 		onCalculate(bmi);
 	};
 
+	//return html
 	return (
 		<div className="bmi-calculator-popup">
 			<h2>BMI Calculator</h2>

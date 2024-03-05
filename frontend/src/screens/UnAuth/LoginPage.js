@@ -1,3 +1,6 @@
+// Login page. Allows users to login using email and password or Google sign-in
+
+//imports
 import React, { useState } from 'react';
 // Importing various Material UI components for UI design
 import {

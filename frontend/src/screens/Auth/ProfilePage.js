@@ -1,8 +1,12 @@
+// This page displays the user's profile information, such as email and pphone number, and allows them to edit it.
+
+//imports
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./css/ProfilePage.css"; // Import the CSS file
 
+// ProfilePage component
 function ProfilePage({ auth, db }) {
 	const [userInfo, setUserInfo] = useState({
 		email: "",
@@ -26,6 +30,7 @@ function ProfilePage({ auth, db }) {
 
 	const handleEdit = () => setEditable(true);
 
+	// Save the user's profile information to Firestore
 	const handleSave = async () => {
 		const user = auth.currentUser;
 		if (user) {
@@ -59,6 +64,7 @@ function ProfilePage({ auth, db }) {
 		}
 	};
 
+	// Handle input changes
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 
@@ -86,6 +92,7 @@ function ProfilePage({ auth, db }) {
 		}
 	};
 
+	// Fetch the user's profile information from Firestore
 	useEffect(() => {
 		const fetchData = async () => {
 			const user = auth.currentUser;
@@ -119,6 +126,7 @@ function ProfilePage({ auth, db }) {
 		fetchData();
 	}, [auth, db]);
 
+	// Render the profile information
 	return (
 		<div className="profilePage">
 			<div className="profile-card">

@@ -1,3 +1,6 @@
+// The homepage when a user is not logged in. It displays the logo and a tagline.
+
+//imports
 import React from "react";
 // Importing various Material UI components for UI design
 import { Typography, Grid, Paper, Container, Avatar } from "@mui/material";
