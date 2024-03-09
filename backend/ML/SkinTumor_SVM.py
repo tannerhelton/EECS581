@@ -5,8 +5,9 @@ from sklearn.decomposition import PCA
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import cross_val_score
 from sklearn.svm import SVC
-from keras.applications.vgg16 import VGG16
+from keras.applications.vgg16 import VGG16, preprocess_input
 from keras.models import Model
+import tensorflow as tf
 import os
 import matplotlib.pyplot as plt
 import numpy as np
@@ -221,21 +222,6 @@ def modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train):
     scores = cross_val_score(svm_model, X_train_pca, y_train, cv=5)
     print("Cross-validation scores:", scores)
 
-'''def plot3D(X_train_pca, y_train):
-    # Plot the data in 3D
-    fig = plt.figure(1, figsize=(8, 6))
-    ax = Axes3D(fig, elev=-150, azim=110)
-    ax.scatter(X_train_pca[:, 0], X_train_pca[:, 1], X_train_pca[:, 2], c=y_train, cmap=plt.cm.coolwarm, s=20, edgecolor='k')
-    ax.set_title("First three PCA directions")
-    ax.set_xlabel("1st eigenvector")
-    ax.w_xaxis.set_ticklabels([])
-    ax.set_ylabel("2nd eigenvector")
-    ax.w_yaxis.set_ticklabels([])
-    ax.set_zlabel("3rd eigenvector")
-    ax.w_zaxis.set_ticklabels([])
-
-    plt.show()'''
-
 def testPreprocessing(test_image_path):
     # Load the image
     img = Image.open(test_image_path)
@@ -280,6 +266,63 @@ def testPrediction(test_pca):
 
     return prediction
 
+def generateSaliencyMap(test_image_path):
+    # Load and preprocess the image
+    img = Image.open(test_image_path)
+    img = img.resize((224, 224))  # Resize to match VGG16 input size
+    x = np.array(img)
+    x = np.expand_dims(x, axis=0)
+    x = preprocess_input(x)  # Preprocess for VGG16
+
+    # Load VGG16 model
+    model_vgg16 = VGG16(weights='imagenet', include_top=True)
+    
+    # Get the top predicted class
+    preds = model_vgg16.predict(x)
+    top_pred_index = tf.argmax(preds[0])
+    
+    # Get the output of the top predicted class
+    output = model_vgg16.output[:, top_pred_index]
+    
+    # Get the last convolutional layer
+    last_conv_layer = model_vgg16.get_layer('block5_conv3')
+    last_conv_layer_model = Model(model_vgg16.inputs, last_conv_layer.output)
+    
+    # Gradient model
+    gradient_model = Model([model_vgg16.inputs], [last_conv_layer.output, model_vgg16.output])
+    
+    # Compute the gradient of the top predicted class for the input image
+    with tf.GradientTape() as tape:
+        last_conv_layer_output, preds = gradient_model(x)
+        top_class_pred = preds[:, top_pred_index]
+    
+    # Use the gradients of the top predicted class with respect to the output feature map
+    grads = tape.gradient(top_class_pred, last_conv_layer_output)
+    
+    # Mean pooling the gradients over the height and width axes
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+    
+    # Weigh the output feature map with the computed gradient values
+    last_conv_layer_output = last_conv_layer_output[0]
+    heatmap = last_conv_layer_output @ pooled_grads[..., tf.newaxis]
+    heatmap = tf.squeeze(heatmap)
+    
+    # Normalize the heatmap
+    heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
+    heatmap = heatmap.numpy()
+    
+    # Display heatmap
+    plt.matshow(heatmap)
+    plt.show()
+
+    # Superimpose the heatmap with the original image
+    img = np.array(img)
+    heatmap = np.uint8(255 * heatmap)  # Convert to RGB
+    heatmap = np.array(Image.fromarray(heatmap).resize((img.shape[1], img.shape[0])))
+    heatmap = np.stack((heatmap,) * 3, axis=-1)
+    superimposed_img = heatmap * 0.4 + img
+    plt.imshow(superimposed_img.astype('uint8'))
+    plt.show()
 
 def main(): 
     #print("Loading data")
@@ -311,7 +354,7 @@ def main():
     #plot3D(X_train_pca, y_train)
 
     print("Test preprocessing")
-    test_image = testPreprocessing('./data/test/malignant/1.jpg')
+    test_image = testPreprocessing('./data/test/malignant/17.jpg')
 
     print("Test feature selection")
     test_feature = testFeatureSelection(test_image)
@@ -321,6 +364,9 @@ def main():
     prediction = testPrediction(test_pca)
 
     print("Prediction:", "Malignant" if prediction[0] == 1 else "Benign")
+
+    print("Generating saliency map")
+    generateSaliencyMap('./data/test/malignant/17.jpg')
 
 if __name__ == '__main__':
     main()
