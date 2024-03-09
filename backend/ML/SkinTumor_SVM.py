@@ -313,7 +313,7 @@ def generateSaliencyMap(test_image_path):
     
     # Display heatmap
     plt.matshow(heatmap)
-    plt.show()
+    plt.show() #USE THIS TO DISPLAY THE HEATMAP
 
     # Superimpose the heatmap with the original image
     img = np.array(img)
@@ -322,7 +322,7 @@ def generateSaliencyMap(test_image_path):
     heatmap = np.stack((heatmap,) * 3, axis=-1)
     superimposed_img = heatmap * 0.4 + img
     plt.imshow(superimposed_img.astype('uint8'))
-    plt.show()
+    plt.show() #USE THIS TO DISPLAY THE SUPERIMPOSED IMAGE
 
 def main(): 
     #print("Loading data")
