@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import DeleteImage from "./DeleteImage"; // Adjust the import path as necessary
 
 const ImagesDisplay = () => {
 	const [images, setImages] = useState([]);
@@ -25,15 +26,18 @@ const ImagesDisplay = () => {
 	}, []);
 	// Return the images
 	return (
-		<div>
+		<div id="imagesDisplay">
 			{Array.isArray(images) &&
 				images.map((image, index) => (
-					<img
-						key={index}
-						src={image}
-						alt={`User Upload ${index}`}
-						style={{ maxWidth: "100px", maxHeight: "100px" }}
-					/>
+					<div className="imageDiv" key={index} id={`uploadImageDiv${index}`}>
+						<img
+							src={image}
+							alt={`User Upload ${index}`}
+							style={{ maxWidth: "100%", maxHeight: "100%" }}
+						/>
+						{/* Add a DeleteImage component to each image */}
+						<DeleteImage url={image} imageDiv={document.getElementById(`uploadImageDiv${index}`)}/>
+					</div>
 				))}
 		</div>
 	);

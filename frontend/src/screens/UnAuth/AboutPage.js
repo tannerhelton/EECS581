@@ -16,6 +16,7 @@ const public_url = process.env.PUBLIC_URL;
 const tannerURL = process.env.PUBLIC_URL + "/tanner.jpg";
 const chrisURL = process.env.PUBLIC_URL + "/chris.jpg";
 const adamURL = process.env.PUBLIC_URL + "/adam.jpg";
+const sloanURL = process.env.PUBLIC_URL + "/sloan.jpg";
 
 // LogoImage: Styled component for displaying logos
 const LogoImage = styled("img")({
@@ -162,9 +163,9 @@ const AboutPage = () => {
 						description="Our trained data models and sophisticated AI algorithms allow us to create catered medical plans for diabetic patients."
 					/>
 					<FeatureBlock
-						imageUrl={public_url + "/default-user-icon.png"}
+						imageUrl={sloanURL}
 						title="Sloan Stubler"
-						description="I'm Sloan. A Frontend developer for Health Horizon AI. I hope your experience with our app is great!"
+						description="We've created a simple and elegant website for our patients to use. We hope your experience using our services is easy and painless."
 					/>
 				</Grid>
 				<hr></hr>
