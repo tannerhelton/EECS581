@@ -79,9 +79,8 @@ const UploadPage = () => {
 				<div id="imageStoragePre">
 					Your previous uploads will be stored here. To improve accuracy, our
 					model will use them to track how your skin changes over time.
-					<ImagesDisplay key={imageListVersion} />
-				</div>
-				<div id="storageContainer"></div>
+				</div><br></br>
+				<ImagesDisplay key={imageListVersion} />
 			</div>
 		</>
 	);
