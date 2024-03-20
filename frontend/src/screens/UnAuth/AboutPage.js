@@ -4,7 +4,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // Importing various Material UI components for UI design
-import { Typography, Grid, Paper, Container, Avatar } from "@mui/material";
+import { Typography, Grid, Paper, Container, Avatar, Button } from "@mui/material";
 import { styled } from "@mui/system";
 
 // URL constants for images used in the application
@@ -17,6 +17,9 @@ const tannerURL = process.env.PUBLIC_URL + "/tanner.jpg";
 const chrisURL = process.env.PUBLIC_URL + "/chris.jpg";
 const adamURL = process.env.PUBLIC_URL + "/adam.jpg";
 const sloanURL = process.env.PUBLIC_URL + "/sloan.jpg";
+const compliancePDFUrl = process.env.PUBLIC_URL + "/Legal_and_Compliance_Framework.pdf";
+const userManualPDFUrl = process.env.PUBLIC_URL + "/User_Manual_And_FAQ.pdf";
+
 
 // LogoImage: Styled component for displaying logos
 const LogoImage = styled("img")({
@@ -100,7 +103,33 @@ const AboutPage = () => {
 					early detection technologies for various medical conditions, including
 					heart disease, cancer, diabetes, and more.
 				</Typography>
+
+				{/* Link to the Compliance Document PDF */}
+                <Button
+                    variant="contained"
+                    color="primary"
+                    href={compliancePDFUrl}
+                    target="_blank"
+                    style={{ marginTop: "20px" }}
+                >
+                    View Our Compliance Document
+                </Button>
+
+				<br></br>
+
+				{/* Link to the User Manual and FAQ PDF */}
+                <Button
+                    variant="contained"
+                    color="primary"
+                    href={userManualPDFUrl}
+                    target="_blank"
+                    style={{ marginTop: "20px" }}
+                >
+                    View Our User Manual and FAQ Document
+                </Button>
 			</StyledContainer>
+
+			
 
 			<BlocksContainer>
 				{/* Showing what our models are capable of */}
