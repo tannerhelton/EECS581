@@ -324,6 +324,42 @@ def generateSaliencyMap(test_image_path):
     plt.imshow(superimposed_img.astype('uint8'))
     plt.show() #USE THIS TO DISPLAY THE SUPERIMPOSED IMAGE
 
+def testGrouped(test_image_path):
+    #USE TO CONNECT TO FRONTEND
+    # Load the image
+    img = Image.open(test_image_path)
+    img = img.convert('RGB')
+    img = img.resize((224, 224))
+
+    # Preprocess the image
+    test_image = img.resize((224, 224))  # Resize to match VGG16 input
+    test_image = np.array(test_image)
+    test_image = np.expand_dims(test_image, axis=0)  # Add batch dimension
+    #test_image = preprocess_input(test_image)  # Preprocess for VGG16
+
+    # Load the VGG16 model
+    model_vgg16 = VGG16(weights='imagenet', include_top=False)
+
+    # Extract features
+    feature_extractor = Model(inputs=model_vgg16.inputs, outputs=model_vgg16.layers[-2].output)
+    test_feature = feature_extractor.predict(test_image)
+
+    # Reshape the test data
+    num_testing_samples = test_feature.shape[0]
+    test_reshaped = test_feature.reshape(num_testing_samples, -1)
+
+    # Load the PCA model
+    pca = joblib.load('pca_model.joblib')
+    test_pca = pca.transform(test_reshaped)
+
+    # Load the model
+    svm_model = joblib.load('svm_model.joblib')
+
+    # Make a prediction
+    prediction = svm_model.predict(test_pca)
+
+    return prediction # 1 for malignant, 0 for benign
+
 def main(): 
     #print("Loading data")
     #X_train, y_train, X_test, y_test = loadingData('./data/train/benign', './data/train/malignant', './data/test/benign', './data/test/malignant')
