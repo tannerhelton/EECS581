@@ -44,7 +44,7 @@ const UploadPage = () => {
 
 		// Handle any errors that occur during the upload
 		request.addEventListener("error", () => alert("Error uploading file!"));
-		request.open("POST", "http://localhost:3001/api/upload"); // Adjust the URL/port as necessary
+		request.open("POST", "http://localhost:3002/api/upload"); // Adjust the URL/port as necessary
 		request.send(formData);
 	};
 
