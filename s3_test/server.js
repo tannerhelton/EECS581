@@ -8,7 +8,7 @@ const { deleteUserFile } = require("./deleteUserFile");
 const { getAllFilesFromUser } = require("./getAllFilesFromUser");
 
 const app = express();
-const port = 3001;
+const port = 3002;
 const upload = multer({ dest: "uploads/" });
 
 app.use(cors());

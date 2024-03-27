@@ -5,7 +5,7 @@ const ImagesDisplay = () => {
 	const [images, setImages] = useState([]);
 
 	useEffect(() => {
-		fetch("http://localhost:3001/api/files")
+		fetch("http://localhost:3002/api/files")
 			.then((response) => response.json())
 			.then((data) => {
 				// Check if the response is indeed an array

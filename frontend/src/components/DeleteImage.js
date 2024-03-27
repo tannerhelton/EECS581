@@ -5,8 +5,9 @@ const DeleteImage = ({ url, imageDiv }) => {
 	// the url seems to be malformed and/or temporary, so I'm not sure if it's what we should be using.
 	const deleteImage = () => {
 		console.log("{Deleting image:", url, "}");
-		fetch("http://localhost:3001/api/delete", {
-			method: "POST",
+		const filename = url.split("/").pop();
+		fetch("http://localhost:3002/api/files/" + filename, {
+			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
 			},
