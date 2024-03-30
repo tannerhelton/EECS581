@@ -17,8 +17,10 @@ from glob import glob
 import seaborn as sns
 from PIL import Image
 import joblib
-    
 
+global_pca = None
+global_svm_model = None
+    
 def loadingData(benign_train, malignant_train, benign_test, malignant_test):
     #LOADING DATA
     folder_benign_train = benign_train
@@ -184,6 +186,8 @@ def efficientnetFeatureSelection(X_train, X_test):
     return X_train_features, X_test_features
 
 def dataReshape(X_train_features, X_test_features):
+    global global_pca  # Use the global variable
+
     # Reshape the training data
     num_training_samples = X_train_features.shape[0]
     X_train_reshaped = X_train_features.reshape(num_training_samples, -1)
@@ -198,17 +202,19 @@ def dataReshape(X_train_features, X_test_features):
     X_test_pca = pca.transform(X_test_reshaped)
 
     # Save the PCA model
-    joblib.dump(pca, 'pca_model.joblib')
+    global_pca = pca
 
     return X_train_pca, X_test_pca
 
 def trainModel(X_train_pca, y_train):
+    global global_svm_model  # Use the global variable
+
     # Train the model
     svm_model = SVC(kernel='rbf')
     svm_model.fit(X_train_pca, y_train)
 
     # Save the model
-    joblib.dump(svm_model, 'svm_model.joblib')
+    global_svm_model = svm_model
 
     return svm_model
 
@@ -221,50 +227,6 @@ def modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train):
     # Cross-validation
     scores = cross_val_score(svm_model, X_train_pca, y_train, cv=5)
     print("Cross-validation scores:", scores)
-
-def testPreprocessing(test_image_path):
-    # Load the image
-    img = Image.open(test_image_path)
-    img = img.convert('RGB')
-    img = img.resize((224, 224))
-
-    return img
-
-def testFeatureSelection(test_image):
-    # Preprocess the image
-    test_image = test_image.resize((224, 224))  # Resize to match VGG16 input
-    test_image = np.array(test_image)
-    test_image = np.expand_dims(test_image, axis=0)  # Add batch dimension
-    #test_image = preprocess_input(test_image)  # Preprocess for VGG16
-
-    # Load the VGG16 model
-    model_vgg16 = VGG16(weights='imagenet', include_top=False)
-
-    # Extract features
-    feature_extractor = Model(inputs=model_vgg16.inputs, outputs=model_vgg16.layers[-2].output)
-    test_feature = feature_extractor.predict(test_image)
-
-    return test_feature
-
-def testReshape(test_feature):
-    # Reshape the test data
-    num_testing_samples = test_feature.shape[0]
-    test_reshaped = test_feature.reshape(num_testing_samples, -1)
-
-    # Load the PCA model
-    pca = joblib.load('pca_model.joblib')
-    test_pca = pca.transform(test_reshaped)
-
-    return test_pca
-
-def testPrediction(test_pca):
-    # Load the model
-    svm_model = joblib.load('svm_model.joblib')
-
-    # Make a prediction
-    prediction = svm_model.predict(test_pca)
-
-    return prediction
 
 def generateSaliencyMap(test_image_path):
     # Load and preprocess the image
@@ -352,11 +314,11 @@ def testGrouped(test_image_path):
     test_reshaped = test_feature.reshape(num_testing_samples, -1)
 
     # Load the PCA model
-    pca = joblib.load('pca_model.joblib')
+    pca = global_pca
     test_pca = pca.transform(test_reshaped)
 
     # Load the model
-    svm_model = joblib.load('svm_model.joblib')
+    svm_model = global_svm_model
 
     # Make a prediction
     prediction = svm_model.predict(test_pca)
@@ -366,7 +328,6 @@ def testGrouped(test_image_path):
 def main(): 
     print("Loading data")
     X_train, y_train, X_test, y_test = loadingData('./data/train/benign', './data/train/malignant', './data/test/benign', './data/test/malignant')
-    print("Data loaded")
     
     print("Displaying first 15 images of moles, and how they are classified")
     testDisplay(X_train, y_train)
@@ -389,18 +350,8 @@ def main():
     print("Model metrics")
     modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train)
 
-    print("Plotting 3D")
-    plot3D(X_train_pca, y_train)
-
-    print("Test preprocessing")
-    test_image = testPreprocessing('./data/test/malignant/17.jpg')
-
-    print("Test feature selection")
-    test_feature = testFeatureSelection(test_image)
-
-    print("Test reshape")
-    test_pca = testReshape(test_feature)
-    prediction = testPrediction(test_pca)
+    print("Testing")
+    prediction = testGrouped('./data/test/malignant/17.jpg')
 
     print("Prediction:", "Malignant" if prediction[0] == 1 else "Benign")
 
