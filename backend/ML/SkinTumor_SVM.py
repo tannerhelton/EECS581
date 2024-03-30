@@ -324,6 +324,9 @@ def generateSaliencyMap(test_image_path):
     plt.imshow(superimposed_img.astype('uint8'))
     plt.show() #USE THIS TO DISPLAY THE SUPERIMPOSED IMAGE
 
+def tests(str):
+    print(str)
+
 def testGrouped(test_image_path):
     #USE TO CONNECT TO FRONTEND
     # Load the image
@@ -361,33 +364,33 @@ def testGrouped(test_image_path):
     return prediction # 1 for malignant, 0 for benign
 
 def main(): 
-    #print("Loading data")
-    #X_train, y_train, X_test, y_test = loadingData('./data/train/benign', './data/train/malignant', './data/test/benign', './data/test/malignant')
-    #print("Data loaded")
+    print("Loading data")
+    X_train, y_train, X_test, y_test = loadingData('./data/train/benign', './data/train/malignant', './data/test/benign', './data/test/malignant')
+    print("Data loaded")
     
-    #print("Displaying first 15 images of moles, and how they are classified")
-    #testDisplay(X_train, y_train)
+    print("Displaying first 15 images of moles, and how they are classified")
+    testDisplay(X_train, y_train)
 
-    #print("Data counts")
-    #dataCounts(X_train, y_train, X_test, y_test)
+    print("Data counts")
+    dataCounts(X_train, y_train, X_test, y_test)
 
-    #print("Normalizing images")
-    #X_train_norm, X_test_norm = normalizeImages(X_train, X_test)
+    print("Normalizing images")
+    X_train_norm, X_test_norm = normalizeImages(X_train, X_test)
 
-    #print("Keras feature selection")
-    #X_train_features, X_test_features = kerasFeatureSelection(X_train_norm, X_test_norm)
+    print("Keras feature selection")
+    X_train_features, X_test_features = kerasFeatureSelection(X_train_norm, X_test_norm)
 
-    #print("Reshaping the image data into 2d arrays")
-    #X_train_pca, X_test_pca = dataReshape(X_train_features, X_test_features)
+    print("Reshaping the image data into 2d arrays")
+    X_train_pca, X_test_pca = dataReshape(X_train_features, X_test_features)
 
-    #print("Training model")
-    #svm_model = trainModel(X_train_pca, y_train)
+    print("Training model")
+    svm_model = trainModel(X_train_pca, y_train)
 
-    #print("Model metrics")
-    #modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train)
+    print("Model metrics")
+    modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train)
 
-    #print("Plotting 3D")
-    #plot3D(X_train_pca, y_train)
+    print("Plotting 3D")
+    plot3D(X_train_pca, y_train)
 
     print("Test preprocessing")
     test_image = testPreprocessing('./data/test/malignant/17.jpg')

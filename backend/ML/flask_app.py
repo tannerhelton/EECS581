@@ -2,7 +2,7 @@
 import shutil
 import numpy as np
 from flask_cors import CORS
-from flask import Flask, jsonify, send_file
+from flask import Flask, jsonify, send_file, request
 import matplotlib.pyplot as plt
 import io
 import os
@@ -10,6 +10,8 @@ import matplotlib
 import base64
 from contextlib import redirect_stdout
 import CVD_kNN
+from werkzeug.utils import secure_filename
+import SkinTumor_SVM
 
 # Set matplotlib to use 'agg' backend, which is non-interactive and suitable for server environments
 matplotlib.use('agg')
@@ -54,6 +56,26 @@ def display_text_results():
 def generate_and_return_plot():
     data_urls = generate_plots()  # Generate plots
     return jsonify(data_urls)  # Return plot data as JSON
+
+@app.route('/api/predict', methods=['POST'])
+def predict():
+    data = request.get_json()  # Get the JSON data
+    file_identifier = data.get('fileIdentifier')
+    
+    if not file_identifier:
+        return jsonify({'error': 'No file identifier provided'}), 400
+
+    # Logic to locate your file based on `file_identifier` and process it
+    # For example:
+    file_path = os.path.join('uploads', file_identifier)
+    if not os.path.exists(file_path):
+        return jsonify({'error': 'File not found'}), 404
+
+    prediction = SkinTumor_SVM.testGrouped(file_path)
+    os.remove(file_path)  # Clean up after prediction
+    
+    result_text = "Malignant" if prediction[0] == 1 else "Benign"
+    return jsonify({'prediction': result_text})
 
 # Run the Flask app in debug mode if this script is the main program
 if __name__ == '__main__':

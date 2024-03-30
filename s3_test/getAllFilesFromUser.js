@@ -63,7 +63,7 @@ async function getAllFilesFromUser(bucketName, userPrefix) {
 	} catch (err) {
 		console.error("Error retrieving files:", err);
 	}
-	console.log("File list:", fileList);
+	// console.log("File list:", fileList);
 	return fileList; // Return the list of file URLs
 }
 

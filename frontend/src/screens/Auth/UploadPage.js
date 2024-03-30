@@ -6,13 +6,13 @@
 //imports
 import React, { useState } from "react";
 import { Button, Typography } from "@mui/material";
-import "./css/UploadPage.css"; // Ensure the path is correct based on your project structure
+import "./css/UploadPage.css"; // Adjust the path as necessary
 import ImagesDisplay from "../../components/ImagesDisplay"; // Adjust the import path as necessary
 
-// UploadPage component
 const UploadPage = () => {
-	// State to trigger re-render of ImagesDisplay component after file upload
 	const [imageListVersion, setImageListVersion] = useState(0);
+	const [loading, setLoading] = useState(false); // For loading state
+	const [predictionResult, setPredictionResult] = useState(""); // To store prediction result
 
 	const uploadFile = (event) => {
 		event.preventDefault();
@@ -24,9 +24,8 @@ const UploadPage = () => {
 		const formData = new FormData();
 		formData.append("file", fileInput.files[0]);
 
-		// Create a new XMLHttpRequest
-		const request = new XMLHttpRequest();
-		request.upload.addEventListener("progress", (event) => {
+		const uploadRequest = new XMLHttpRequest();
+		uploadRequest.upload.addEventListener("progress", (event) => {
 			if (event.lengthComputable) {
 				const percent = (event.loaded / event.total) * 100;
 				document.getElementById(
@@ -35,20 +34,48 @@ const UploadPage = () => {
 			}
 		});
 
-		// Handle the server response after the file is uploaded
-		request.addEventListener("load", () => {
-			setImageListVersion((prevVersion) => prevVersion + 1); // Trigger ImagesDisplay update
-			document.getElementById("progressNumber").innerText = "Upload Complete!";
-			document.getElementById("uploadResults").innerText = request.response;
+		uploadRequest.addEventListener("load", () => {
+			setImageListVersion((prevVersion) => prevVersion + 1);
+			document.getElementById("progressNumber").innerText =
+				"Upload Complete! Fetching Prediction...";
+			const response = JSON.parse(uploadRequest.response);
+			fetchPrediction(response.fileName || response.fileIdentifier); // Assuming the response contains fileName or fileIdentifier
 		});
 
 		// Handle any errors that occur during the upload
-		request.addEventListener("error", () => alert("Error uploading file!"));
-		request.open("POST", "http://localhost:3002/api/upload"); // Adjust the URL/port as necessary
-		request.send(formData);
+		uploadRequest.addEventListener("error", () =>
+			alert("Error uploading file!")
+		);
+		uploadRequest.open("POST", "http://localhost:3002/api/upload"); // Adjust the URL/port as necessary
+		uploadRequest.send(formData);
 	};
 
-	// Return html for the UploadPage component
+	const fetchPrediction = (fileIdentifier) => {
+		// Assuming backend is adjusted to find the file by identifier
+		fetch("/api/predict", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ fileIdentifier }),
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Prediction failed");
+				}
+				return response.json();
+			})
+			.then((data) => {
+				setPredictionResult(`Prediction: ${data.prediction}`);
+				document.getElementById(
+					"uploadResults"
+				).innerText = `Prediction: ${data.prediction}`;
+			})
+			.catch((error) => {
+				alert("Error fetching prediction!");
+				console.error("Prediction error:", error);
+			});
+	};
 	return (
 		<>
 			<div id="chatbotCard">
@@ -74,12 +101,14 @@ const UploadPage = () => {
 					Results will appear shortly after your image is uploaded.
 				</div>
 				<div id="uploadResults"></div>
+				<div>This is by no way </div>
 			</div>
 			<div id="imageStorageCard">
 				<div id="imageStoragePre">
 					Your previous uploads will be stored here. To improve accuracy, our
 					model will use them to track how your skin changes over time.
-				</div><br></br>
+				</div>
+				<br></br>
 				<ImagesDisplay key={imageListVersion} />
 			</div>
 		</>
