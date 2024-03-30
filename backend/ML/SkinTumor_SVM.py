@@ -342,21 +342,21 @@ def main():
     X_train_features, X_test_features = kerasFeatureSelection(X_train_norm, X_test_norm)
 
     print("Reshaping the image data into 2d arrays")
-    X_train_pca, X_test_pca = dataReshape(X_train_features, X_test_features)
+    X_train_pca, X_test_pca = dataReshape(X_train_features, X_test_features) #PCA model is saved in global_pca
 
     print("Training model")
     svm_model = trainModel(X_train_pca, y_train)
 
     print("Model metrics")
-    modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train)
+    modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train) #Model training ends here. The model is saved in global_svm_model
 
     print("Testing")
-    prediction = testGrouped('./data/test/malignant/17.jpg')
+    prediction = testGrouped('./data/test/malignant/17.jpg') # PREDICTION 1 for malignant, 0 for benign
 
     print("Prediction:", "Malignant" if prediction[0] == 1 else "Benign")
 
     print("Generating saliency map")
-    generateSaliencyMap('./data/test/malignant/17.jpg')
+    generateSaliencyMap('./data/test/malignant/17.jpg') #USE THIS TO DISPLAY THE SALIENCY MAP
 
 if __name__ == '__main__':
     main()
