@@ -176,7 +176,11 @@ async function sendForm(query) {
     await openai.beta.threads.messages.create(thread.id, { content: query, role: "user" });
 
     const assistant_id = process.env.REACT_APP_ASSISTANT_ID;
-    const run = openai.beta.threads.runs.createAndStream(thread.id, { assistant_id, model: "gpt-4-turbo-preview"});
+    const run = openai.beta.threads.runs.createAndStream(thread.id, {
+        assistant_id,
+        model: "gpt-4-turbo-preview",
+        instructions: "You are a heath assistant helping a patient with their health concerns."
+    });
 
     const stream = run.toReadableStream();
     const reader = stream.getReader();
