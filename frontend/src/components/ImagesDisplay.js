@@ -8,37 +8,42 @@ const ImagesDisplay = () => {
 		fetch("http://localhost:3002/api/files")
 			.then((response) => response.json())
 			.then((data) => {
-				// Check if the response is indeed an array
 				if (Array.isArray(data)) {
 					setImages(data);
 				} else {
-					// Log or handle unexpected data format
 					console.error("Received data is not an array:", data);
-					// Consider setting images to an empty array or handling this case appropriately
 					setImages([]);
 				}
 			})
 			.catch((error) => {
 				console.error("Error fetching data: ", error);
-				// Handle error state appropriately
 				setImages([]);
 			});
 	}, []);
-	// Return the images
+
+	// Function to handle image deletion
+	const handleDelete = (imageUrl) => {
+		// Optionally, make a request to the server to delete the image
+		// Then, update the state to remove the image from the UI
+		setImages(images.filter((image) => image !== imageUrl));
+	};
+
+	const DeleteImage = ({ url, onDelete }) => {
+		return <button onClick={() => onDelete(url)}>Delete</button>;
+	};
+
 	return (
 		<div id="imagesDisplay">
-			{Array.isArray(images) &&
-				images.map((image, index) => (
-					<div className="imageDiv" key={index} id={`uploadImageDiv${index}`}>
-						<img
-							src={image}
-							alt={`User Upload ${index}`}
-							style={{ maxWidth: "100%", maxHeight: "100%" }}
-						/>
-						{/* Add a DeleteImage component to each image */}
-						<DeleteImage url={image} imageDiv={document.getElementById(`uploadImageDiv${index}`)}/>
-					</div>
-				))}
+			{images.map((image, index) => (
+				<div className="imageDiv" key={index}>
+					<img
+						src={image}
+						alt={`User Upload ${index}`}
+						style={{ maxWidth: "100%", maxHeight: "100%" }}
+					/>
+					<DeleteImage url={image} onDelete={() => handleDelete(image)} />
+				</div>
+			))}
 		</div>
 	);
 };

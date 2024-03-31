@@ -4,15 +4,17 @@
 //Results include the diagnosis as a graph and a description of the condition, and its likelihood.
 
 //imports
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Typography } from "@mui/material";
-import "./css/UploadPage.css"; // Adjust the path as necessary
-import ImagesDisplay from "../../components/ImagesDisplay"; // Adjust the import path as necessary
+import "./css/UploadPage.css";
+import ImagesDisplay from "../../components/ImagesDisplay";
 
 const UploadPage = () => {
 	const [imageListVersion, setImageListVersion] = useState(0);
-	const [loading, setLoading] = useState(false); // For loading state
-	const [predictionResult, setPredictionResult] = useState(""); // To store prediction result
+	const [fileIdentifier, setFileIdentifier] = useState(""); // State to store the file identifier
+	const [predictionResult, setPredictionResult] = useState("");
+	const [heatmapImage, setHeatmapImage] = useState("");
+	const [superimposedImage, setSuperimposedImage] = useState("");
 
 	const uploadFile = (event) => {
 		event.preventDefault();
@@ -36,46 +38,52 @@ const UploadPage = () => {
 
 		uploadRequest.addEventListener("load", () => {
 			setImageListVersion((prevVersion) => prevVersion + 1);
-			document.getElementById("progressNumber").innerText =
-				"Upload Complete! Fetching Prediction...";
+			document.getElementById("progressNumber").innerText = "Upload Complete!";
 			const response = JSON.parse(uploadRequest.response);
-			fetchPrediction(response.fileName || response.fileIdentifier); // Assuming the response contains fileName or fileIdentifier
+			console.log(response);
+			// Assuming the response contains a property "fileIdentifier"
+
+			setFileIdentifier(response.url); // Save the file identifier for later use
 		});
 
-		// Handle any errors that occur during the upload
 		uploadRequest.addEventListener("error", () =>
 			alert("Error uploading file!")
 		);
-		uploadRequest.open("POST", "http://localhost:3002/api/upload"); // Adjust the URL/port as necessary
+		uploadRequest.open("POST", "http://localhost:3002/api/upload");
 		uploadRequest.send(formData);
 	};
 
-	const fetchPrediction = (fileIdentifier) => {
-		// Assuming backend is adjusted to find the file by identifier
+	useEffect(() => {
+		console.log(fileIdentifier);
+		// Fetch prediction only if fileIdentifier is set
+		if (fileIdentifier) {
+			fetchPrediction(fileIdentifier);
+		}
+	}, [fileIdentifier]); // Dependency array ensures this runs only when fileIdentifier changes
+
+	const fetchPrediction = (identifier) => {
+		console.log("Fetching prediction for identifier:", identifier);
 		fetch("/api/predict", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ fileIdentifier }),
+			body: JSON.stringify({ fileIdentifier: identifier }),
 		})
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error("Prediction failed");
-				}
-				return response.json();
-			})
+			.then((response) => response.json())
 			.then((data) => {
-				setPredictionResult(`Prediction: ${data.prediction}`);
-				document.getElementById(
-					"uploadResults"
-				).innerText = `Prediction: ${data.prediction}`;
+				// Assuming the response structure is as mentioned and correct
+				setHeatmapImage(`data:image/jpeg;base64,${data.prediction.heatmap}`);
+				setSuperimposedImage(
+					`data:image/jpeg;base64,${data.prediction.superimposed_img}`
+				);
 			})
 			.catch((error) => {
 				alert("Error fetching prediction!");
 				console.error("Prediction error:", error);
 			});
 	};
+
 	return (
 		<>
 			<div id="chatbotCard">
@@ -88,7 +96,10 @@ const UploadPage = () => {
 				</Typography>
 				<Typography variant="body1">Upload limit: 50MB</Typography>
 				<br />
-				<input type="file" id="file" name="file" style={{ color: "white" }} />
+				<input type="file" id="file" name="file" style={{ display: "none" }} />
+				<label htmlFor="file" className="custom-file-upload">
+					SELECT AN IMAGE
+				</label>
 				<Button variant="contained" color="primary" onClick={uploadFile}>
 					Upload!
 				</Button>
@@ -100,8 +111,28 @@ const UploadPage = () => {
 				<div id="uploadResultsPre">
 					Results will appear shortly after your image is uploaded.
 				</div>
-				<div id="uploadResults"></div>
-				<div>This is by no way </div>
+				<div id="uploadResults">
+					{heatmapImage && (
+						<img
+							src={heatmapImage}
+							alt="Heatmap Visualization"
+							style={{ margin: "10px" }}
+						/>
+					)}
+					{superimposedImage && (
+						<img
+							src={superimposedImage}
+							alt="Superimposed Visualization"
+							style={{ margin: "10px" }}
+						/>
+					)}
+				</div>
+				<div>
+					The Early Detection System is for informational purposes only and not
+					a substitute for professional medical advice, diagnosis, or treatment.
+					Always consult with a healthcare professional for any health concerns
+					or before making any medical decisions.
+				</div>
 			</div>
 			<div id="imageStorageCard">
 				<div id="imageStoragePre">

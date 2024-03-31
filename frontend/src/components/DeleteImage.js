@@ -29,6 +29,6 @@ const DeleteImage = ({ url, imageDiv }) => {
 	};
 
 	return <button onClick={deleteImage}>Delete</button>;
-}
+};
 
 export default DeleteImage;

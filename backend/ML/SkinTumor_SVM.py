@@ -12,11 +12,13 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import os
+import io
+import base64
 from glob import glob
 import seaborn as sns
 from PIL import Image
 import joblib
+import requests
 
 global_pca = None
 global_svm_model = None
@@ -228,11 +230,23 @@ def modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train):
     scores = cross_val_score(svm_model, X_train_pca, y_train, cv=5)
     print("Cross-validation scores:", scores)
 
+
+def is_url(path):
+    return path.startswith('http://') or path.startswith('https://')
+
+def download_image(url):
+    response = requests.get(url)
+    image = Image.open(io.BytesIO(response.content)).convert('RGB')
+    return image
+
 def generateSaliencyMap(test_image_path):
     # Load and preprocess the image
-    img = Image.open(test_image_path)
-    img = img.resize((224, 224))  # Resize to match VGG16 input size
-    x = np.array(img)
+    if is_url(test_image_path):
+        img = download_image(test_image_path)
+    else:
+        img = Image.open(test_image_path).convert('RGB')
+    img_resized = img.resize((224, 224))  # Resize to match VGG16 input size
+    x = np.array(img_resized)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)  # Preprocess for VGG16
 
@@ -241,50 +255,62 @@ def generateSaliencyMap(test_image_path):
     
     # Get the top predicted class
     preds = model_vgg16.predict(x)
-    top_pred_index = tf.argmax(preds[0])
+    top_pred_index = np.argmax(preds[0])
     
     # Get the output of the top predicted class
     output = model_vgg16.output[:, top_pred_index]
     
     # Get the last convolutional layer
     last_conv_layer = model_vgg16.get_layer('block5_conv3')
-    last_conv_layer_model = Model(model_vgg16.inputs, last_conv_layer.output)
     
     # Gradient model
     gradient_model = Model([model_vgg16.inputs], [last_conv_layer.output, model_vgg16.output])
     
     # Compute the gradient of the top predicted class for the input image
     with tf.GradientTape() as tape:
-        last_conv_layer_output, preds = gradient_model(x)
-        top_class_pred = preds[:, top_pred_index]
+        conv_outputs, predictions = gradient_model(x)
+        loss = predictions[:, top_pred_index]
     
     # Use the gradients of the top predicted class with respect to the output feature map
-    grads = tape.gradient(top_class_pred, last_conv_layer_output)
+    output = conv_outputs[0]
+    grads = tape.gradient(loss, conv_outputs)[0]
     
     # Mean pooling the gradients over the height and width axes
-    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1))
     
     # Weigh the output feature map with the computed gradient values
-    last_conv_layer_output = last_conv_layer_output[0]
-    heatmap = last_conv_layer_output @ pooled_grads[..., tf.newaxis]
+    heatmap = tf.matmul(output, pooled_grads[..., tf.newaxis])
     heatmap = tf.squeeze(heatmap)
     
     # Normalize the heatmap
     heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
     heatmap = heatmap.numpy()
     
-    # Display heatmap
-    plt.matshow(heatmap)
-    plt.show() #USE THIS TO DISPLAY THE HEATMAP
-
-    # Superimpose the heatmap with the original image
-    img = np.array(img)
-    heatmap = np.uint8(255 * heatmap)  # Convert to RGB
-    heatmap = np.array(Image.fromarray(heatmap).resize((img.shape[1], img.shape[0])))
+    # Convert heatmap to RGB
+    heatmap = np.uint8(255 * heatmap)
+    heatmap = np.array(Image.fromarray(heatmap).resize((img.size)))
     heatmap = np.stack((heatmap,) * 3, axis=-1)
-    superimposed_img = heatmap * 0.4 + img
-    plt.imshow(superimposed_img.astype('uint8'))
-    plt.show() #USE THIS TO DISPLAY THE SUPERIMPOSED IMAGE
+    
+    # Create superimposed image
+    superimposed_img = heatmap * 0.4 + np.array(img)
+    superimposed_img = np.clip(superimposed_img, 0, 255).astype('uint8')
+
+    # Convert images to base64
+    def img_to_base64(image_array):
+        pil_img = Image.fromarray(image_array)
+        buff = io.BytesIO()
+        pil_img.save(buff, format="JPEG")
+        img_str = base64.b64encode(buff.getvalue()).decode("utf-8")
+        return img_str
+    
+    heatmap_base64 = img_to_base64(heatmap)
+    superimposed_img_base64 = img_to_base64(superimposed_img)
+    
+    # Return JSON values
+    return {
+        'heatmap': heatmap_base64,
+        'superimposed_img': superimposed_img_base64
+    }
 
 def tests(str):
     print(str)

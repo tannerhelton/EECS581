@@ -11,6 +11,7 @@ import base64
 from contextlib import redirect_stdout
 import CVD_kNN
 from werkzeug.utils import secure_filename
+from traceback import print_exc
 import SkinTumor_SVM
 
 # Set matplotlib to use 'agg' backend, which is non-interactive and suitable for server environments
@@ -52,31 +53,25 @@ def display_text_results():
     return text_result  # Return the text results as a response
 
 # Flask route for generating and returning plot data
-@app.route('/api/generate-plot', methods=['GET'])
+@app.route('/api/generate-plot', methods=['POST'])
 def generate_and_return_plot():
     data_urls = generate_plots()  # Generate plots
     return jsonify(data_urls)  # Return plot data as JSON
 
 @app.route('/api/predict', methods=['POST'])
 def predict():
-    data = request.get_json()  # Get the JSON data
-    file_identifier = data.get('fileIdentifier')
-    
-    if not file_identifier:
+    print('WORRRRKKKKING\n\n\n\n\n\n\n\n\n')
+    data = request.get_json()
+    if not data or 'fileIdentifier' not in data:
         return jsonify({'error': 'No file identifier provided'}), 400
 
-    # Logic to locate your file based on `file_identifier` and process it
-    # For example:
-    file_path = os.path.join('uploads', file_identifier)
-    if not os.path.exists(file_path):
-        return jsonify({'error': 'File not found'}), 404
-
-    prediction = SkinTumor_SVM.testGrouped(file_path)
-    os.remove(file_path)  # Clean up after prediction
-    
-    result_text = "Malignant" if prediction[0] == 1 else "Benign"
-    return jsonify({'prediction': result_text})
-
+    file_identifier = data['fileIdentifier']
+    try:
+        prediction_result = SkinTumor_SVM.generateSaliencyMap(file_identifier)
+        return jsonify({'prediction': prediction_result})
+    except Exception as e:
+        print_exc()  # This will print the traceback of the exception
+        return jsonify({'error': 'Error processing the prediction'}), 500
 # Run the Flask app in debug mode if this script is the main program
 if __name__ == '__main__':
     app.run(debug=True)

@@ -45,3 +45,22 @@
     background-color: #6195CB;
     border-radius: 0 0 10px 10px;
 }
+#file{
+    padding-left: 0;
+}
+.custom-file-upload {
+    font-size: 13px;
+    width: 12vw;
+    display: inline-block;
+    padding: 10px 20px; /* Adjust padding as needed */
+    margin-bottom: 20px;
+    cursor: pointer;
+    background-color: #6195CB;
+    color: white;
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid transparent; /* Optional: adds a border */
+    transition: all 0.3s ease-in-out;
+}
+.custom-file-upload:hover{
+    background-color: rgb(67, 104, 142);
+}
