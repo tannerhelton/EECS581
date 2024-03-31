@@ -20,7 +20,7 @@ const BlocksContainer = styled(Container)(({ theme }) => ({
 	marginBottom: theme.spacing(5),
 	textAlign: "center",
 	backgroundColor: "transparent",
-	width: "50%",
+	width: "30%",
 	borderRadius: theme.shape.borderRadius,
 	backgroundColor: "#2c3e50",
 	boxShadow: theme.shadows[5],
@@ -32,7 +32,7 @@ const BlocksContainer = styled(Container)(({ theme }) => ({
 }));
 
 const FeatureBlock = ({ imageUrl, title, linkUrl }) => (
-	<Grid item xs={12} sm={4}>
+	<Grid item xs={12} sm={6}>
 		<Link to={linkUrl} style={{ textDecoration: "none" }}>
 			<Avatar
 				sx={{ width: 75, height: 75 }}
@@ -70,7 +70,7 @@ function HealthOptions() {
 						linkUrl="/questionnaire"
 					/>
 					<FeatureBlock imageUrl={cancerUrl} title="Cancer" linkUrl="/upload" />
-					<FeatureBlock imageUrl={diabetesUrl} title="Diabetes" />
+					{/* <FeatureBlock imageUrl={diabetesUrl} title="Diabetes" /> */}
 				</Grid>
 			</BlocksContainer>
 		</div>

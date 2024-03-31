@@ -84,6 +84,7 @@
 
 .profile-input {
   background-color: #1b2631;
+  padding-top: 5px;
   color: whitesmoke;
   border: none;
   outline: none;
@@ -99,12 +100,13 @@
 
 .profile-info {
   height: 28px;
-  font-size: 20px;
+  padding-top: 5px;
+  font-size: 18px;
   padding: 0;
-  padding-left: 8px;
+  /* padding-left: 8px; */
   font-family: Inter, -apple-system, system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
   border-radius: 4px;
-  border: 1px solid #1b2631;
+  /* border: 1px solid #1b2631; */
   width: 20%;
 }
 
