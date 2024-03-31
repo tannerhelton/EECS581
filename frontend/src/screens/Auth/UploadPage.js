@@ -4,15 +4,17 @@
 //Results include the diagnosis as a graph and a description of the condition, and its likelihood.
 
 //imports
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Typography } from "@mui/material";
-import "./css/UploadPage.css"; // Ensure the path is correct based on your project structure
-import ImagesDisplay from "../../components/ImagesDisplay"; // Adjust the import path as necessary
+import "./css/UploadPage.css";
+import ImagesDisplay from "../../components/ImagesDisplay";
 
-// UploadPage component
 const UploadPage = () => {
-	// State to trigger re-render of ImagesDisplay component after file upload
 	const [imageListVersion, setImageListVersion] = useState(0);
+	const [fileIdentifier, setFileIdentifier] = useState(""); // State to store the file identifier
+	const [predictionResult, setPredictionResult] = useState("");
+	const [heatmapImage, setHeatmapImage] = useState("");
+	const [superimposedImage, setSuperimposedImage] = useState("");
 
 	const uploadFile = (event) => {
 		event.preventDefault();
@@ -24,9 +26,8 @@ const UploadPage = () => {
 		const formData = new FormData();
 		formData.append("file", fileInput.files[0]);
 
-		// Create a new XMLHttpRequest
-		const request = new XMLHttpRequest();
-		request.upload.addEventListener("progress", (event) => {
+		const uploadRequest = new XMLHttpRequest();
+		uploadRequest.upload.addEventListener("progress", (event) => {
 			if (event.lengthComputable) {
 				const percent = (event.loaded / event.total) * 100;
 				document.getElementById(
@@ -35,52 +36,137 @@ const UploadPage = () => {
 			}
 		});
 
-		// Handle the server response after the file is uploaded
-		request.addEventListener("load", () => {
-			setImageListVersion((prevVersion) => prevVersion + 1); // Trigger ImagesDisplay update
+		uploadRequest.addEventListener("load", () => {
+			setImageListVersion((prevVersion) => prevVersion + 1);
 			document.getElementById("progressNumber").innerText = "Upload Complete!";
-			document.getElementById("uploadResults").innerText = request.response;
+			const response = JSON.parse(uploadRequest.response);
+			console.log(response);
+			// Assuming the response contains a property "fileIdentifier"
+
+			setFileIdentifier(response.url); // Save the file identifier for later use
 		});
 
-		// Handle any errors that occur during the upload
-		request.addEventListener("error", () => alert("Error uploading file!"));
-		request.open("POST", "http://localhost:3002/api/upload"); // Adjust the URL/port as necessary
-		request.send(formData);
+		uploadRequest.addEventListener("error", () =>
+			alert("Error uploading file!")
+		);
+		uploadRequest.open("POST", "http://localhost:3002/api/upload");
+		uploadRequest.send(formData);
 	};
 
-	// Return html for the UploadPage component
+	useEffect(() => {
+		console.log(fileIdentifier);
+		// Fetch prediction only if fileIdentifier is set
+		if (fileIdentifier) {
+			fetchPrediction(fileIdentifier);
+		}
+	}, [fileIdentifier]); // Dependency array ensures this runs only when fileIdentifier changes
+
+	const fetchPrediction = (identifier) => {
+		console.log("Fetching prediction for identifier:", identifier);
+		fetch("/api/predict", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ fileIdentifier: identifier }),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				// Assuming the response structure is as mentioned and correct
+				setHeatmapImage(`data:image/jpeg;base64,${data.prediction.heatmap}`);
+				setSuperimposedImage(
+					`data:image/jpeg;base64,${data.prediction.superimposed_img}`
+				);
+				if (data.text) {
+					setPredictionResult(data.text);
+				}
+			})
+			.catch((error) => {
+				alert("Error fetching prediction!");
+				console.error("Prediction error:", error);
+			});
+	};
+
+	const [showImages, setShowImages] = useState(false); // State to toggle image display
+	const toggleImagesDisplay = () => {
+		setShowImages(!showImages);
+	};
+
 	return (
 		<>
 			<div id="chatbotCard">
-				<Typography variant="h3">
-					<b>Image Uploader</b>
-				</Typography>
+				<div className="upload-title">
+					<Typography variant="h3">
+						<b>Image Uploader</b>
+					</Typography>
+				</div>
+
 				<Typography variant="body1">
 					Upload an image of a rash, mole, or other skin condition to receive a
 					diagnosis powered by artificial intelligence.
 				</Typography>
-				<Typography variant="body1">Upload limit: 50MB</Typography>
 				<br />
-				<input type="file" id="file" name="file" style={{ color: "white" }} />
+				<input type="file" id="file" name="file" style={{ display: "none" }} />
+				<div className="upload-btn">
+					<label htmlFor="file" className="custom-file-upload">
+						SELECT AN IMAGE
+					</label>
+					<p className="upload-detail">Upload limit: 50MB</p>
+				</div>
 				<Button variant="contained" color="primary" onClick={uploadFile}>
 					Upload!
 				</Button>
+				<div className="disclaimer">
+					The Early Detection System is for informational purposes only and not
+					a substitute for professional medical advice, diagnosis, or treatment.
+					Always consult with a healthcare professional for any health concerns
+					or before making any medical decisions.
+				</div>
 				<div id="data">
-					<div id="progressNumber">ready...</div>
+					<div id="progressNumber"></div>
 				</div>
 			</div>
 			<div id="uploadResultsCard">
 				<div id="uploadResultsPre">
 					Results will appear shortly after your image is uploaded.
 				</div>
-				<div id="uploadResults"></div>
+				<div id="uploadResults">
+					{predictionResult && <p>Prediction Result: {predictionResult}</p>}
+					{heatmapImage && (
+						<>
+							<p>Heat Map </p>
+							<img
+								src={heatmapImage}
+								alt="Heatmap Visualization"
+								style={{ margin: "10px" }}
+							/>
+						</>
+					)}
+					{superimposedImage && (
+						<>
+							<p>Image</p>
+							<img
+								src={superimposedImage}
+								alt="Superimposed Visualization"
+								style={{ margin: "10px" }}
+							/>
+						</>
+					)}
+				</div>
 			</div>
 			<div id="imageStorageCard">
 				<div id="imageStoragePre">
-					Your previous uploads will be stored here. To improve accuracy, our
-					model will use them to track how your skin changes over time.
-				</div><br></br>
-				<ImagesDisplay key={imageListVersion} />
+					<h2 className="previous-uploads">Previous Uploads</h2>
+					<p>
+						To improve accuracy, our model will use them to track how your skin
+						changes over time.
+					</p>
+				</div>
+				<br></br>
+				<Button variant="contained" onClick={toggleImagesDisplay}>
+					{showImages ? "Hide Images" : "Show Images"}
+				</Button>
+				{showImages && <ImagesDisplay key={imageListVersion} />}
 			</div>
 		</>
 	);

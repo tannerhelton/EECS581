@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import DeleteImage from "./DeleteImage"; // Adjust the import path as necessary
+import { Grid, Card, CardMedia, CardActions, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const ImagesDisplay = () => {
 	const [images, setImages] = useState([]);
@@ -8,38 +9,47 @@ const ImagesDisplay = () => {
 		fetch("http://localhost:3002/api/files")
 			.then((response) => response.json())
 			.then((data) => {
-				// Check if the response is indeed an array
 				if (Array.isArray(data)) {
 					setImages(data);
 				} else {
-					// Log or handle unexpected data format
 					console.error("Received data is not an array:", data);
-					// Consider setting images to an empty array or handling this case appropriately
 					setImages([]);
 				}
 			})
 			.catch((error) => {
 				console.error("Error fetching data: ", error);
-				// Handle error state appropriately
 				setImages([]);
 			});
 	}, []);
-	// Return the images
+
+	const handleDelete = (imageUrl) => {
+		// Optionally, make a request to the server to delete the image
+		setImages(images.filter((image) => image !== imageUrl));
+	};
+
 	return (
-		<div id="imagesDisplay">
-			{Array.isArray(images) &&
-				images.map((image, index) => (
-					<div className="imageDiv" key={index} id={`uploadImageDiv${index}`}>
-						<img
-							src={image}
+		<Grid container spacing={2}>
+			{images.map((image, index) => (
+				<Grid item xs={12} sm={6} md={4} key={index}>
+					<Card>
+						<CardMedia
+							component="img"
+							height="140"
+							image={image}
 							alt={`User Upload ${index}`}
-							style={{ maxWidth: "100%", maxHeight: "100%" }}
 						/>
-						{/* Add a DeleteImage component to each image */}
-						<DeleteImage url={image} imageDiv={document.getElementById(`uploadImageDiv${index}`)}/>
-					</div>
-				))}
-		</div>
+						<CardActions disableSpacing>
+							<IconButton
+								aria-label="delete"
+								onClick={() => handleDelete(image)}
+							>
+								<DeleteIcon />
+							</IconButton>
+						</CardActions>
+					</Card>
+				</Grid>
+			))}
+		</Grid>
 	);
 };
 
