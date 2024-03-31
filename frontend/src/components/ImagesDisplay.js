@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import DeleteImage from "./DeleteImage"; // Adjust the import path as necessary
+import { Grid, Card, CardMedia, CardActions, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const ImagesDisplay = () => {
 	const [images, setImages] = useState([]);
@@ -21,30 +22,34 @@ const ImagesDisplay = () => {
 			});
 	}, []);
 
-	// Function to handle image deletion
 	const handleDelete = (imageUrl) => {
 		// Optionally, make a request to the server to delete the image
-		// Then, update the state to remove the image from the UI
 		setImages(images.filter((image) => image !== imageUrl));
 	};
 
-	const DeleteImage = ({ url, onDelete }) => {
-		return <button onClick={() => onDelete(url)}>Delete</button>;
-	};
-
 	return (
-		<div id="imagesDisplay">
+		<Grid container spacing={2}>
 			{images.map((image, index) => (
-				<div className="imageDiv" key={index}>
-					<img
-						src={image}
-						alt={`User Upload ${index}`}
-						style={{ maxWidth: "100%", maxHeight: "100%" }}
-					/>
-					<DeleteImage url={image} onDelete={() => handleDelete(image)} />
-				</div>
+				<Grid item xs={12} sm={6} md={4} key={index}>
+					<Card>
+						<CardMedia
+							component="img"
+							height="140"
+							image={image}
+							alt={`User Upload ${index}`}
+						/>
+						<CardActions disableSpacing>
+							<IconButton
+								aria-label="delete"
+								onClick={() => handleDelete(image)}
+							>
+								<DeleteIcon />
+							</IconButton>
+						</CardActions>
+					</Card>
+				</Grid>
 			))}
-		</div>
+		</Grid>
 	);
 };
 

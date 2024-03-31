@@ -318,7 +318,10 @@ def tests(str):
 def testGrouped(test_image_path):
     #USE TO CONNECT TO FRONTEND
     # Load the image
-    img = Image.open(test_image_path)
+    if is_url(test_image_path):
+        img = download_image(test_image_path)
+    else:
+        img = Image.open(test_image_path).convert('RGB')
     img = img.convert('RGB')
     img = img.resize((224, 224))
 

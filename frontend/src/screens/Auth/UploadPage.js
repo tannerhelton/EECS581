@@ -77,6 +77,9 @@ const UploadPage = () => {
 				setSuperimposedImage(
 					`data:image/jpeg;base64,${data.prediction.superimposed_img}`
 				);
+				if (data.text) {
+					setPredictionResult(data.text);
+				}
 			})
 			.catch((error) => {
 				alert("Error fetching prediction!");
@@ -84,27 +87,43 @@ const UploadPage = () => {
 			});
 	};
 
+	const [showImages, setShowImages] = useState(false); // State to toggle image display
+	const toggleImagesDisplay = () => {
+		setShowImages(!showImages);
+	};
+
 	return (
 		<>
 			<div id="chatbotCard">
-				<Typography variant="h3">
-					<b>Image Uploader</b>
-				</Typography>
+				<div className="upload-title">
+					<Typography variant="h3">
+						<b>Image Uploader</b>
+					</Typography>
+				</div>
+
 				<Typography variant="body1">
 					Upload an image of a rash, mole, or other skin condition to receive a
 					diagnosis powered by artificial intelligence.
 				</Typography>
-				<Typography variant="body1">Upload limit: 50MB</Typography>
 				<br />
 				<input type="file" id="file" name="file" style={{ display: "none" }} />
-				<label htmlFor="file" className="custom-file-upload">
-					SELECT AN IMAGE
-				</label>
+				<div className="upload-btn">
+					<label htmlFor="file" className="custom-file-upload">
+						SELECT AN IMAGE
+					</label>
+					<p className="upload-detail">Upload limit: 50MB</p>
+				</div>
 				<Button variant="contained" color="primary" onClick={uploadFile}>
 					Upload!
 				</Button>
+				<div className="disclaimer">
+					The Early Detection System is for informational purposes only and not
+					a substitute for professional medical advice, diagnosis, or treatment.
+					Always consult with a healthcare professional for any health concerns
+					or before making any medical decisions.
+				</div>
 				<div id="data">
-					<div id="progressNumber">ready...</div>
+					<div id="progressNumber"></div>
 				</div>
 			</div>
 			<div id="uploadResultsCard">
@@ -112,35 +131,42 @@ const UploadPage = () => {
 					Results will appear shortly after your image is uploaded.
 				</div>
 				<div id="uploadResults">
+					{predictionResult && <p>Prediction Result: {predictionResult}</p>}
 					{heatmapImage && (
-						<img
-							src={heatmapImage}
-							alt="Heatmap Visualization"
-							style={{ margin: "10px" }}
-						/>
+						<>
+							<p>Heat Map </p>
+							<img
+								src={heatmapImage}
+								alt="Heatmap Visualization"
+								style={{ margin: "10px" }}
+							/>
+						</>
 					)}
 					{superimposedImage && (
-						<img
-							src={superimposedImage}
-							alt="Superimposed Visualization"
-							style={{ margin: "10px" }}
-						/>
+						<>
+							<p>Image</p>
+							<img
+								src={superimposedImage}
+								alt="Superimposed Visualization"
+								style={{ margin: "10px" }}
+							/>
+						</>
 					)}
-				</div>
-				<div>
-					The Early Detection System is for informational purposes only and not
-					a substitute for professional medical advice, diagnosis, or treatment.
-					Always consult with a healthcare professional for any health concerns
-					or before making any medical decisions.
 				</div>
 			</div>
 			<div id="imageStorageCard">
 				<div id="imageStoragePre">
-					Your previous uploads will be stored here. To improve accuracy, our
-					model will use them to track how your skin changes over time.
+					<h2 className="previous-uploads">Previous Uploads</h2>
+					<p>
+						To improve accuracy, our model will use them to track how your skin
+						changes over time.
+					</p>
 				</div>
 				<br></br>
-				<ImagesDisplay key={imageListVersion} />
+				<Button variant="contained" onClick={toggleImagesDisplay}>
+					{showImages ? "Hide Images" : "Show Images"}
+				</Button>
+				{showImages && <ImagesDisplay key={imageListVersion} />}
 			</div>
 		</>
 	);

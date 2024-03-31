@@ -68,6 +68,7 @@ def predict():
     file_identifier = data['fileIdentifier']
     try:
         prediction_result = SkinTumor_SVM.generateSaliencyMap(file_identifier)
+        # prediction_text = SkinTumor_SVM.testGrouped(file_identifier)
         return jsonify({'prediction': prediction_result})
     except Exception as e:
         print_exc()  # This will print the traceback of the exception
