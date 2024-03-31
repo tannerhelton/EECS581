@@ -36,6 +36,7 @@
     display: grid;
     grid-template-areas: "text image";
     grid-gap: 6px;
+    margin-bottom: 6px;
 }
 
 .chatbotResponse {
