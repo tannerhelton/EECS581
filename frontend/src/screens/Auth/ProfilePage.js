@@ -3,6 +3,7 @@
 //imports
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
+import { Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import "./css/ProfilePage.css"; // Import the CSS file
 
@@ -130,11 +131,16 @@ function ProfilePage({ auth, db }) {
 	return (
 		<div className="profilePage">
 			<div className="profile-card">
-				<h1>Account Information</h1>
+				<div className="profile-title">
+					<Typography variant="h3">
+						<b>Account Information</b>
+					</Typography>
+				</div>
 				<p>
-					<strong>Name:</strong><br />
+					<strong>Name:</strong>
+					<br />
 					{editable ? (
-						<input 
+						<input
 							className="profile-input"
 							type="text"
 							name="displayName"
@@ -146,25 +152,29 @@ function ProfilePage({ auth, db }) {
 					)}
 				</p>
 				<p>
-					<strong>Email: </strong><br/><div className="profile-info">{userInfo.email}</div>
+					<strong>Email: </strong>
+					<br />
+					<div className="profile-info">{userInfo.email}</div>
 				</p>
 				<p>
-					<strong>Phone Number:</strong><br />
+					<strong>Phone Number:</strong>
+					<br />
 					{editable ? (
-					<input 
-						className="profile-input"
-						type="text"
-						name="phoneNumber"
-						value={userInfo.phoneNumber}
-						onChange={handleChange}
-					/>
+						<input
+							className="profile-input"
+							type="text"
+							name="phoneNumber"
+							value={userInfo.phoneNumber}
+							onChange={handleChange}
+						/>
 					) : (
 						<div className="profile-info">{userInfo.phoneNumber}</div>
 					)}
 				</p>
 				{editable ? (
 					<div>
-						<button onClick={handleSave}>Save</button><span> </span>
+						<button onClick={handleSave}>Save</button>
+						<span> </span>
 						<button onClick={() => setEditable(false)}>Cancel</button>
 					</div>
 				) : (

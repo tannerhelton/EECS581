@@ -4,7 +4,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // Importing various Material UI components for UI design
-import { Typography, Grid, Paper, Container, Avatar, Button } from "@mui/material";
+import {
+	Typography,
+	Grid,
+	Paper,
+	Container,
+	Avatar,
+	Button,
+} from "@mui/material";
 import { styled } from "@mui/system";
 
 // URL constants for images used in the application
@@ -17,9 +24,10 @@ const tannerURL = process.env.PUBLIC_URL + "/tanner.jpg";
 const chrisURL = process.env.PUBLIC_URL + "/chris.jpg";
 const adamURL = process.env.PUBLIC_URL + "/adam.jpg";
 const sloanURL = process.env.PUBLIC_URL + "/sloan.jpg";
-const compliancePDFUrl = process.env.PUBLIC_URL + "/Legal_and_Compliance_Framework.pdf";
+const thomasUrl = process.env.PUBLIC_URL + "/thomas.jpg";
+const compliancePDFUrl =
+	process.env.PUBLIC_URL + "/Legal_and_Compliance_Framework.pdf";
 const userManualPDFUrl = process.env.PUBLIC_URL + "/User_Manual_And_FAQ.pdf";
-
 
 // LogoImage: Styled component for displaying logos
 const LogoImage = styled("img")({
@@ -48,7 +56,7 @@ const BlocksContainer = styled(Container)(({ theme }) => ({
 	marginBottom: theme.spacing(5),
 	textAlign: "center",
 	backgroundColor: "transparent",
-	width: "50%",
+	width: "30%",
 	borderRadius: theme.shape.borderRadius,
 	backgroundColor: "#2c3e50",
 	boxShadow: theme.shadows[5],
@@ -61,8 +69,8 @@ const BlocksContainer = styled(Container)(({ theme }) => ({
 
 // FeatureBlock: A functional component representing a single feature block
 // It takes imageUrl, title, and description as props
-const FeatureBlock = ({ imageUrl, title, description, linkUrl }) => (
-	<Grid item xs={12} sm={4}>
+const FeatureBlock = ({ imageUrl, title, description, linkUrl, classN }) => (
+	<Grid item xs={12} sm={6}>
 		<Link to={linkUrl} style={{ textDecoration: "none" }}>
 			<Avatar
 				sx={{ width: 75, height: 75 }}
@@ -73,10 +81,15 @@ const FeatureBlock = ({ imageUrl, title, description, linkUrl }) => (
 					margin: "0 auto",
 					marginBottom: "8px",
 					backgroundColor: "transparent",
-					objectFit: 'cover'
+					objectFit: "cover",
 				}}
 			>
-				<img src={imageUrl} alt={title} style={{ maxWidth: "100%" }} />
+				<img
+					src={imageUrl}
+					alt={title}
+					style={{ maxWidth: "100%" }}
+					className={classN}
+				/>
 			</Avatar>
 			<Typography variant="h5" color="primary">
 				{title}
@@ -105,31 +118,29 @@ const AboutPage = () => {
 				</Typography>
 
 				{/* Link to the Compliance Document PDF */}
-                <Button
-                    variant="contained"
-                    color="primary"
-                    href={compliancePDFUrl}
-                    target="_blank"
-                    style={{ marginTop: "20px" }}
-                >
-                    View Our Compliance Document
-                </Button>
+				<Button
+					variant="contained"
+					color="primary"
+					href={compliancePDFUrl}
+					target="_blank"
+					style={{ marginTop: "20px" }}
+				>
+					View Our Compliance Document
+				</Button>
 
 				<br></br>
 
 				{/* Link to the User Manual and FAQ PDF */}
-                <Button
-                    variant="contained"
-                    color="primary"
-                    href={userManualPDFUrl}
-                    target="_blank"
-                    style={{ marginTop: "20px" }}
-                >
-                    View Our User Manual and FAQ Document
-                </Button>
+				<Button
+					variant="contained"
+					color="primary"
+					href={userManualPDFUrl}
+					target="_blank"
+					style={{ marginTop: "20px" }}
+				>
+					View Our User Manual and FAQ Document
+				</Button>
 			</StyledContainer>
-
-			
 
 			<BlocksContainer>
 				{/* Showing what our models are capable of */}
@@ -138,6 +149,7 @@ const AboutPage = () => {
 						imageUrl={heartDiseaseUrl}
 						title="Heart Disease"
 						description="We leverage a K-nearest neighbors (KNN) algorithm to detect early heart disease in patients."
+						classN="white-image"
 						linkUrl="/questionnaire"
 					/>
 					<FeatureBlock
@@ -145,12 +157,13 @@ const AboutPage = () => {
 						title="Cancer"
 						description="Our neural networks are meticulously trained to accurately detect cancer symptoms."
 						linkUrl="/upload"
+						classN="white-image"
 					/>
-					<FeatureBlock
+					{/* <FeatureBlock
 						imageUrl={diabetesUrl}
 						title="Diabetes"
 						description="Our trained data models and sophisticated AI algorithms allow us to create catered medical plans for diabetic patients."
-					/>
+					/> */}
 				</Grid>
 			</BlocksContainer>
 
@@ -187,9 +200,9 @@ const AboutPage = () => {
 						description="Our trained data models and sophisticated AI algorithms allow us to create catered medical plans for diabetic patients."
 					/>
 					<FeatureBlock
-						imageUrl={public_url + "/default-user-icon.png"}
+						imageUrl={thomasUrl}
 						title="Thomas Gansner"
-						description="Our trained data models and sophisticated AI algorithms allow us to create catered medical plans for diabetic patients."
+						description="By harnessing the power of artificial intelligence and detailed data models, our system crafts customized treatment plans for patients with heart disease."
 					/>
 					<FeatureBlock
 						imageUrl={sloanURL}
@@ -199,13 +212,19 @@ const AboutPage = () => {
 				</Grid>
 				<hr></hr>
 				{/* contact info */}
-				<Typography
-					variant="h6"
-					color="primary"
-					style={{ marginTop: "20px", marginBottom: "-20px", fontSize: "18px" }}
-				>
-					Feel like something could be better? Contact us!
-				</Typography>
+				<Link to="/contactus" style={{ textDecoration: "none" }}>
+					<Typography
+						variant="h6"
+						color="primary"
+						style={{
+							marginTop: "20px",
+							marginBottom: "-20px",
+							fontSize: "18px",
+						}}
+					>
+						Feel like something could be better? Contact us!
+					</Typography>
+				</Link>
 			</StyledContainer>
 		</>
 	);
