@@ -239,6 +239,62 @@ def download_image(url):
     image = Image.open(io.BytesIO(response.content)).convert('RGB')
     return image
 
+def generateSaliencyMapTest(test_image_path):
+    # Load and preprocess the image
+    if is_url(test_image_path):
+        img = download_image(test_image_path)
+    else:
+        img = Image.open(test_image_path).convert('RGB')
+    img_resized = img.resize((224, 224))  # Resize to match VGG16 input size
+    x = np.array(img_resized)
+    x = np.expand_dims(x, axis=0)
+    x = preprocess_input(x)  # Preprocess for VGG16
+
+    # Load VGG16 model
+    model_vgg16 = VGG16(weights='imagenet', include_top=True)
+    
+    # Get the top predicted class
+    preds = model_vgg16.predict(x)
+    top_pred_index = np.argmax(preds[0])
+    
+    # Get the output of the top predicted class
+    output = model_vgg16.output[:, top_pred_index]
+    
+    # Get the last convolutional layer
+    last_conv_layer = model_vgg16.get_layer('block5_conv3')
+    
+    # Gradient model
+    gradient_model = Model([model_vgg16.inputs], [last_conv_layer.output, model_vgg16.output])
+    
+    # Compute the gradient of the top predicted class for the input image
+    with tf.GradientTape() as tape:
+        conv_outputs, predictions = gradient_model(x)
+        loss = predictions[:, top_pred_index]
+    
+    # Use the gradients of the top predicted class with respect to the output feature map
+    output = conv_outputs[0]
+    grads = tape.gradient(loss, conv_outputs)[0]
+    
+    # Mean pooling the gradients over the height and width axes
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1))
+    
+    # Weigh the output feature map with the computed gradient values
+    heatmap = tf.matmul(output, pooled_grads[..., tf.newaxis])
+    heatmap = tf.squeeze(heatmap)
+    
+    # Normalize the heatmap
+    heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
+    heatmap = heatmap.numpy()
+    
+    # Convert heatmap to RGB
+    heatmap = np.uint8(255 * heatmap)
+    heatmap = np.array(Image.fromarray(heatmap).resize((img.size)))
+    heatmap = np.stack((heatmap,) * 3, axis=-1)
+    
+    # Create superimposed image
+    superimposed_img = heatmap * 0.4 + np.array(img)
+    superimposed_img = np.clip(superimposed_img, 0, 255).astype('uint8')
+    
 def generateSaliencyMap(test_image_path):
     # Load and preprocess the image
     if is_url(test_image_path):
@@ -305,7 +361,6 @@ def generateSaliencyMap(test_image_path):
     
     heatmap_base64 = img_to_base64(heatmap)
     superimposed_img_base64 = img_to_base64(superimposed_img)
-    
     # Return JSON values
     return {
         'heatmap': heatmap_base64,
