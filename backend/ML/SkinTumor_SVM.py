@@ -212,7 +212,7 @@ def trainModel(X_train_pca, y_train):
     global global_svm_model  # Use the global variable
 
     # Train the model
-    svm_model = SVC(kernel='rbf')
+    svm_model = SVC(kernel='rbf', probability=True, random_state=42)
     svm_model.fit(X_train_pca, y_train)
 
     # Save the model
@@ -405,9 +405,12 @@ def testGrouped(test_image_path):
     svm_model = global_svm_model
 
     # Make a prediction
-    prediction = svm_model.predict(test_pca)
+    probabilities = svm_model.predict_proba(test_pca)
 
-    return prediction # 1 for malignant, 0 for benign
+    benign_prob = probabilities[0][0]
+    malignant_prob = probabilities[0][1]
+
+    return benign_prob,malignant_prob 
 
 def main(): 
     print("Loading data")
@@ -435,9 +438,7 @@ def main():
     modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train) #Model training ends here. The model is saved in global_svm_model
 
     print("Testing")
-    prediction = testGrouped('./data/test/malignant/17.jpg') # PREDICTION 1 for malignant, 0 for benign
-
-    print("Prediction:", "Malignant" if prediction[0] == 1 else "Benign")
+    benign_prob, malignant_prob = testGrouped('./data/test/malignant/17.jpg') # PREDICTION 1 for malignant, 0 for benign
 
     print("Generating saliency map")
     generateSaliencyMap('./data/test/malignant/17.jpg') #USE THIS TO DISPLAY THE SALIENCY MAP
