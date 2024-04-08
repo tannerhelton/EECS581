@@ -60,7 +60,6 @@ def generate_and_return_plot():
 
 @app.route('/api/predict', methods=['POST'])
 def predict():
-    print('WORRRRKKKKING\n\n\n\n\n\n\n\n\n')
     data = request.get_json()
     if not data or 'fileIdentifier' not in data:
         return jsonify({'error': 'No file identifier provided'}), 400
