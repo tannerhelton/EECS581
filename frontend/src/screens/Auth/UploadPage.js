@@ -91,6 +91,31 @@ const UploadPage = () => {
 	const toggleImagesDisplay = () => {
 		setShowImages(!showImages);
 	};
+	useEffect(() => {
+		const zoomImage = document.querySelector(".hover-zoom");
+		if (zoomImage) {
+			zoomImage.addEventListener("click", function () {
+				this.classList.toggle("enlarged");
+			});
+		}
+
+		// Return a cleanup function to remove the event listener when the component unmounts
+		return () => {
+			if (zoomImage) {
+				zoomImage.removeEventListener("click", function () {
+					this.classList.toggle("enlarged");
+				});
+			}
+		};
+	}, []); // Empty dependency array means this runs once on mount
+
+	const [isEnlarged, setIsEnlarged] = useState(false);
+
+	// Toggle function
+	const toggleEnlarge = () => setIsEnlarged(!isEnlarged);
+
+	// Adjusted closeImage function to use state
+	const closeImage = () => setIsEnlarged(false);
 
 	return (
 		<>
@@ -131,26 +156,34 @@ const UploadPage = () => {
 					Results will appear shortly after your image is uploaded.
 				</div>
 				<div id="uploadResults">
-					{predictionResult && <p>Prediction Result: {predictionResult}</p>}
-					{heatmapImage && (
-						<>
-							<p>Heat Map </p>
-							<img
-								src={heatmapImage}
-								alt="Heatmap Visualization"
-								style={{ margin: "10px" }}
-							/>
-						</>
-					)}
 					{superimposedImage && (
-						<>
-							<p>Image</p>
+						<div className="imageResultsCard">
+							<p>Saliency Map:</p>
 							<img
 								src={superimposedImage}
 								alt="Superimposed Visualization"
+								className={`resultImage ${isEnlarged ? "enlarged" : ""}`}
+								style={{ margin: "10px" }}
+								onClick={toggleEnlarge}
+							/>
+							{isEnlarged && (
+								<div className="close-icon" onClick={closeImage}>
+									&#10006;
+								</div>
+							)}
+						</div>
+					)}
+					{predictionResult && <p>Prediction Result: {predictionResult}</p>}
+					{heatmapImage && (
+						<div className="imageResultsCard">
+							<p>Heat Map:</p>
+							<img
+								src={heatmapImage}
+								alt="Heatmap Visualization"
+								className="resultImage"
 								style={{ margin: "10px" }}
 							/>
-						</>
+						</div>
 					)}
 				</div>
 			</div>

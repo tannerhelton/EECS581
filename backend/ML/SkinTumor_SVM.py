@@ -212,7 +212,7 @@ def trainModel(X_train_pca, y_train):
     global global_svm_model  # Use the global variable
 
     # Train the model
-    svm_model = SVC(kernel='rbf')
+    svm_model = SVC(kernel='rbf', probability=True, random_state=42)
     svm_model.fit(X_train_pca, y_train)
 
     # Save the model
@@ -232,85 +232,170 @@ def modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train):
 
 
 def is_url(path):
+    """Check if the given path is a URL."""
     return path.startswith('http://') or path.startswith('https://')
 
-def download_image(url):
-    response = requests.get(url)
-    image = Image.open(io.BytesIO(response.content)).convert('RGB')
-    return image
-
-def generateSaliencyMap(test_image_path):
-    # Load and preprocess the image
-    if is_url(test_image_path):
-        img = download_image(test_image_path)
+def open_image(path):
+    """Open an image from a local path or a URL."""
+    if is_url(path):
+        response = requests.get(path)
+        img = Image.open(io.BytesIO(response.content))
     else:
-        img = Image.open(test_image_path).convert('RGB')
-    img_resized = img.resize((224, 224))  # Resize to match VGG16 input size
-    x = np.array(img_resized)
+        img = Image.open(path)
+    return img
+def gsm(test_image_path):
+   # Load and preprocess the image
+    img = Image.open(test_image_path)
+    img = img.resize((224, 224))  # Resize to match VGG16 input size
+    x = np.array(img)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)  # Preprocess for VGG16
 
     # Load VGG16 model
     model_vgg16 = VGG16(weights='imagenet', include_top=True)
-    
+
     # Get the top predicted class
     preds = model_vgg16.predict(x)
-    top_pred_index = np.argmax(preds[0])
-    
+    top_pred_index = tf.argmax(preds[0])
+
     # Get the output of the top predicted class
     output = model_vgg16.output[:, top_pred_index]
-    
+
     # Get the last convolutional layer
     last_conv_layer = model_vgg16.get_layer('block5_conv3')
-    
+    last_conv_layer_model = Model(model_vgg16.inputs, last_conv_layer.output)
+
     # Gradient model
     gradient_model = Model([model_vgg16.inputs], [last_conv_layer.output, model_vgg16.output])
-    
+
     # Compute the gradient of the top predicted class for the input image
     with tf.GradientTape() as tape:
-        conv_outputs, predictions = gradient_model(x)
-        loss = predictions[:, top_pred_index]
-    
+        last_conv_layer_output, preds = gradient_model(x)
+        top_class_pred = preds[:, top_pred_index]
+
     # Use the gradients of the top predicted class with respect to the output feature map
-    output = conv_outputs[0]
-    grads = tape.gradient(loss, conv_outputs)[0]
-    
+    grads = tape.gradient(top_class_pred, last_conv_layer_output)
+
     # Mean pooling the gradients over the height and width axes
-    pooled_grads = tf.reduce_mean(grads, axis=(0, 1))
-    
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+
     # Weigh the output feature map with the computed gradient values
-    heatmap = tf.matmul(output, pooled_grads[..., tf.newaxis])
+    last_conv_layer_output = last_conv_layer_output[0]
+    heatmap = last_conv_layer_output @ pooled_grads[..., tf.newaxis]
     heatmap = tf.squeeze(heatmap)
-    
+
     # Normalize the heatmap
     heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
     heatmap = heatmap.numpy()
-    
-    # Convert heatmap to RGB
-    heatmap = np.uint8(255 * heatmap)
-    heatmap = np.array(Image.fromarray(heatmap).resize((img.size)))
-    heatmap = np.stack((heatmap,) * 3, axis=-1)
-    
-    # Create superimposed image
-    superimposed_img = heatmap * 0.4 + np.array(img)
-    superimposed_img = np.clip(superimposed_img, 0, 255).astype('uint8')
 
-    # Convert images to base64
+    # Display heatmap
+    plt.matshow(heatmap)
+    plt.show()
+
+    # Superimpose the heatmap with the original image
+    img = np.array(img)
+    heatmap = np.uint8(255 * heatmap)  # Convert to RGB
+    heatmap = np.array(Image.fromarray(heatmap).resize((img.shape[1], img.shape[0])))
+    heatmap = np.stack((heatmap,) * 3, axis=-1)
+    superimposed_img = heatmap * 0.4 + img
+    plt.imshow(superimposed_img.astype('uint8'))
+    plt.show()
+    
+def generateSaliencyMap(test_image_path):
+   # Load and preprocess the image
+    img = open_image(test_image_path)  # Assuming open_image is defined as before
+    img = img.resize((224, 224))  # Resize to match VGG16 input size
+    x = np.array(img)
+    x = np.expand_dims(x, axis=0)
+    x = preprocess_input(x)  # Preprocess for VGG16
+
+    # Convert x from a numpy array to a TensorFlow tensor
+    x_tensor = tf.convert_to_tensor(x, dtype=tf.float32)
+
+    # Load VGG16 model
+    model_vgg16 = VGG16(weights='imagenet', include_top=True)
+
+    # Get the top predicted class
+    preds = model_vgg16.predict(x_tensor)
+    top_pred_index = tf.argmax(preds[0])
+
+    # Get the output of the top predicted class
+    output = model_vgg16.output[:, top_pred_index]
+
+    # Get the last convolutional layer
+    last_conv_layer = model_vgg16.get_layer('block5_conv3')
+
+    # Gradient model
+    gradient_model = Model([model_vgg16.inputs], [last_conv_layer.output, model_vgg16.output])
+
+    # Compute the gradient of the top predicted class for the input image
+    with tf.GradientTape() as tape:
+        tape.watch(x_tensor)
+        last_conv_layer_output, preds = gradient_model(x_tensor)
+        top_class_pred = preds[:, top_pred_index]
+    # Use the gradients of the top predicted class with respect to the output feature map
+    grads = tape.gradient(top_class_pred, last_conv_layer_output)
+
+    # Mean pooling the gradients over the height and width axes
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+
+    # Weigh the output feature map with the computed gradient values
+    last_conv_layer_output = last_conv_layer_output[0]
+    heatmap = tf.matmul(last_conv_layer_output, pooled_grads[..., tf.newaxis])
+    heatmap = tf.squeeze(heatmap)
+
+    # Normalize the heatmap
+    heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
+    heatmap = heatmap.numpy()
+
+    # Superimpose the heatmap with the original image
+    img = np.array(img)
+    heatmap = np.uint8(255 * heatmap)  # Convert to RGB
+    heatmap = np.array(Image.fromarray(heatmap).resize((img.shape[1], img.shape[0])))
+    heatmap = np.stack((heatmap,) * 3, axis=-1)
+    superimposed_img = heatmap * 0.4 + img
+
+    # Convert images to base64 for web display or API response
     def img_to_base64(image_array):
-        pil_img = Image.fromarray(image_array)
+        pil_img = Image.fromarray(image_array.astype(np.uint8))
         buff = io.BytesIO()
         pil_img.save(buff, format="JPEG")
         img_str = base64.b64encode(buff.getvalue()).decode("utf-8")
         return img_str
-    
+
     heatmap_base64 = img_to_base64(heatmap)
     superimposed_img_base64 = img_to_base64(superimposed_img)
-    
-    # Return JSON values
+
+    # Return base64-encoded images
     return {
         'heatmap': heatmap_base64,
         'superimposed_img': superimposed_img_base64
     }
+
+def setup_global_models(benign_train, malignant_train, benign_test, malignant_test):
+    global global_pca, global_svm_model
+
+    # Load and preprocess the data
+    X_train, y_train, X_test, y_test = loadingData(benign_train, malignant_train, benign_test, malignant_test)
+
+    # Normalize images
+    X_train_norm, X_test_norm = normalizeImages(X_train, X_test)
+
+    # Select one of the feature selection methods (e.g., using VGG16)
+    X_train_features, X_test_features = kerasFeatureSelection(X_train_norm, X_test_norm)
+
+    # Reshape data for PCA and initialize PCA
+    X_train_reshaped = X_train_features.reshape(X_train_features.shape[0], -1)
+    global_pca = PCA(n_components=0.9).fit(X_train_reshaped)
+
+    # Apply PCA transformation
+    X_train_pca = global_pca.transform(X_train_reshaped)
+
+    # Train SVM model
+    global_svm_model = SVC(kernel='rbf', probability=True, random_state=42)
+    global_svm_model.fit(X_train_pca, y_train)
+
+
 
 def tests(str):
     print(str)
@@ -350,9 +435,12 @@ def testGrouped(test_image_path):
     svm_model = global_svm_model
 
     # Make a prediction
-    prediction = svm_model.predict(test_pca)
+    probabilities = svm_model.predict_proba(test_pca)
 
-    return prediction # 1 for malignant, 0 for benign
+    benign_prob = probabilities[0][0]
+    malignant_prob = probabilities[0][1]
+
+    return benign_prob,malignant_prob 
 
 def main(): 
     print("Loading data")
@@ -380,9 +468,7 @@ def main():
     modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train) #Model training ends here. The model is saved in global_svm_model
 
     print("Testing")
-    prediction = testGrouped('./data/test/malignant/17.jpg') # PREDICTION 1 for malignant, 0 for benign
-
-    print("Prediction:", "Malignant" if prediction[0] == 1 else "Benign")
+    benign_prob, malignant_prob = testGrouped('./data/test/malignant/17.jpg') # PREDICTION 1 for malignant, 0 for benign
 
     print("Generating saliency map")
     generateSaliencyMap('./data/test/malignant/17.jpg') #USE THIS TO DISPLAY THE SALIENCY MAP
