@@ -1,5 +1,15 @@
-// This file is the main page for the user to select which test they would like to take.
-//it ccontains navigation buttons to go to each test.
+/**
+ * Journey.js
+ * 
+ * This component serves as the main navigation page where users can select which health test they 
+ * wish to take, such as for heart disease, cancer, or diabetes. It features a grid of navigation 
+ * buttons, each representing a different health test. The design utilizes Material UI components 
+ * and custom styling for a clean and accessible user interface, allowing users to easily choose 
+ * and navigate to the desired test.
+ * 
+ * Contributors:
+ * - Thomas Gansner - Design and implementation of the test selection interface
+ */
 
 //imports
 import React from "react";

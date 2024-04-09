@@ -1,5 +1,16 @@
-// Logic for the chatbot page. This page is only accessible to authenticated users.
-// Users can ask the chatbot questions about their health and the chatbot will respond with an answer.
+/**
+ * ChatbotPage.js
+ * 
+ * This component serves as the chat interface for authenticated users to interact with a health-focused 
+ * chatbot powered by OpenAI's GPT-4 Turbo model. Users can ask questions about health issues, and the chatbot 
+ * responds in real-time. The page includes a text input field for queries and a display area for the chat 
+ * conversation. Custom styling is applied for a user-friendly experience, and advanced async functions handle 
+ * the communication with OpenAI's API, ensuring responsive and accurate chatbot replies.
+ * 
+ * Contributors:
+ * - Tanner Helton - Integration with OpenAI's API and development of the chatbot interaction logic
+ * - Sloan Stubler - Styling and interactivity enhancements
+ */
 
 // Import the necessary components and modules
 import React from "react";

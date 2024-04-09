@@ -1,4 +1,14 @@
-// A response page to display to users when they submit a contact form
+/**
+ * ThankYouPage.js
+ * 
+ * This component serves as a response page to users who have submitted a contact form, 
+ * thanking them for their inquiry. It provides a simple, clear message of acknowledgment 
+ * in a styled, centered container. The design follows the site's aesthetic, using Material 
+ * UI components for consistency and responsiveness.
+ * 
+ * Contributors:
+ * - Adam Jolles - Created the thank you message and page design
+ */
 
 //imports
 import React from 'react';

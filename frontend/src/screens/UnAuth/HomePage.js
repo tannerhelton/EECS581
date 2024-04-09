@@ -1,4 +1,14 @@
-// The homepage when a user is not logged in. It displays the logo and a tagline.
+/**
+ * HomePage.js
+ * 
+ * This component acts as the landing page for users who are not logged in to the Health Horizon AI platform.
+ * It displays the company's logo and a tagline that encapsulates the mission of Health Horizon AI, emphasizing
+ * the importance of early detection for better health outcomes. The page is designed with Material UI components
+ * for a clean and professional look, maintaining a focus on simplicity and brand representation.
+ * 
+ * Contributors:
+ * - Adam Jolles - Layout and initial design
+ */
 
 //imports
 import React from "react";

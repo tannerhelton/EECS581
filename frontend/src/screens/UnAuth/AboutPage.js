@@ -1,4 +1,14 @@
-//This page is the About page, which provides information about the Health Horizon AI team and the services they provide.
+/**
+ * AboutPage.js
+ * 
+ * This page presents information about our team and our AI-driven healthcare services. 
+ * Features include an overview of the company, service highlights in medical areas like heart disease and cancer, 
+ * team introductions, and resource links (compliance documents, user manuals). Uses Material UI for styling.
+ * 
+ * Contributors:
+ * - Adam Jolles - Page creation and design
+ * - Sloan Stubler - Content updates and enhancements
+ */
 
 //imports
 import React from "react";

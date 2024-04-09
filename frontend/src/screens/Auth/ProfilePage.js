@@ -1,4 +1,16 @@
-// This page displays the user's profile information, such as email and pphone number, and allows them to edit it.
+/**
+ * ProfilePage.js
+ * 
+ * This component displays the user's profile information, including email, phone number, and other 
+ * personal details. Users can edit their information directly on this page. The component handles 
+ * data fetching, editing, and saving to Firebase Firestore, ensuring data synchronization and real-time 
+ * updates. It provides an interactive and responsive interface for managing account information, 
+ * with error handling to guide the user experience.
+ * 
+ * Contributors:
+ * - Thomas Gansner - Development of profile management functionality and data integration
+ * - Adam Jolles - Styling and interactivity enhancements
+ */
 
 //imports
 import { doc, getDoc, setDoc } from "firebase/firestore";

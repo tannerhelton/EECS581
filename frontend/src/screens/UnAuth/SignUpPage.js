@@ -1,4 +1,15 @@
-// The page where users can create an account with HHai
+/**
+ * SignUpPage.js
+ * 
+ * This component is the registration page where new users can create an account with Health Horizon AI.
+ * It features a form for inputting personal details like name, email, password, and phone number. 
+ * The design uses Material UI for a consistent and user-friendly interface, and Firebase Authentication 
+ * for managing the account creation process. Error handling provides feedback on the sign-up process.
+ * 
+ * Contributors:
+ * - Adam Jolles - Implementation of the sign-up logic and page layout
+ * - Adam Jolles - Design and styling of the form elements
+ */
 
 //imports
 import React, { useState } from 'react';

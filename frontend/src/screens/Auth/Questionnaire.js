@@ -1,7 +1,16 @@
-// This page is a health questionnaire for the user to fill out.
-// The user will be provided a list of questions and their answers will be saved to the database.
-// The user will then be able to view the results of the questionnaire.
-// The results are in the form of a probability of heart disease, including graphs and data.
+/**
+ * Questionnaire.js
+ * 
+ * This component is a health questionnaire designed to collect user responses on various health-related 
+ * questions. The answers are saved to the database, and the user can view the results, which include a 
+ * probability of heart disease and related data visualizations. It features dynamic input fields for 
+ * responses, conditional rendering based on user interaction, and integration with Firebase Firestore 
+ * for data storage. A BMI calculator popup is also included to aid users in calculating their Body Mass Index.
+ * 
+ * Contributors:
+ * - Thomas Gansner - Implementation of questionnaire logic and integration with the database
+ * - Sloan Stubler - Styling and interactivity enhancements
+ */
 
 //imports
 import React, { useState } from "react";
