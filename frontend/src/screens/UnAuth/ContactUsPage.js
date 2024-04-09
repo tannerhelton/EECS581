@@ -18,17 +18,23 @@ import { Button, TextField, Typography, Paper, Container, Box } from "@mui/mater
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 
-// StyledContainer: Custom styled container for the contact form
-const StyledContainer = styled(Container)({
-  maxWidth: '400px',
-  padding: '20px',
-  marginTop: '20vh',
-  textAlign: "center",
+// StyledContainer: Custom styled container for the login page
+const StyledContainer = styled(Container)(({ theme }) => ({
+  width: 'fit-content',
+  padding: theme.spacing(3),
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  height: 'fit-content',
+  marginTop: theme.spacing(15),
+  marginBottom: theme.spacing(5),
+  textAlign: 'center',
   backgroundColor: '#2c3e50',
-  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
-  borderRadius: '20px',
-  color: 'white', // Adjust text color as needed
-});
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[5],
+  color: 'white',
+}));
 
 // primaryLabelStyle: Style object for primary label colors in text fields
 const primaryLabelStyle = {
@@ -69,7 +75,6 @@ const ContactPage = () => {
       [name]: value
     }));
   };
-
 
   // handleSubmit: Function to handle form submission
   const handleSubmit = async (e) => {
