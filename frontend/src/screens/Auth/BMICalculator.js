@@ -1,5 +1,16 @@
-// A component used to calculate BMI.
-//It is used on the Questionnaire page to make it easier for users to calculate their BMI.
+/**
+ * BMICalculator.js
+ * 
+ * This component is a BMI (Body Mass Index) calculator popup used within the Questionnaire page 
+ * of the application. It allows users to input their height and weight to calculate their BMI. 
+ * The component provides a straightforward interface for users to easily calculate their BMI 
+ * as part of a larger questionnaire process, enhancing user interaction and providing valuable 
+ * health metrics on the fly.
+ * 
+ * Contributors:
+ * - Thomas Gansner - Creation of the BMI calculator functionality and integration into the questionnaire
+ * - Sloan Stubler - Styling and interactivity enhancements
+ */
 
 //imports
 import React, { useState } from "react";

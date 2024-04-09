@@ -1,5 +1,16 @@
-// Contact Us page for HHai
-//contains an email form and other contact information
+/**
+ * ContactPage.js
+ * 
+ * This React component serves as the contact page for our application, featuring a form 
+ * where users can submit their name, email, and a message. The page also includes additional 
+ * contact information. The form uses Material UI components for consistent styling and 
+ * responsiveness. Form submission handling and navigation upon submission are implemented 
+ * with React hooks.
+ * 
+ * Contributors:
+ * - Adam Jolles - Implementation of the contact form and page layout
+ * - Sloan Stubler - Styling and interactivity enhancements
+ */
 
 //imports
 import React, { useState } from "react";

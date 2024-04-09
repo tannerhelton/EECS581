@@ -1,4 +1,16 @@
-// Page for handling the forgot password functionality
+/**
+ * ForgotPasswordPage.js
+ * 
+ * This component provides the functionality for users to reset their password in case 
+ * they forget it. Users can enter their email address to receive a password reset link. 
+ * The page uses Material UI for UI elements and Firebase Authentication for handling 
+ * the password reset logic. It includes input validation, error handling, and success 
+ * feedback to guide the user through the reset process.
+ * 
+ * Contributors:
+ * - Adam Jolles - Development of password reset functionality and integration with Firebase
+ * - Sloan Stubler - UI/UX design and error handling
+ */
 
 import React, { useState } from 'react';
 // Importing various Material UI components for UI design

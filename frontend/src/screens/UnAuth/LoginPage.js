@@ -1,4 +1,16 @@
-// Login page. Allows users to login using email and password or Google sign-in
+/**
+ * LoginPage.js
+ * 
+ * This component facilitates user login through email and password or Google sign-in. It features
+ * a clean and straightforward interface using Material UI components, with Firebase Authentication 
+ * handling the authentication processes. The page includes error handling for login failures and 
+ * navigational links for password recovery and new account registration. Custom styled components 
+ * enhance the visual appeal and user experience.
+ * 
+ * Contributors:
+ * - Adam Jolles - Development and integration of authentication logic
+ * - Adam Jolles - UI design and error management
+ */
 
 //imports
 import React, { useState } from 'react';

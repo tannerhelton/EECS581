@@ -1,5 +1,15 @@
-//The home page for authenticated users. This page is only accessible to authenticated users.
-//it includes a custom welcome message and a button to naviagate to test selection.
+/**
+ * AuthHomePage.js
+ * 
+ * This component serves as the home page for authenticated users of Health Horizon AI. It displays 
+ * a custom welcome message addressing the user by their email and includes a button to navigate to 
+ * the test selection or user journey section. The page maintains the branding with the logo and 
+ * consistent theming using Material UI components. This page is accessible only to users who are 
+ * logged in, ensuring a personalized experience.
+ * 
+ * Contributors:
+ * - Adam Jolles - Implementation of the authenticated user interface and navigation
+ */
 
 //imports
 import React from "react";

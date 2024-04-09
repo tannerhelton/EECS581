@@ -1,7 +1,16 @@
-// This file contains the Upload page, which is a screen that allows users to upload images of skin conditions for diagnosis by ML model.
-//The user can upload images, view previously uploaded images, delete them, and view the results of the diagnosis.
-//The page is divided into three sections: the image uploader, the upload results, and the image storage.
-//Results include the diagnosis as a graph and a description of the condition, and its likelihood.
+/**
+ * UploadPage.js
+ * 
+ * This component facilitates the upload of skin condition images for analysis by a machine learning model. 
+ * Users can upload images, view, and delete previously uploaded images, and check the results of the analysis. 
+ * The page consists of three sections: an image uploader, the display of upload results including diagnosis 
+ * and probability graphs, and a storage area for past images. Results include visual representations like 
+ * heatmaps and superimposed images to provide insights into the model's diagnosis process.
+ * 
+ * Contributors:
+ * - Thomas Gansner - Development of the image upload functionality and result presentation logic
+ * - Adam Jolles - Styling and interactivity enhancements
+ */
 
 //imports
 import React, { useEffect, useState } from "react";
