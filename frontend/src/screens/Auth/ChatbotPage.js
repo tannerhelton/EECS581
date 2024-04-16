@@ -13,8 +13,9 @@
  */
 
 // Import the necessary components and modules
-import React from "react";
+import {React, useState} from "react";
 import { Button, TextField, Typography } from "@mui/material";
+import ReactMarkdown from "react-markdown";
 import "./css/ChatbotPage.css"; // Import the CSS file
 
 import OpenAI from "openai";
@@ -25,10 +26,47 @@ const openai = new OpenAI({
 
 const thread = await openai.beta.threads.create();
 
+
+
+const ChatbotConversationCard = ({conversationArray}) => {
+    const starterMessage = {owner: "bot", text: "Hi, I'm your AI assistant. How can I help you today? Please include as much detail as possible so I can better assist you. Waiting for your inquiry..."};
+    const localConversationArray = [...conversationArray];
+    if (localConversationArray.length === 0) localConversationArray.push(starterMessage);
+
+    return (
+        <div id="ChatbotConversationCard">
+            {localConversationArray.map(({owner, text}, index) => {
+                return (
+                    <ChatbotConversationMessage
+                        key={index}
+                        owner={owner}
+                        text={text}
+                    />
+                )
+            })}
+        </div>
+    )
+};
+
+const ChatbotConversationMessage = ({ owner, text }) => {
+    const className = owner === "user" ? "chatbotConversationMessageUser" : "chatbotConversationMessageBot";
+    const imgSrc    = owner === "user" ? "/default-user-icon.png" : "/HH_Logo.png";
+    return (
+        <div className={className}>
+            <img src={process.env.PUBLIC_URL + imgSrc} className="chatbotImg"></img>
+            <ReactMarkdown
+                className={"chatbotText"}
+                children={text}
+            />
+        </div>
+    )
+};
+
 // Define the ChatbotPage component
 const ChatbotPage = () => {
+    const [ conversationArray, setConversationArray ] = useState([]);
     return (
-        <>
+        <div className="ChatbotPage">
             <div id="chatbotCard">
                 <Typography variant="h3">
                     <b>Chatbot</b>
@@ -55,7 +93,7 @@ const ChatbotPage = () => {
                     onKeyPress={(e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
                             e.preventDefault(); // Prevent default to avoid newline in TextField
-                            handleQuery();
+                            handleQuery(conversationArray, setConversationArray);
                         }
                     }}
                     // give nicer scrollbar
@@ -85,29 +123,13 @@ const ChatbotPage = () => {
                     variant="contained"
                     color="primary"
                     id="chatbotSendButton"
-                    onClick={handleQuery}
+                    onClick={() => handleQuery(conversationArray, setConversationArray)}
                 >
                     Send
                 </Button>
             </div>
-            {/* chat history between user and chatbot */}
-            <div id="chatbotCard2">
-                <div id="chatBotInit" className="chatbotResponse">
-                    <img
-                        src={process.env.PUBLIC_URL + "/HH_Logo.png"}
-                        className="chatbotImg"
-                    ></img>
-                    <div className="chatbotText">
-                        Hi, I'm your AI assistant. How can I help you today?
-                        <br />
-                        Please include as much detail as possible so I can better assist
-                        you.
-                        <br />
-                        Waiting for your inquiry...
-                    </div>
-                </div>
-            </div>
-        </>
+            <ChatbotConversationCard conversationArray={conversationArray} />
+        </div>
     );
 };
 
@@ -117,60 +139,39 @@ export default ChatbotPage;
 let queryLock = false; // Lock to elegantly prevent spam queries
 // this function is called when the user clicks the send button
 // it gets the query from the text field and sends it to the backend
-function handleQuery() {
+const THINKING_TEXT = "&ZeroWidthSpace;Thinking...";
+function handleQuery(conversationArray, setConversationArray) {
     if (queryLock) return;
     const query = document.getElementById("chatbotInput").value;
     if (!query) return;
     queryLock = true;
     document.getElementById("chatbotInput").value = "";
     document.getElementById("chatbotInput").focus();
-    //send users query
-    sendForm(query);
-    // show users query in the chat log
-    document.getElementById("chatbotSendButton").innerText = "Thinking...";
-    document.getElementById("chatBotInit").style.display = "none";
-    const container = document.getElementById("chatbotCard2");
-    const main = document.createElement("div");
-    main.className = "chatbotQuery";
-    const img = document.createElement("img");
-    img.className = "chatbotImg";
-    img.src = process.env.PUBLIC_URL + "/default-user-icon.png";
-    main.appendChild(img);
-    const text = document.createElement("div");
-    text.className = "chatbotText";
-    text.innerHTML = query;
-    main.appendChild(text);
-    container.appendChild(main);
+    const localConversationArray = [...conversationArray, {owner: "user", text: query}, {owner: "bot", text: THINKING_TEXT}];
+    setConversationArray(localConversationArray);
+    sendForm(query, localConversationArray, setConversationArray);
+    document.getElementById("chatbotSendButton").innerText = "Please wait...";
+    window.scrollTo(0, document.body.scrollHeight);
+    setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+    }, 50);
 }
 
-let responseLock = false; // Lock when responding to one query. Unlock when ready to respond to another query
 /**
  * @param {string} chunk - A piece of the response stream, usually a single character. Can also be the entire response.
  * @param {boolean} isLastChunk - Whether this is the last chunk of the response.
  * @description This function should be called repeatedly as the response stream comes in. It can also be called once with the entire response.
  * If the chunk is the entire response, isLastChunk should be true.
  */
-function queryResponseChunk(chunk, isLastChunk = false) {
-    const container = document.getElementById("chatbotCard2");
-    // display new bot query response
-    if (!responseLock) {
-        responseLock = true;
-        const main = document.createElement("div");
-        main.className = "chatbotResponse";
-        const img = document.createElement("img");
-        img.className = "chatbotImg";
-        img.src = process.env.PUBLIC_URL + "/HH_Logo.png";
-        main.appendChild(img);
-        const text = document.createElement("div");
-        text.className = "chatbotText";
-        main.appendChild(text);
-        container.appendChild(main);
-    }
-    container.lastChild.lastChild.innerHTML += chunk;
+function queryResponseChunk(chunk, conversationArray, setConversationArray, isLastChunk = false) {
+    const localConversationArray = [...conversationArray];
+    const lastMessage = localConversationArray[localConversationArray.length - 1];
+    if (lastMessage.text == THINKING_TEXT) lastMessage.text = "";
+    lastMessage.text += chunk;
+    setConversationArray(localConversationArray);
     // response stream is done, prepare for next query
     if (isLastChunk) {
         queryLock = false;
-        responseLock = false;
         document.getElementById("chatbotSendButton").innerText = "SEND";
     }
     // scroll to bottom of entire document
@@ -183,14 +184,14 @@ function queryResponseChunk(chunk, isLastChunk = false) {
 // ====================================================================================================
 
 //send form to GPT API here
-async function sendForm(query) {
+async function sendForm(query, conversationArray, setConversationArray) {
     await openai.beta.threads.messages.create(thread.id, { content: query, role: "user" });
 
     const assistant_id = process.env.REACT_APP_ASSISTANT_ID;
     const run = openai.beta.threads.runs.createAndStream(thread.id, {
         assistant_id,
         model: "gpt-4-turbo-preview",
-        instructions: "You are a heath assistant helping a patient with their health concerns."
+        instructions: "You are a heath assistant helping a patient with their health concerns. When generating styling for lists, headers, etc, please use the markdown style."
     });
 
     const stream = run.toReadableStream();
@@ -206,21 +207,23 @@ async function sendForm(query) {
         codes.push(response.event);
 
         const chunk = response.data.delta?.content[0].text.value;
-        if (chunk && response.event == "thread.message.delta") queryResponseChunk(chunk);
-        else if (response.event == "thread.message.completed") queryResponseChunk("", true)
+        if (chunk && response.event == "thread.message.delta") queryResponseChunk(chunk, conversationArray, setConversationArray);
+        else if (response.event == "thread.message.completed") queryResponseChunk("", conversationArray, setConversationArray, true)
     }
 
     codes.forEach(code => {
-        const response = (() => {switch (code) {
-            case "thread.run.failed":
-                return " I failed to process your message. Please try sending it again.";
-            case "error":
-                return " A general error occured. Please try sending your message again.";
-            case "thread.run.expired":
-                return " This session has expired. Please refresh the page and start a new conversation.";
-            case "thread.message.incomplete":
-                return " Something has interrupted my response. Please try sending your message again.";
-        }})();
+        const response = (() => {
+            switch (code) {
+                case "thread.run.failed":
+                    return " I failed to process your message. Please try sending it again.";
+                case "error":
+                    return " A general error occured. Please try sending your message again.";
+                case "thread.run.expired":
+                    return " This session has expired. Please refresh the page and start a new conversation.";
+                case "thread.message.incomplete":
+                    return " Something has interrupted my response. Please try sending your message again.";
+            }
+        })();
         if (response) queryResponseChunk(response, true);
     });
 }
