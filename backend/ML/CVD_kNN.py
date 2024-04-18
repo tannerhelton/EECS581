@@ -17,7 +17,9 @@ import io
 # ----------------------------------------
 
 
-
+### Description: This function loads and preprocesses the data from a CSV file.
+### Parameters: filepath - Path to the CSV file.
+### Returns: A preprocessed DataFrame.
 def load_and_preprocess_data(filepath):
     """
     Load and preprocess the dataset.
@@ -30,6 +32,9 @@ def load_and_preprocess_data(filepath):
     df['Diabetic'] = df['Diabetic'].astype(int)
     return df
 
+### Description: This function plots the count distribution of a specified feature.
+### Parameters: df - DataFrame containing the data, feature - Name of the feature to plot.
+### Returns: None, displays a plot.
 def plot_count_distribution(df, feature):
     """
     Plot count distribution of a feature based on heart disease.
@@ -43,6 +48,9 @@ def plot_count_distribution(df, feature):
         f"Distribution of Cases with Yes/No heart disease according to {feature}")
     plt.show()
 
+### Description: This function plots the distribution of a feature, highlighting a specific user's value.
+### Parameters: df - DataFrame, feature - Feature to plot, user_value - Value to highlight, color - Color of the highlight, label - Label for the highlight.
+### Returns: Data URL of the plot as a string.
 def plot_feature_distribution(df, feature, user_value, color, label):
     """
     Plot the distribution of a given feature in the dataset, 
@@ -71,6 +79,9 @@ def plot_feature_distribution(df, feature, user_value, color, label):
 
     return data_url
 
+### Description: This function performs correlation analysis on the dataset and plots a heatmap.
+### Parameters: df - DataFrame containing the data.
+### Returns: Data URL of the heatmap plot as a string.
 def correlation_analysis(df):
     """
     Perform correlation analysis on the dataset.
@@ -98,6 +109,9 @@ def correlation_analysis(df):
 
     return data_url
 
+### Description: This function evaluates a model using specified metrics.
+### Parameters: model - The model to evaluate, x_test - Test features, y_test - Test labels.
+### Returns: A dictionary containing evaluation metrics.
 def evaluate_model(model, x_test, y_test):
     """
     Evaluate the given model using test data.
@@ -118,6 +132,9 @@ def evaluate_model(model, x_test, y_test):
         'kappa': kappa, 'fpr': fpr, 'tpr': tpr, 'auc': auc, 'cm': cm
     }
 
+### Description: This function applies transformations (OneHotEncoding and Standardization) to the data.
+### Parameters: df - DataFrame, categorical_features - List of categorical feature names.
+### Returns: Transformed DataFrame, transformer object, scaler object.
 def transform_data(df, categorical_features):
     """
     Apply data transformations (OneHotEncoding and Standardization) to the DataFrame.
@@ -135,6 +152,9 @@ def transform_data(df, categorical_features):
 
     return df_transformed, transformer, scaler
 
+### Description: This function performs a grid search to find the best hyperparameters for the kNN model.
+### Parameters: X_train - Training features, y_train - Training labels.
+### Returns: The best model and the best number of neighbors.
 def perform_grid_search(X_train, y_train):
     '''
     Perform grid search to find the best hyperparameters for the kNN model.
@@ -158,6 +178,9 @@ def perform_grid_search(X_train, y_train):
 
     return best_model, best_n_neighbors
 
+### Description: This function trains the kNN model using the provided training data.
+### Parameters: X_train - Training features, y_train - Training labels.
+### Returns: The trained model.
 def train_model(X_train, y_train):
     """
     Train the kNN model on the provided training data.
@@ -174,6 +197,9 @@ def train_model(X_train, y_train):
     model.fit(X_train, y_train)
     return model
 
+### Description: This function predicts heart disease by processing user input and dataset filepath.
+### Parameters: filepath - Path to the dataset CSV file, user_input - Dictionary containing user input data.
+### Returns: Probability of heart disease as a float.
 def predict_heart_disease(filepath, user_input):
     # Re-importing the dataset to start fresh
     df = pd.read_csv(filepath)
@@ -229,6 +255,9 @@ def predict_heart_disease(filepath, user_input):
 
     return predict_heart_disease_manual(user_input)
 
+### Description: Main function to run the module, used for initialization and testing.
+### Parameters: None
+### Returns: None, prints output to console.
 def main():
     # Load and preprocess the dataset
     df = load_and_preprocess_data('../CVD_datasets/heart_main.csv')

@@ -23,6 +23,9 @@ import requests
 global_pca = None
 global_svm_model = None
     
+### Description: This function loads and preprocesses image data from specified directories.
+### Parameters: benign_train, malignant_train, benign_test, malignant_test - Paths to the image directories.
+### Returns: Arrays of training and test data along with their labels.
 def loadingData(benign_train, malignant_train, benign_test, malignant_test):
     #LOADING DATA
     folder_benign_train = benign_train
@@ -72,6 +75,8 @@ def loadingData(benign_train, malignant_train, benign_test, malignant_test):
 
     return X_train, y_train, X_test, y_test
 
+### Description: Displays the first 15 images from the training set along with their classifications.
+### Parameters: X_train - Array of training images, y_train - Array of training labels.
 def testDisplay(X_train, y_train):
     # Display first 15 images of moles, and how they are classified
     w=40
@@ -89,6 +94,8 @@ def testDisplay(X_train, y_train):
         plt.imshow(X_train[i], interpolation='nearest')
     plt.show()
 
+### Description: Displays bar graphs showing the number of benign and malignant moles in the training and test datasets.
+### Parameters: X_train, y_train - Training images and labels; X_test, y_test - Test images and labels.
 def dataCounts(X_train, y_train, X_test, y_test):
     # Bar graph to show the number of benign and malignant moles in the training and test data
     plt.bar(0, y_train[np.where(y_train == 0)].shape[0], label = 'benign')
@@ -103,6 +110,9 @@ def dataCounts(X_train, y_train, X_test, y_test):
     plt.title("Test Data")
     plt.show()
 
+### Description: Normalizes the pixel values of images from 0 to 1.
+### Parameters: X_train, X_test - Training and test image arrays.
+### Returns: Normalized training and test image arrays.
 def normalizeImages(X_train, X_test):
     # Normalize the images to have pixel values between 0 and 1
     def normalize_images(images):
@@ -115,6 +125,9 @@ def normalizeImages(X_train, X_test):
 
     return X_train_norm, X_test_norm
 
+### Description: Uses a pre-trained VGG16 model to extract features from images.
+### Parameters: X_train, X_test - Training and test image arrays.
+### Returns: Feature arrays extracted from the images.
 def kerasFeatureSelection(X_train, X_test):
     # Load the VGG16 model
     model_vgg16 = VGG16(weights='imagenet', include_top=False)
@@ -130,6 +143,9 @@ def kerasFeatureSelection(X_train, X_test):
 
     return X_train_features, X_test_features
 
+### Description: Uses a pre-trained ResNet50 model to extract features from images.
+### Parameters: X_train, X_test - Training and test image arrays.
+### Returns: Feature arrays extracted from the images.
 def resnetFeatureSelection(X_train, X_test):
     from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
     from tensorflow.keras.models import Model
@@ -149,6 +165,9 @@ def resnetFeatureSelection(X_train, X_test):
 
     return X_train_features, X_test_features
 
+### Description: Uses a pre-trained InceptionV3 model to extract features from images.
+### Parameters: X_train, X_test - Training and test image arrays.
+### Returns: Feature arrays extracted from the images.
 def inceptionFeatureSelection(X_train, X_test):
     from tensorflow.keras.applications.inception_v3 import InceptionV3, preprocess_input
     from tensorflow.keras.models import Model
@@ -168,6 +187,9 @@ def inceptionFeatureSelection(X_train, X_test):
 
     return X_train_features, X_test_features
 
+### Description: Uses a pre-trained EfficientNetB0 model to extract features from images.
+### Parameters: X_train, X_test - Training and test image arrays.
+### Returns: Feature arrays extracted from the images.
 def efficientnetFeatureSelection(X_train, X_test):
     from tensorflow.keras.applications.efficientnet import EfficientNetB0, preprocess_input
     from tensorflow.keras.models import Model
@@ -187,6 +209,9 @@ def efficientnetFeatureSelection(X_train, X_test):
 
     return X_train_features, X_test_features
 
+### Description: Reshapes the feature arrays and applies PCA to reduce dimensions while retaining 90% of the variance.
+### Parameters: X_train_features, X_test_features - Feature arrays from the training and test sets.
+### Returns: PCA-transformed training and test data.
 def dataReshape(X_train_features, X_test_features):
     global global_pca  # Use the global variable
 
@@ -208,6 +233,9 @@ def dataReshape(X_train_features, X_test_features):
 
     return X_train_pca, X_test_pca
 
+### Description: Trains a Support Vector Machine (SVM) model on the PCA-transformed data.
+### Parameters: X_train_pca - PCA-transformed training data, y_train - Training labels.
+### Returns: Trained SVM model.
 def trainModel(X_train_pca, y_train):
     global global_svm_model  # Use the global variable
 
@@ -220,6 +248,8 @@ def trainModel(X_train_pca, y_train):
 
     return svm_model
 
+### Description: Evaluates the SVM model using accuracy and cross-validation and prints the results.
+### Parameters: svm_model - Trained SVM model, X_test_pca, X_train_pca - PCA-transformed test and training data, y_test, y_train - Test and training labels.
 def modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train):
     # Model metrics
     y_pred = svm_model.predict(X_test_pca)
@@ -230,11 +260,16 @@ def modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train):
     scores = cross_val_score(svm_model, X_train_pca, y_train, cv=5)
     print("Cross-validation scores:", scores)
 
-
+### Description: Checks if a given path is a URL.
+### Parameters: path - String path to check.
+### Returns: Boolean indicating if the path is a URL.
 def is_url(path):
     """Check if the given path is a URL."""
     return path.startswith('http://') or path.startswith('https://')
 
+### Description: Opens an image from a local path or URL.
+### Parameters: path - Path or URL of the image.
+### Returns: Image object.
 def open_image(path):
     """Open an image from a local path or a URL."""
     if is_url(path):
@@ -301,6 +336,9 @@ def gsm(test_image_path):
     plt.imshow(superimposed_img.astype('uint8'))
     plt.show()
     
+### Description: Generates a saliency map for a given image using VGG16 model to highlight areas most affecting the model's prediction.
+### Parameters: test_image_path - Path to the test image.
+### Returns: Dictionary with base64-encoded heatmap and superimposed image.
 def generateSaliencyMap(test_image_path):
    # Load and preprocess the image
     img = open_image(test_image_path)  # Assuming open_image is defined as before
@@ -372,6 +410,8 @@ def generateSaliencyMap(test_image_path):
         'superimposed_img': superimposed_img_base64
     }
 
+### Description: Initializes and trains global models for PCA and SVM, processing images for feature extraction and dimensionality reduction.
+### Parameters: benign_train, malignant_train, benign_test, malignant_test - Paths to the image directories.
 def setup_global_models(benign_train, malignant_train, benign_test, malignant_test):
     global global_pca, global_svm_model
 
@@ -396,10 +436,14 @@ def setup_global_models(benign_train, malignant_train, benign_test, malignant_te
     global_svm_model.fit(X_train_pca, y_train)
 
 
-
+### Description: Simple test function to print a string.
+### Parameters: str - String to print.
 def tests(str):
     print(str)
 
+### Description: Processes a test image to predict probabilities of benign and malignant classifications using a pre-trained SVM.
+### Parameters: test_image_path - Path to the test image.
+### Returns: Tuple of probabilities for benign and malignant classifications.
 def testGrouped(test_image_path):
     #USE TO CONNECT TO FRONTEND
     # Load the image
@@ -442,6 +486,7 @@ def testGrouped(test_image_path):
 
     return benign_prob,malignant_prob 
 
+### Description: Main function to execute the sequence of operations including data loading, processing, model training, and testing.
 def main(): 
     print("Loading data")
     X_train, y_train, X_test, y_test = loadingData('./data/train/benign', './data/train/malignant', './data/test/benign', './data/test/malignant')
