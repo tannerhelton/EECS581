@@ -1,13 +1,42 @@
 /**
- * AboutPage.js
+ * File Name: AboutPage.js
  * 
- * This page presents information about our team and our AI-driven healthcare services. 
- * Features include an overview of the company, service highlights in medical areas like heart disease and cancer, 
- * team introductions, and resource links (compliance documents, user manuals). Uses Material UI for styling.
+ * Description:
+ * This component file defines the About Page for Health Horizon AI's website. It includes information about the company, the services provided,
+ * and introduces the team behind the project. The page uses Material-UI for styling and includes various interactive elements like links and buttons
+ * to external documents and sections of the website.
  * 
- * Contributors:
- * - Adam Jolles - Page creation and design
- * - Sloan Stubler - Content updates and enhancements
+ * Created by: Adam Jolles
+ * Date Created: October 8, 2023
+ * 
+ * Revised History:
+ * - January 15, 2024 - Sloan Stubler added feature blocks and updated content descriptions.
+ * - February 12, 2022 - Adam Jolles updated styling with Material UI adjustments.
+ * 
+ * Preconditions:
+ * - Material UI and React Router must be installed and properly configured in the project.
+ * - Environment variables must be set up correctly for image and document URLs.
+ * 
+ * Input Values:
+ * - No direct input values are processed by this component. It utilizes environment variables for resource locations.
+ * 
+ * Postconditions:
+ * - Renders a styled informational page that includes text, images, and links.
+ * 
+ * Return Values:
+ * - Returns a React component displaying the about page content.
+ * 
+ * Errors and Exceptions:
+ * - If environment variables are not set, image and PDF links will be broken.
+ * 
+ * Side Effects:
+ * - No significant side effects are anticipated as the page primarily displays static content.
+ * 
+ * Invariants:
+ * - The layout and major features of the page remain constant; content updates may occur through props.
+ * 
+ * Known Faults:
+ * - None known at the time of the last revision.
  */
 
 //imports

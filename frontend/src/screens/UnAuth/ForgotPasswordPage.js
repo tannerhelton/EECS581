@@ -1,15 +1,41 @@
 /**
- * ForgotPasswordPage.js
+ * File Name: ForgotPasswordPage.js
  * 
- * This component provides the functionality for users to reset their password in case 
- * they forget it. Users can enter their email address to receive a password reset link. 
- * The page uses Material UI for UI elements and Firebase Authentication for handling 
- * the password reset logic. It includes input validation, error handling, and success 
- * feedback to guide the user through the reset process.
+ * Description:
+ * This component allows users to initiate a password reset process if they forget their password.
+ * It provides a form for users to submit their email address to receive a reset link. The component uses Material UI for styling and Firebase Authentication for managing the reset process.
+ * It includes input validation, error handling, and visual feedback based on the success or failure of the reset request.
  * 
- * Contributors:
- * - Adam Jolles - Development of password reset functionality and integration with Firebase
- * - Sloan Stubler - UI/UX design and error handling
+ * Created by: Adam Jolles
+ * Date Created: October 15, 2023
+ * 
+ * Revised History:
+ * - October 23, 2023 - Sloan Stubler improved UI/UX design and implemented advanced error handling mechanisms.
+ * 
+ * Preconditions:
+ * - Firebase project must be configured and linked to the application.
+ * - Material UI must be installed and properly configured in the project environment.
+ * 
+ * Input Values:
+ * - Email: String input that must be a valid email address to receive the password reset link.
+ * 
+ * Postconditions:
+ * - Renders a form that users can use to request a password reset email.
+ * 
+ * Return Values:
+ * - A React component displaying a form for password reset email requests.
+ * 
+ * Errors and Exceptions:
+ * - Firebase-related errors will be displayed if the email is not in the correct format or if the email does not exist in the database.
+ * 
+ * Side Effects:
+ * - Triggering the password reset sends a network request to Firebase, which may alter user data on the backend.
+ * 
+ * Invariants:
+ * - The page structure and functionality remain consistent under the same input conditions.
+ * 
+ * Known Faults:
+ * - Lack of real-time validation may lead users to submit incorrect data that only gets validated server-side.
  */
 
 import React, { useState } from 'react';
