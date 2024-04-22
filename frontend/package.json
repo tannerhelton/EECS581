@@ -36,7 +36,8 @@
     "predeploy:staging": "npm run build:staging",
     "predeploy:production": "npm run build:production",
     "deploy:staging": "firebase deploy --only hosting:staging",
-    "deploy:production": "firebase deploy --only hosting:production"
+    "deploy:production": "firebase deploy --only hosting:production",
+    "start:dev": "REACT_APP_ENV=development react-scripts start"
   },
   "eslintConfig": {
     "extends": [
