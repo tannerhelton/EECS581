@@ -513,10 +513,18 @@ def main():
     modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train) #Model training ends here. The model is saved in global_svm_model
 
     print("Testing")
-    benign_prob, malignant_prob = testGrouped('./data/test/malignant/17.jpg') # PREDICTION 1 for malignant, 0 for benign
+    benign_prob, malignant_prob = testGrouped('./data/test/malignant/17.jpg') # Returns prediction probabilities for benign and malignant
 
     print("Generating saliency map")
     generateSaliencyMap('./data/test/malignant/17.jpg') #USE THIS TO DISPLAY THE SALIENCY MAP
 
+    # FRONT END LOADING AND TESTING
+        # 1. Loading and preprocessing the images - Print this at start of loadingData()
+        # 2. Extracting features using VGG16 CNN model - Print this at start of kerasFeatureSelection()
+        # 3. Reshaping the data and applying PCA - Print this at start of dataReshape()
+        # 4. Training the SVM model - Print this at start of trainModel()
+        # 5. Testing the model using your test image - Print this at start of testGrouped()
+            #5.1. Update on the prediction. There are two predictions, one for benign and one for malignant. Return both to the front end after completion.
+        # 6. Success!
 if __name__ == '__main__':
     main()
