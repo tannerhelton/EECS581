@@ -1,9 +1,11 @@
 /**
- * AppToolbar.js
- *
- * This component represents the application toolbar for navigation and user interaction.
- * It includes a logo, navigation buttons, and a logout button if the user is authenticated.
- * Navigation is handled using React Router, and authentication is managed through Firebase.
+ * This script defines the `AppToolbar` component, a key element for navigation and user interaction within the application.
+ * It dynamically constructs a toolbar including a logo, navigation buttons, and a logout option for authenticated users.
+ * Navigation between pages is facilitated by React Router, ensuring seamless routing throughout the app.
+ * Authentication states are managed through Firebase, with secure sign-out functionality incorporated for logged-in users.
+ * The toolbar is styled using Material-UI components, adhering to design standards and ensuring a consistent user interface.
+ * This component enhances the user experience by providing easy access to various parts of the application and quick logout capabilities.
+ * The modular design and integration with authentication and routing frameworks demonstrate a robust approach to application toolbar implementation.
  *
  * Contributors:
  * - Tanner Helton - Initial design and functionality

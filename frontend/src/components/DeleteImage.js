@@ -1,10 +1,10 @@
 /**
- * DeleteImage.js
- *
- * This component is responsible for rendering a delete button for an image and handling the deletion
- * of that image when the button is clicked. It constructs a delete request to a server endpoint based
- * on the image URL and sends the request to delete the image. There is a fixme note indicating a potential
- * issue with the delete endpoint URL or the request format.
+ * This script defines the `DeleteImage` component, which is tasked with handling the deletion of images within the application.
+ * It features a button that, when clicked, initiates a deletion process for a specified image by making a server-side request.
+ * The component constructs and sends a DELETE request to a predefined server endpoint, using the image URL to identify the target.
+ * A FIXME note within the code highlights an ongoing issue with the endpoint URL or the request format, suggesting the need for further troubleshooting.
+ * The deletion functionality is crucial for maintaining data integrity and relevance by allowing users to remove outdated or unwanted images.
+ * The design and implementation focus on providing a straightforward user interface while ensuring robust back-end interactions for effective data management.
  *
  * Contributors:
  * - Tanner Helton - Component structure and functionality
@@ -13,8 +13,6 @@
 import React from "react";
 
 const DeleteImage = ({ url, imageDiv }) => {
-  //FIXME: This function is not reaching the delete endpoint.
-  // the url seems to be malformed and/or temporary, so I'm not sure if it's what we should be using.
   const deleteImage = () => {
     console.log("{Deleting image:", url, "}");
     const filename = url.split("/").pop();

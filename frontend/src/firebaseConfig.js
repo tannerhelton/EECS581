@@ -1,3 +1,13 @@
+// This script is used to integrate and manage Firebase services in a React application.
+// Firebase modules are imported, including authentication, database, and analytics functionalities.
+// The script includes the initialization of the Firebase application with API keys and other credentials stored in environment variables.
+// It also outlines the process to acquire instances of Firebase Auth, Firestore, and Analytics services.
+// Additionally, the script configures Firebase App Check with ReCaptchaV3 for enhanced security in non-development environments.
+// The Firebase instances are exported, allowing them to be utilized across various parts of the application.
+// This setup ensures that Firebase services are centrally managed and easily accessible throughout the application.
+
+// Created by: Tanner Helton
+
 // Import necessary Firebase modules
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
