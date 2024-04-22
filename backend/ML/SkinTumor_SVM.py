@@ -1,3 +1,14 @@
+'''
+This script is a part of the Skin Tumor Classification project. 
+It contains the main functions for loading, processing, and training the model on the skin tumor dataset. 
+The script also includes functions for generating saliency maps and testing the model on new images. 
+The main function executes the sequence of operations, including data loading, processing, model training, and testing. 
+The script can be run to train the model and test it on new images.
+
+Created by: Chris Stillman
+
+'''
+
 #IMPORTS
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.preprocessing import StandardScaler
@@ -278,6 +289,7 @@ def open_image(path):
     else:
         img = Image.open(path)
     return img
+
 def gsm(test_image_path):
    # Load and preprocess the image
     img = Image.open(test_image_path)
@@ -435,7 +447,6 @@ def setup_global_models(benign_train, malignant_train, benign_test, malignant_te
     global_svm_model = SVC(kernel='rbf', probability=True, random_state=42)
     global_svm_model.fit(X_train_pca, y_train)
 
-
 ### Description: Simple test function to print a string.
 ### Parameters: str - String to print.
 def tests(str):
@@ -513,10 +524,18 @@ def main():
     modelMetrics(svm_model, X_test_pca, X_train_pca, y_test, y_train) #Model training ends here. The model is saved in global_svm_model
 
     print("Testing")
-    benign_prob, malignant_prob = testGrouped('./data/test/malignant/17.jpg') # PREDICTION 1 for malignant, 0 for benign
+    benign_prob, malignant_prob = testGrouped('./data/test/malignant/17.jpg') # Returns prediction probabilities for benign and malignant
 
     print("Generating saliency map")
     generateSaliencyMap('./data/test/malignant/17.jpg') #USE THIS TO DISPLAY THE SALIENCY MAP
 
+    # FRONT END LOADING AND TESTING
+        # 1. Loading and preprocessing the images - Print this at start of loadingData()
+        # 2. Extracting features using VGG16 CNN model - Print this at start of kerasFeatureSelection()
+        # 3. Reshaping the data and applying PCA - Print this at start of dataReshape()
+        # 4. Training the SVM model - Print this at start of trainModel()
+        # 5. Testing the model using your test image - Print this at start of testGrouped()
+            #5.1. Update on the prediction. There are two predictions, one for benign and one for malignant. Return both to the front end after completion.
+        # 6. Success!
 if __name__ == '__main__':
     main()
