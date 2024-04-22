@@ -1,10 +1,10 @@
 /**
- * ImagesDisplay.js
- *
- * This component is responsible for displaying uploaded images and providing functionality
- * to delete them. It fetches images from a server endpoint, renders them in Material-UI
- * cards, and allows users to delete images with a delete button. Deletion is handled locally,
- * and optionally, a request can be made to the server to delete the image permanently.
+ * This script defines the `ImagesDisplay` component, designed to manage the presentation and removal of uploaded images within the application.
+ * It fetches image data from a server endpoint and displays each image in Material-UI styled cards, enhancing the visual interface.
+ * Each card is equipped with a delete button, enabling users to remove images. While deletion is processed locally for instant UI feedback,
+ * an optional server request can be implemented to erase images permanently from the backend, ensuring data consistency across platforms.
+ * This component encapsulates both the functionality and aesthetics required for a dynamic and interactive image management system.
+ * The implementation leverages React's hooks for state management and effects, illustrating modern React development practices.
  *
  * Contributors:
  * - Tanner Helton - Component structure and functionality

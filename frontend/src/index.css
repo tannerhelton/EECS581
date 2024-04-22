@@ -1,3 +1,13 @@
+/* This CSS file establishes the fundamental styles applied throughout a web application.
+   It sets a zero margin for the body to remove default spacing, applies a dark background color, and sets a light color for text to ensure high contrast and readability.
+   The font family is specified to provide a modern and clean aesthetic using system-native fonts to enhance performance and visual coherence.
+   For code elements, a specific monospace font family is set to differentiate and highlight inline code snippets or blocks.
+   Styling for different toolbars ('toolbarCurrent' and 'toolbarOther') is defined to visually distinguish active elements from others, applying specific colors and backgrounds.
+   A custom style removes all default scrollbars from the document, aiming to create a cleaner and more focused user interface by eliminating visual clutter.
+   This approach not only enhances the visual appeal but also focuses on improving the user experience by providing a consistent and accessible interface. */
+
+/* Created by: Tanner Helton */
+
 body {
   margin: 0;
   background-color: #121212;
