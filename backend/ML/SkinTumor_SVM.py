@@ -1,3 +1,14 @@
+'''
+This script is a part of the Skin Tumor Classification project. 
+It contains the main functions for loading, processing, and training the model on the skin tumor dataset. 
+The script also includes functions for generating saliency maps and testing the model on new images. 
+The main function executes the sequence of operations, including data loading, processing, model training, and testing. 
+The script can be run to train the model and test it on new images.
+
+Created by: Chris Stillman
+
+'''
+
 #IMPORTS
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.preprocessing import StandardScaler
@@ -278,6 +289,7 @@ def open_image(path):
     else:
         img = Image.open(path)
     return img
+
 def gsm(test_image_path):
    # Load and preprocess the image
     img = Image.open(test_image_path)
@@ -434,7 +446,6 @@ def setup_global_models(benign_train, malignant_train, benign_test, malignant_te
     # Train SVM model
     global_svm_model = SVC(kernel='rbf', probability=True, random_state=42)
     global_svm_model.fit(X_train_pca, y_train)
-
 
 ### Description: Simple test function to print a string.
 ### Parameters: str - String to print.

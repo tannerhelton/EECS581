@@ -1,3 +1,16 @@
+'''
+This script is used to train a k-Nearest Neighbors (kNN) model on the heart disease dataset.
+The model is trained on the preprocessed dataset and evaluated using various evaluation metrics.
+The script also contains functions to perform grid search for hyperparameter tuning,
+transform the data using OneHotEncoding and StandardScaler, and predict heart disease for a user.
+The user input is processed and the probability of heart disease is predicted using the trained model.
+The script also contains functions to plot the distribution of features and correlation analysis.
+The functions are used to generate visualizations for the web application.
+
+Created by: Chris Stillman
+
+'''
+
 # ----------------------------------------
 # Imports
 import pandas as pd
