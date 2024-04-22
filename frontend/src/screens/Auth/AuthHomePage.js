@@ -1,14 +1,43 @@
 /**
- * AuthHomePage.js
+ * File Name: AuthHomePage.js
  * 
- * This component serves as the home page for authenticated users of Health Horizon AI. It displays 
- * a custom welcome message addressing the user by their email and includes a button to navigate to 
- * the test selection or user journey section. The page maintains the branding with the logo and 
- * consistent theming using Material UI components. This page is accessible only to users who are 
- * logged in, ensuring a personalized experience.
+ * Description:
+ * This component serves as the authenticated homepage for users logged into the Health Horizon AI platform.
+ * It displays a welcoming message personalized with the user's email, a company logo, and a call-to-action button
+ * that directs users to begin their journey. The page is styled with Material UI components to ensure a consistent
+ * and engaging user interface. It also includes a dynamic greeting that recognizes the returning user, enhancing
+ * the personalized experience.
  * 
- * Contributors:
- * - Adam Jolles - Implementation of the authenticated user interface and navigation
+ * Created by: Adam Jolles
+ * Date Created: October 8, 2024
+ * 
+ * Revised History:
+ * - No revisions made to date.
+ * 
+ * Preconditions:
+ * - Users must be authenticated, and their authentication state must be managed and accessible via the `auth` prop.
+ * - Material UI and React Router must be properly configured within the project.
+ * 
+ * Input Values:
+ * - auth: An object containing the current user's authentication information, including their email.
+ * 
+ * Postconditions:
+ * - Renders a personalized greeting and navigation options for authenticated users.
+ * 
+ * Return Values:
+ * - A React component that displays the authenticated homepage with a welcome message and a navigational button.
+ * 
+ * Errors and Exceptions:
+ * - If the `auth` prop is not properly passed or if `auth.currentUser.email` is undefined, the greeting will not display the user's email.
+ * 
+ * Side Effects:
+ * - No significant side effects expected as the component is primarily used for displaying information based on the current authentication state.
+ * 
+ * Invariants:
+ * - The visual layout and elements remain consistent unless explicitly modified.
+ * 
+ * Known Faults:
+ * - Potential for displaying incorrect or outdated user information if the authentication state is not updated or managed correctly.
  */
 
 //imports

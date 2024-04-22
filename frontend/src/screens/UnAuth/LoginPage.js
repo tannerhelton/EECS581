@@ -1,16 +1,48 @@
 /**
- * LoginPage.js
+ * File Name: LoginPage.js
  * 
- * This component facilitates user login through email and password or Google sign-in. It features
- * a clean and straightforward interface using Material UI components, with Firebase Authentication 
- * handling the authentication processes. The page includes error handling for login failures and 
- * navigational links for password recovery and new account registration. Custom styled components 
- * enhance the visual appeal and user experience.
+ * Description:
+ * This component serves as the login interface for the Health Horizon AI platform. It supports authentication
+ * via email and password or through Google sign-in, using Firebase Authentication services. The interface
+ * is built with Material UI components to provide a clean and user-friendly experience. It includes error handling
+ * for login failures and provides navigational links for users to recover their passwords or register a new account.
+ * The design and functionality aim to offer a straightforward user experience with enhanced visual appeal through custom styled components.
  * 
- * Contributors:
- * - Adam Jolles - Development and integration of authentication logic
- * - Adam Jolles - UI design and error management
+ * Created by: Adam Jolles
+ * Date Created: October 8, 2023
+ * 
+ * Revised History:
+ * - Adam Jolles added alernate sign-in methods and improved styling on November 5, 2024.
+ * - Sloan Stubler revised the UI design and added error management on March 20, 2024.
+ * - Adam Jolles made styling changes on April 9, 2024.
+ * 
+ * Preconditions:
+ * - Firebase must be configured correctly with the project for authentication.
+ * - Material UI library must be installed and available within the project.
+ * 
+ * Input Values:
+ * - Email: String, expected to be a valid email format.
+ * - Password: String, handled securely for authentication.
+ * 
+ * Postconditions:
+ * - Renders a login form that can authenticate users through Firebase.
+ * 
+ * Return Values:
+ * - A React component that displays a login page allowing users to authenticate or navigate to other user-related pages.
+ * 
+ * Errors and Exceptions:
+ * - Displays error messages if login fails due to incorrect credentials or connection issues.
+ * 
+ * Side Effects:
+ * - Successful login alters user session state and may redirect the user to the homepage or other parts of the application.
+ * 
+ * Invariants:
+ * - The layout and core functionality remain constant; only the user input and resulting session state change.
+ * 
+ * Known Faults:
+ * - Potential for inconsistent error messages from Firebase that may not be user-friendly.
  */
+
 
 //imports
 import React, { useState } from 'react';

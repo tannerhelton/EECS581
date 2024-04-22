@@ -1,14 +1,43 @@
 /**
- * HomePage.js
+ * File Name: HomePage.js
  * 
- * This component acts as the landing page for users who are not logged in to the Health Horizon AI platform.
- * It displays the company's logo and a tagline that encapsulates the mission of Health Horizon AI, emphasizing
- * the importance of early detection for better health outcomes. The page is designed with Material UI components
- * for a clean and professional look, maintaining a focus on simplicity and brand representation.
+ * Description:
+ * The HomePage component serves as the main landing page for users who are not logged in to the Health Horizon AI platform.
+ * It features the company's logo and a tagline promoting the mission of early detection for improved health outcomes. This component
+ * uses Material UI for styling to ensure a clean, professional look that emphasizes simplicity and effective brand representation.
  * 
- * Contributors:
- * - Adam Jolles - Layout and initial design
+ * Created by: Adam Jolles
+ * Date Created: October 8, 2023
+ * 
+ * Revised History:
+ * - No revisions made to date.
+ * 
+ * Preconditions:
+ * - Material UI must be installed and properly integrated within the project.
+ * - Environment variables for image URLs must be set.
+ * 
+ * Input Values:
+ * - None. This component does not handle user input directly.
+ * 
+ * Postconditions:
+ * - Renders the homepage with the company logo and a concise tagline.
+ * 
+ * Return Values:
+ * - A React component that displays the homepage of the Health Horizon AI platform.
+ * 
+ * Errors and Exceptions:
+ * - If environment variables for the images are not set, the images will not load, leading to missing visuals.
+ * 
+ * Side Effects:
+ * - None expected as the component primarily serves static content.
+ * 
+ * Invariants:
+ * - The overall design and content of the homepage remain consistent across different viewing sessions.
+ * 
+ * Known Faults:
+ * - Potential layout issues on varying screen sizes due to fixed styling properties if not responsive.
  */
+
 
 //imports
 import React from "react";

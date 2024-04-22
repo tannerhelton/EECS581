@@ -1,14 +1,43 @@
 /**
- * ThankYouPage.js
+ * File Name: ThankYouPage.js
  * 
- * This component serves as a response page to users who have submitted a contact form, 
- * thanking them for their inquiry. It provides a simple, clear message of acknowledgment 
- * in a styled, centered container. The design follows the site's aesthetic, using Material 
- * UI components for consistency and responsiveness.
+ * Description:
+ * The ThankYouPage component is displayed after a user submits a contact form. It thanks the user for their inquiry
+ * with a simple and clear message. The component uses Material UI for styling to ensure consistency with the site's
+ * aesthetic and to maintain responsiveness. The layout is centered and designed to provide a positive user experience
+ * by acknowledging user interaction in a visually appealing manner.
  * 
- * Contributors:
- * - Adam Jolles - Created the thank you message and page design
+ * Created by: Adam Jolles
+ * Date Created: October 15, 2023
+ * 
+ * Revised History:
+ * - No revisions made to date.
+ * 
+ * Preconditions:
+ * - Material UI library must be installed and properly integrated within the project.
+ * 
+ * Input Values:
+ * - None. This component displays static content and does not process user input.
+ * 
+ * Postconditions:
+ * - Renders a message thanking the user for their inquiry, positioned centrally on the page.
+ * 
+ * Return Values:
+ * - A React component that provides a visual response to user submissions.
+ * 
+ * Errors and Exceptions:
+ * - No direct errors or exceptions are handled by this component as it does not involve data processing.
+ * 
+ * Side Effects:
+ * - None. The component is purely informational and does not modify any state or data.
+ * 
+ * Invariants:
+ * - The content and styling of the thank you message are maintained unless explicitly modified in the code.
+ * 
+ * Known Faults:
+ * - None identified, given the static nature of the content.
  */
+
 
 //imports
 import React from 'react';

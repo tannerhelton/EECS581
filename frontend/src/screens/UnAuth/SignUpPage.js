@@ -1,15 +1,49 @@
 /**
- * SignUpPage.js
+ * File Name: SignUpPage.js
  * 
- * This component is the registration page where new users can create an account with Health Horizon AI.
- * It features a form for inputting personal details like name, email, password, and phone number. 
- * The design uses Material UI for a consistent and user-friendly interface, and Firebase Authentication 
- * for managing the account creation process. Error handling provides feedback on the sign-up process.
+ * Description:
+ * The SignUpPage component provides a registration interface for new users of the Health Horizon AI platform.
+ * It features a form that collects personal details such as name, email, password, and phone number. This page utilizes
+ * Material UI components for a consistent and accessible user interface, enhanced by Firebase Authentication for secure
+ * and reliable account creation. The page incorporates thorough error handling to provide feedback on the sign-up process,
+ * guiding the user through potential issues during account registration.
  * 
- * Contributors:
- * - Adam Jolles - Implementation of the sign-up logic and page layout
- * - Adam Jolles - Design and styling of the form elements
+ * Created by: Adam Jolles
+ * Date Created: October 15, 2023
+ * 
+ * Revised History:
+ * - Adam Jolles refined the design and form styling on March 18, 2024.
+ * 
+ * Preconditions:
+ * - Firebase and Material UI libraries must be properly configured and integrated into the project.
+ * - The environment for handling React state with hooks must be set up.
+ * 
+ * Input Values:
+ * - Name: String, required for personal identification.
+ * - Email: String, required, must be in a valid email format to ensure future communications.
+ * - Password: String, required, must meet defined security criteria for account safety.
+ * - Phone Number: String, optional, to enhance user profile and communication.
+ * 
+ * Postconditions:
+ * - Renders a sign-up form that allows new users to create an account.
+ * 
+ * Return Values:
+ * - A React component displaying a user-friendly sign-up interface.
+ * 
+ * Errors and Exceptions:
+ * - Provides error feedback if the sign-up process fails, such as Firebase authentication errors.
+ * 
+ * Side Effects:
+ * - User data is collected and processed for account creation.
+ * - Navigates to a different page upon successful sign-up.
+ * 
+ * Invariants:
+ * - The component structure and functionality remain constant under the same operational conditions.
+ * 
+ * Known Faults:
+ * - Lack of real-time validation feedback for input fields, potentially delaying error discovery until submission.
  */
+
 
 //imports
 import React, { useState } from 'react';

@@ -1,15 +1,44 @@
 /**
- * ContactPage.js
+ * File Name: ContactPage.js
  * 
- * This React component serves as the contact page for our application, featuring a form 
- * where users can submit their name, email, and a message. The page also includes additional 
- * contact information. The form uses Material UI components for consistent styling and 
- * responsiveness. Form submission handling and navigation upon submission are implemented 
- * with React hooks.
+ * Description:
+ * This file defines the ContactPage component for the application. It includes a form for users to submit their contact details,
+ * including name, email, and a message. This page utilizes Material UI components for styling and React Router for navigation.
+ * The form submission logic is handled using React hooks.
  * 
- * Contributors:
- * - Adam Jolles - Implementation of the contact form and page layout
- * - Sloan Stubler - Styling and interactivity enhancements
+ * Created by: Adam Jolles
+ * Date Created: December 4, 2023
+ * 
+ * Revised History:
+ * - January 15, 2024 - Sloan Stubler enhanced styling and interactivity.
+ * 
+ * Preconditions:
+ * - Material UI and React Router must be installed.
+ * - The environment for React state management and hooks (useState, useNavigate) should be properly configured.
+ * 
+ * Input Values:
+ * - Name: String input for the user's name.
+ * - Email: String input that should be a valid email format.
+ * - Message: String input for the user's message, accepts multiline text.
+ * 
+ * Postconditions:
+ * - Renders a contact form on the page that users can interact with.
+ * 
+ * Return Values:
+ * - A React component that displays a styled contact form.
+ * 
+ * Errors and Exceptions:
+ * - Form submission may fail if backend API or server issues occur.
+ * - Navigation errors can happen if the route specified in navigate() does not exist.
+ * 
+ * Side Effects:
+ * - Submission of the form triggers a state update and potential navigation.
+ * 
+ * Invariants:
+ * - The structure of the form and its handlers are constant unless explicitly changed in the code.
+ * 
+ * Known Faults:
+ * - No error handling is currently implemented for the form submission process.
  */
 
 //imports
