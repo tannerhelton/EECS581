@@ -132,3 +132,9 @@
 #data{
     padding-top: 8px;
 }
+#mapInfo{
+    line-height: 2;
+    padding-top: 6vw;
+    padding-left: 1vw;
+    font-style: italic;
+}

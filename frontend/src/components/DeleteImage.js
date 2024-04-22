@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 const DeleteImage = ({ url, imageDiv }) => {
 	//FIXME: This function is not reaching the delete endpoint.
 	// the url seems to be malformed and/or temporary, so I'm not sure if it's what we should be using.
+	const apiUrl = process.env.REACT_APP_API_URL;
 	const deleteImage = () => {
 		console.log("{Deleting image:", url, "}");
 		const filename = url.split("/").pop();
-		fetch("http://localhost:3002/api/files/" + filename, {
+		fetch(`${apiUrl}/api/files/` + filename, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",

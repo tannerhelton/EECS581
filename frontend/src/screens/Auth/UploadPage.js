@@ -10,6 +10,7 @@ import "./css/UploadPage.css";
 import ImagesDisplay from "../../components/ImagesDisplay";
 
 const UploadPage = () => {
+	const apiUrl = process.env.REACT_APP_API_URL;
 	const [imageListVersion, setImageListVersion] = useState(0);
 	const [fileIdentifier, setFileIdentifier] = useState(""); // State to store the file identifier
 	const [predictionResult, setPredictionResult] = useState("");
@@ -49,7 +50,7 @@ const UploadPage = () => {
 		uploadRequest.addEventListener("error", () =>
 			alert("Error uploading file!")
 		);
-		uploadRequest.open("POST", "http://localhost:3002/api/upload");
+		uploadRequest.open("POST", `${apiUrl}/api/upload`);
 		uploadRequest.send(formData);
 	};
 
@@ -183,6 +184,15 @@ const UploadPage = () => {
 								className="resultImage"
 								style={{ margin: "10px" }}
 							/>
+						</div>
+					)}
+					{superimposedImage && (
+						<div id="mapInfo">
+							In the context of skin cancer detection, these maps highlight
+							areas on the skin lesion that have features commonly associated
+							with malignant (cancerous) or benign (non-cancerous) conditions.
+							Brighter areas in the saliency map indicate higher relevance to
+							the algorithm's decision-making process.
 						</div>
 					)}
 				</div>

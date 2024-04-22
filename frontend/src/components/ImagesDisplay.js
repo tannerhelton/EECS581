@@ -1,12 +1,18 @@
+`
+The purpose of this file is to display the images from the machine learning
+algorithms. It includes a heat map and saliency map. 
+
+`;
+
 import React, { useEffect, useState } from "react";
 import { Grid, Card, CardMedia, CardActions, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const ImagesDisplay = () => {
 	const [images, setImages] = useState([]);
-
+	const apiUrl = process.env.REACT_APP_API_URL;
 	useEffect(() => {
-		fetch("http://localhost:3002/api/files")
+		fetch(`${apiUrl}}/api/files`)
 			.then((response) => response.json())
 			.then((data) => {
 				if (Array.isArray(data)) {

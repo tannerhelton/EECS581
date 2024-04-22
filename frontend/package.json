@@ -28,7 +28,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"REACT_APP_ENV=development react-scripts start\" \"python3 ../backend/ML/flask_app.py\" \"node ../s3_test/server.js\"",
+    "start": "concurrently \"REACT_APP_ENV=development REACT_APP_API_URL=http://localhost:3002 react-scripts start\" \"python3 ../backend/ML/flask_app.py\" \"node ../s3_test/server.js\"",
     "build:staging": "REACT_APP_ENV=staging react-scripts build",
     "build:production": "REACT_APP_ENV=production react-scripts build",
     "eject": "react-scripts eject",
