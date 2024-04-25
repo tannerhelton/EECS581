@@ -1,15 +1,45 @@
 /**
- * ProfilePage.js
+ * File Name: ProfilePage.js
  * 
+ * Description:
  * This component displays the user's profile information, including email, phone number, and other 
  * personal details. Users can edit their information directly on this page. The component handles 
  * data fetching, editing, and saving to Firebase Firestore, ensuring data synchronization and real-time 
  * updates. It provides an interactive and responsive interface for managing account information, 
  * with error handling to guide the user experience.
  * 
- * Contributors:
- * - Thomas Gansner - Development of profile management functionality and data integration
+ * Created by: Thomas Gansner
+ * Date Created: October 1, 2024
+ * 
+ * Revised History:
  * - Adam Jolles - Styling and interactivity enhancements
+ * 
+ * Preconditions:
+ * - Users must be authenticated, and their authentication state must be managed and accessible via the `auth` prop.
+ * - Material UI and React Router must be properly configured within the project.
+ * 
+ * Input Values:
+ * - auth: An object containing the current user's authentication information, including their email.
+ * - db: A Firestore database object used to fetch and save user profile information.
+ * 
+ * Postconditions:
+ * - The ProfilePage component will display the user's profile information and allow them to edit and save changes.
+ * 
+ * Return Values:
+ * - A React component that displays the ProfilePage.
+ * 
+ * Errors and Exceptions:
+ * - If the `auth` prop is not properly passed or if `auth.currentUser.email` is undefined, the greeting will not display the user's email.
+ * - If the user's profile information fails to load or save, an error message will be displayed to the user.
+ * 
+ * Side Effects:
+ * - Updates the user's profile information in Firestore when changes are saved.
+ * 
+ * Invariants:
+ * - The visual layout and elements remain consistent unless explicitly modified.
+ * 
+ * Known Faults:
+ * - None.
  */
 
 //imports
