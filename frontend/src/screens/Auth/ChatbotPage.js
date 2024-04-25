@@ -1,15 +1,43 @@
 /**
- * ChatbotPage.js
+ * File Name: ChatbotPage.js
  * 
+ * Description:
  * This component serves as the chat interface for authenticated users to interact with a health-focused 
  * chatbot powered by OpenAI's GPT-4 Turbo model. Users can ask questions about health issues, and the chatbot 
  * responds in real-time. The page includes a text input field for queries and a display area for the chat 
  * conversation. Custom styling is applied for a user-friendly experience, and advanced async functions handle 
  * the communication with OpenAI's API, ensuring responsive and accurate chatbot replies.
  * 
- * Contributors:
- * - Tanner Helton - Integration with OpenAI's API and development of the chatbot interaction logic
- * - Sloan Stubler - Styling and interactivity enhancements
+ * Created by: Tanner Helton
+ * Date Created: October 14, 2024
+ * 
+ * Revised History:
+ * - Sloan Stubler revised the frontend to be React component-based on April 14, 2024.
+ * 
+ * Preconditions:
+ * - Users must be authenticated, and their authentication state must be managed and accessible via the `auth` prop.
+ * - Material UI and React Router must be properly configured within the project.
+ * 
+ * Input Values:
+ * - None.
+ * 
+ * Postconditions:
+ * - Renders a chatbot interface for authenticated users to interact with a health-focused AI assistant.
+ * 
+ * Return Values:
+ * - A React component that displays the chatbot page.
+ * 
+ * Errors and Exceptions:
+ * - Chatbot will tell the user what went wrong in a normal chat message.
+ * 
+ * Side Effects:
+ * - None.
+ * 
+ * Invariants:
+ * - The visual layout and elements remain consistent unless explicitly modified.
+ * 
+ * Known Faults:
+ * - None.
  */
 
 // Import the necessary components and modules

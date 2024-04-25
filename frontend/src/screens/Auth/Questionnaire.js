@@ -1,15 +1,43 @@
 /**
- * Questionnaire.js
+ * File Name: Questionnaire.js
  * 
+ * Description:
  * This component is a health questionnaire designed to collect user responses on various health-related 
  * questions. The answers are saved to the database, and the user can view the results, which include a 
  * probability of heart disease and related data visualizations. It features dynamic input fields for 
  * responses, conditional rendering based on user interaction, and integration with Firebase Firestore 
  * for data storage. A BMI calculator popup is also included to aid users in calculating their Body Mass Index.
  * 
- * Contributors:
- * - Thomas Gansner - Implementation of questionnaire logic and integration with the database
- * - Sloan Stubler - Styling and interactivity enhancements
+ * Created by: Thomas Gansner
+ * Date Created: October 22, 2024
+ * 
+ * Revised History:
+ * - Sloan Stubler - Styling and interactivity enhancements on March 20, 2024
+ * 
+ * Preconditions:
+ * - Users must be authenticated, and their authentication state must be managed and accessible via the `auth` prop.
+ * - Material UI and React Router must be properly configured within the project.
+ * 
+ * Input Values:
+ * - db: A Firestore database object used to fetch and save user profile information.
+ * 
+ * Postconditions:
+ * - The Questionnaire page will display a series of health-related questions for the user to answer.
+ * 
+ * Return Values:
+ * - A React component that displays the Questionnaire page.
+ * 
+ * Errors and Exceptions:
+ * - If the user's questionnaire answers fail to save, an error message will be displayed to the user.
+ * 
+ * Side Effects:
+ * - Updates the user's questionnaire answers in Firestore when saved.
+ * 
+ * Invariants:
+ * - The visual layout and elements remain consistent unless explicitly modified.
+ * 
+ * Known Faults:
+ * - None.
  */
 
 //imports

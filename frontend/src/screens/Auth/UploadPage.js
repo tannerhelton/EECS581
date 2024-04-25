@@ -1,15 +1,43 @@
 /**
- * UploadPage.js
+ * File Name: UploadPage.js
  * 
+ * Description:
  * This component facilitates the upload of skin condition images for analysis by a machine learning model. 
  * Users can upload images, view, and delete previously uploaded images, and check the results of the analysis. 
  * The page consists of three sections: an image uploader, the display of upload results including diagnosis 
  * and probability graphs, and a storage area for past images. Results include visual representations like 
  * heatmaps and superimposed images to provide insights into the model's diagnosis process.
  * 
- * Contributors:
- * - Thomas Gansner - Development of the image upload functionality and result presentation logic
- * - Adam Jolles - Styling and interactivity enhancements
+ * Created by: Thomas Gansner
+ * Date Created: October 24, 2024
+ * 
+ * Revised History:
+ * - Adam Jolles - Styling and interactivity enhancements on March 27, 2024
+ * 
+ * Preconditions:
+ * - Users must be authenticated, and their authentication state must be managed and accessible via the `auth` prop.
+ * - Material UI and React Router must be properly configured within the project.
+ * 
+ * Input Values:
+ * - None.
+ * 
+ * Postconditions:
+ * - The UploadPage component will display the image uploader, upload results, and image storage sections, as well as display the results of the machine learning model analysis.
+ * 
+ * Return Values:
+ * - A React component that displays the UploadPage.
+ * 
+ * Errors and Exceptions:
+ * - If the user's image fails to upload or the prediction fails to fetch, an error message will be displayed to the user.
+ * 
+ * Side Effects:
+ * - None
+ * 
+ * Invariants:
+ * - The visual layout and elements remain consistent unless explicitly modified.
+ * 
+ * Known Faults:
+ * - None.
  */
 
 //imports
